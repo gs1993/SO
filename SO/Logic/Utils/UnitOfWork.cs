@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Logic.Models;
 
 namespace Logic.Utils
 {
@@ -30,10 +31,10 @@ namespace Logic.Utils
             }
             finally
             {
-                ;
                 _context.Dispose();
             }
         }
+
         public void Commit()
         {
             if (!_isAlive)
@@ -42,9 +43,9 @@ namespace Logic.Utils
             _isCommitted = true;
         }
 
-        internal T Get<T>(long id) where T : class
+        internal T Get<T>(long id) where T : Entity
         {
-            return _context.Set<T>().Find(id);
+            return _context.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 
         internal void SaveOrUpdate<T>(T entity)

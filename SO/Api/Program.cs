@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using Logic.Utils;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Api
@@ -13,6 +14,8 @@ namespace Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls(Consts.ApiUrl)
                 .UseStartup<Startup>();
         }
     }
