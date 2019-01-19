@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Logic.Models
+﻿namespace Logic.Models
 {
-    public partial class PostTypes
+    public partial class PostTypes : Entity
     {
-        public int Id { get; set; }
         public string Type { get; set; }
     }
 }

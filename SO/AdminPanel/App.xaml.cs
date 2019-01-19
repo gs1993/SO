@@ -4,6 +4,6 @@ namespace AdminPanel
 {
     public partial class App : Application
     {
-
+        //Logic
     }
 }

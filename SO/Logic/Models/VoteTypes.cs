@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Logic.Models
+﻿namespace Logic.Models
 {
-    public partial class VoteTypes
+    public partial class VoteTypes : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

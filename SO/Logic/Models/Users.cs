@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Logic.Models
 {
-    public partial class Users
+    public partial class Users : Entity
     {
-        public int Id { get; set; }
         public string AboutMe { get; set; }
         public int? Age { get; set; }
         public DateTime CreationDate { get; set; }

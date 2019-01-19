@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Logic.Models
 {
-    public partial class PostLinks
+    public partial class PostLinks : Entity
     {
-        public int Id { get; set; }
         public DateTime CreationDate { get; set; }
         public int PostId { get; set; }
         public int RelatedPostId { get; set; }

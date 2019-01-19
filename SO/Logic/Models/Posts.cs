@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Logic.Models
 {
-    public partial class Posts
+    public partial class Posts : Entity
     {
-        public int Id { get; set; }
         public int? AcceptedAnswerId { get; set; }
         public int? AnswerCount { get; set; }
         public string Body { get; set; }

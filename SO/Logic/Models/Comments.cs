@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Logic.Models
 {
-    public partial class Comments
+    public partial class Comments : Entity
     {
-        public int Id { get; set; }
         public DateTime CreationDate { get; set; }
         public int PostId { get; set; }
         public int? Score { get; set; }
