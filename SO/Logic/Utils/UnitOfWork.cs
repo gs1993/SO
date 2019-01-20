@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Logic.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Logic.Utils
 {
@@ -46,6 +48,11 @@ namespace Logic.Utils
         internal T Get<T>(long id) where T : Entity
         {
             return _context.Set<T>().FirstOrDefault(x => x.Id == id);
+        }
+
+        internal Task<T> GetAsync<T>(long id) where T : Entity
+        {
+            return _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         internal void SaveOrUpdate<T>(T entity)

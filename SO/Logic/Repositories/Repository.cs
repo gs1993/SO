@@ -1,4 +1,5 @@
-﻿using Logic.Models;
+﻿using System.Threading.Tasks;
+using Logic.Models;
 using Logic.Utils;
 
 namespace Logic.Repositories
@@ -15,6 +16,11 @@ namespace Logic.Repositories
         public T GetById(int id)
         {
             return _unitOfWork.Get<T>(id);
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _unitOfWork.GetAsync<T>(id);
         }
 
         public void Add(T entity)

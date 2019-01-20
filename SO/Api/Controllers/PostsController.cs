@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Api.Dtos;
 using AutoMapper;
 using Logic.Repositories;
@@ -29,9 +30,9 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var post = _postsRepository.GetById(id);
+            var post = await _postsRepository.GetByIdAsync(id);
             if (post == null)
                 return Error("Not Found");
 
