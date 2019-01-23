@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace AdminPanel.Api
 {
-    public class ApiClient
+    public static class ApiClient
     {
         private static readonly HttpClient _client = new HttpClient();
         private static string _endpointUrl;
@@ -23,7 +23,7 @@ namespace AdminPanel.Api
 
         public static async Task<PostDetailsDto> GetPost(int id)
         {
-            var result = await SendRequest<PostDetailsDto>($"?id={id}", HttpMethod.Get).ConfigureAwait(false);
+            var result = await SendRequest<PostDetailsDto>($"Posts?id={id}", HttpMethod.Get).ConfigureAwait(false);
             if (result.IsFailure)
             {
                 // TODO: add fail user message
@@ -32,6 +32,16 @@ namespace AdminPanel.Api
             return result.Value;
         }
 
+        public static async Task<IReadOnlyList<PostListDto>> GetPostPage(int pageNumber, int pageSize)
+        {
+            var result = await SendRequest<IReadOnlyList<PostListDto>>($"Posts/GetPage?pageNumber={pageNumber}&pageSize={pageSize}", HttpMethod.Get).ConfigureAwait(false);
+            if (result.IsFailure)
+            {
+                // TODO: add fail user message
+            }
+
+            return result.Value;
+        }
 
         private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
             where T : class

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Dtos;
 using AutoMapper;
@@ -11,21 +12,29 @@ namespace Api.Controllers
     [Route("api/posts")]
     public class PostsController : BaseController
     {
-        private readonly UnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly PostsRepository _postsRepository;
 
-        public PostsController(UnitOfWork unitOfWork, IMapper mapper)
+        public PostsController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _postsRepository = new PostsRepository(unitOfWork);
         }
 
         [HttpGet]
-        public IActionResult GetList()
+        [Route("GetPage")]
+        public async Task<IActionResult> GetList([FromQuery]int pageNumber, [FromQuery]int pageSize)
         {
-            throw new NotImplementedException();
+            if (pageNumber < 1)
+                pageNumber = 1;
+
+            if (pageSize < 1)
+                return Error($"Parameter pageNumber cannot have value: {pageSize}");
+
+            var posts = await _postsRepository.GetPageAsync(pageNumber, pageSize);
+            if (posts == null)
+                return Error("Not Found");
+
+            var dto = Mapper.Map<IReadOnlyList<PostListDto>>(posts);
+            return Ok(dto);
         }
 
         [HttpGet]
@@ -36,7 +45,7 @@ namespace Api.Controllers
             if (post == null)
                 return Error("Not Found");
 
-            var dto = _mapper.Map<PostDetailsDto>(post);
+            var dto = Mapper.Map<PostDetailsDto>(post);
             return Ok(dto);
         }
     }

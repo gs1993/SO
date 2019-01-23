@@ -13,7 +13,7 @@
         <mui:LinkGroup DisplayName="welcome">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Home" Source="/Pages/Home.xaml" />
-                <mui:Link DisplayName="Posts List" Source="/Pages/Posts/PostsList.xaml" />
+                <mui:Link DisplayName="Posts List" Source="/Pages/Posts/PostList.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="settings" GroupKey="settings">

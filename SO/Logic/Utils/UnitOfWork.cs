@@ -65,9 +65,9 @@ namespace Logic.Utils
             //_context.Set<T>().Remove(entity);
         }
 
-        public IQueryable<T> Query<T>()
+        public IQueryable<T> Query<T>() where T : Entity
         {
-            return null; //_session.Query<T>();
+            return _context.Set<T>();
         }
     }
 }
