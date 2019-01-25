@@ -46,25 +46,33 @@ namespace AdminPanel.Api
         private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
             where T : class
         {
-            var request = new HttpRequestMessage(method, $"{_endpointUrl}/{url}");
-            if (content != null)
-                request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
-            
-            var message = await _client.SendAsync(request).ConfigureAwait(false);
-            var response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var envelope = JsonConvert.DeserializeObject<Envelope<T>>(response);
+            try
+            {
+                var request = new HttpRequestMessage(method, $"{_endpointUrl}/{url}");
+                if (content != null)
+                    request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
 
-            if (message.StatusCode == HttpStatusCode.InternalServerError)
-                throw new Exception(envelope.ErrorMessage);
+                var message = await _client.SendAsync(request).ConfigureAwait(false);
+                var response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (!message.IsSuccessStatusCode)
-                return Result.Fail<T>(envelope.ErrorMessage);
+                if (message.StatusCode == HttpStatusCode.InternalServerError)
+                    throw new Exception(response);
 
-            var result = envelope.Result;
-            if (result == null && typeof(T) == typeof(string))
-                result = string.Empty as T;
+                var envelope = JsonConvert.DeserializeObject<Envelope<T>>(response);
+                
+                if (!message.IsSuccessStatusCode)
+                    return Result.Fail<T>(envelope.ErrorMessage);
 
-            return Result.Ok(result);
+                var result = envelope.Result;
+                if (result == null && typeof(T) == typeof(string))
+                    result = string.Empty as T;
+
+                return Result.Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Result.Fail<T>(e.Message);
+            }
         }
     }
 }
