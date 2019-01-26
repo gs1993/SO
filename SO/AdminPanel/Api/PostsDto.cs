@@ -22,6 +22,7 @@ namespace AdminPanel.Api
 
     public class PostListDto
     {
+        public int Id { get; set; }
         public int AnswerCount { get; set; }
         public bool IsClosed { get; set; }
         public int CommentCount { get; set; }

@@ -55,14 +55,15 @@ namespace Logic.Utils
             return _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        internal void SaveOrUpdate<T>(T entity)
+        internal void SaveOrUpdate<T>(T entity) where T : Entity
         {
-            //_context.SaveChanges(entity);
+            _context.Set<T>().Update(entity);
         }
 
-        internal void Delete<T>(T entity)
+        internal void Delete<T>(T entity) where T : Entity
         {
-            //_context.Set<T>().Remove(entity);
+            _context.Set<T>().Remove(entity);
+            _context.SaveChanges();
         }
 
         public IQueryable<T> Query<T>() where T : Entity

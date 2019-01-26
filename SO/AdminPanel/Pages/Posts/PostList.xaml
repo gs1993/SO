@@ -14,9 +14,9 @@
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
-                <Button Command="{Binding CreateStudentCommand}" Content="Create" Margin="10 0 10 15" Padding="5" FontSize="18" />
-                <Button Command="{Binding UpdateStudentCommand}" CommandParameter="{Binding ElementName=grdStudents, Path=SelectedValue}" Content="Update" Margin="10 0 10 15" Padding="5" FontSize="18" />
-                <Button Command="{Binding DeleteStudentCommand}" CommandParameter="{Binding ElementName=grdStudents, Path=SelectedValue}" Content="Delete" Margin="10 0 10 15" Padding="5" FontSize="18" />
+                <Button Command="{Binding CreatePostCommand}" Content="Create" Margin="10 0 10 15" Padding="5" FontSize="18" />
+                <Button Command="{Binding UpdatePostCommand}" CommandParameter="{Binding ElementName=grdPosts, Path=SelectedValue}" Content="Update" Margin="10 0 10 15" Padding="5" FontSize="18" />
+                <Button Command="{Binding DeletePostCommand}" CommandParameter="{Binding ElementName=grdPosts, Path=SelectedValue}" Content="Delete" Margin="10 0 10 15" Padding="5" FontSize="18" />
             </StackPanel>
 
         <Grid>

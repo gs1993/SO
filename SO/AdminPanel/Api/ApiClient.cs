@@ -43,6 +43,14 @@ namespace AdminPanel.Api
             return result.Value;
         }
 
+        public static async Task<bool> DeletePost(int id)
+        {
+            var result = await SendRequest<PostDetailsDto>($"Posts?id={id}", HttpMethod.Delete).ConfigureAwait(false);
+
+            return !result.IsFailure;
+        }
+
+
         private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
             where T : class
         {

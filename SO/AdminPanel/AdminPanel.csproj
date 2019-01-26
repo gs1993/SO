@@ -92,6 +92,7 @@
     <Compile Include="Pages\Settings\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Command.cs" />
     <Compile Include="Utils\Envelope.cs" />
     <Compile Include="Utils\MainViewModel.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />

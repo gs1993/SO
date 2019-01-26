@@ -5,9 +5,10 @@ namespace Logic.Dtos
 {
     public class PostListDto
     {
-        public PostListDto(string title, int? answerCount, int? commentCount,
+        public PostListDto(int id, string title, int? answerCount, int? commentCount,
             DateTime creationDate, int score, int viewCount, DateTime? closedDate)
         {
+            Id = id;
             Title = title;
             AnswerCount = answerCount ?? 0;
             CommentCount = commentCount ?? 0;
@@ -18,6 +19,7 @@ namespace Logic.Dtos
             IsClosed = closedDate == null;
         }
 
+        public int Id { get; set; }
         public int AnswerCount { get; set; }
         public bool IsClosed { get; set; }
         public int CommentCount { get; set; }

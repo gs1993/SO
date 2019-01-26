@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Logic.Dtos;
@@ -39,12 +39,30 @@ namespace Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            if (id <= 0)
+                return Error("Invalid id");
+
             var post = await _postsRepository.GetByIdAsync(id);
             if (post == null)
                 return Error("Not Found");
 
             var dto = Mapper.Map<PostDetailsDto>(post);
             return Ok(dto);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0)
+                return Error("Invalid id");
+
+            var result = await _postsRepository.Delete(id);
+
+            if (result.IsFailure)
+                return Error(result.Error);
+
+            return Ok();
         }
     }
 }

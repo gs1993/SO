@@ -10,7 +10,7 @@ namespace Api.Controllers
         protected readonly UnitOfWork UnitOfWork;
         protected readonly IMapper Mapper;
 
-        public BaseController( UnitOfWork unitOfWork, IMapper mapper)
+        public BaseController(UnitOfWork unitOfWork, IMapper mapper)
         {
             Mapper = mapper;
             UnitOfWork = unitOfWork;

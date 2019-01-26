@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Logic.Dtos;
@@ -16,15 +17,32 @@ namespace Logic.Repositories
 
         public async Task<IReadOnlyList<PostListDto>> GetPageAsync(int pageNumber, int pageSize)
         {
+            if(pageNumber < 1 || pageSize < 1)
+                throw new ArgumentException($"Invalid arguments: pageNumber: {pageNumber}, pageSize: {pageSize}");
+
             return await _unitOfWork.Query<Posts>()
                 .Where(p => !string.IsNullOrEmpty(p.Title))
                 .OrderBy(p => p.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => 
-                    new PostListDto(p.Title, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
+                    new PostListDto(p.Id, p.Title, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
                 )
                 .ToListAsync();
+        }
+
+        public async Task<Result> Delete(int id)
+        {
+            if(id <= 0)
+                return Result.Fail($"Id cannot be: {id}");
+
+            var post = await _unitOfWork.Query<Posts>()
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if(post == null)
+                return Result.Fail($"There is no posts with id: {id}");
+
+            _unitOfWork.Delete(post);
+            return Result.Ok();
         }
     }
 }
