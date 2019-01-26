@@ -1,6 +1,7 @@
 ﻿using System;
+using Logic.Models;
 
-namespace Api.Dtos
+namespace Logic.Dtos
 {
     public class PostDetailsDto
     {
@@ -13,21 +14,6 @@ namespace Api.Dtos
         public int? FavoriteCount { get; set; }
         public DateTime LastActivityDate { get; set; }
         public DateTime? LastEditDate { get; set; }
-        public string LastEditorDisplayName { get; set; }
-        public int Score { get; set; }
-        public string Tags { get; set; }
-        public string Title { get; set; }
-        public int ViewCount { get; set; }
-    }
-
-    public class PostListDto
-    {
-        public int? AnswerCount { get; set; }
-        public string Body { get; set; }
-        public DateTime? ClosedDate { get; set; }
-        public int? CommentCount { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int? FavoriteCount { get; set; }
         public string LastEditorDisplayName { get; set; }
         public int Score { get; set; }
         public string Tags { get; set; }

@@ -22,15 +22,11 @@ namespace AdminPanel.Api
 
     public class PostListDto
     {
-        public int? AnswerCount { get; set; }
-        public string Body { get; set; }
-        public DateTime? ClosedDate { get; set; }
-        public int? CommentCount { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int? FavoriteCount { get; set; }
-        public string LastEditorDisplayName { get; set; }
+        public int AnswerCount { get; set; }
+        public bool IsClosed { get; set; }
+        public int CommentCount { get; set; }
+        public string CreationDate { get; set; }
         public int Score { get; set; }
-        public string Tags { get; set; }
         public string Title { get; set; }
         public int ViewCount { get; set; }
     }

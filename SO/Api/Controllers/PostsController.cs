@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Api.Dtos;
 using AutoMapper;
+using Logic.Dtos;
 using Logic.Repositories;
 using Logic.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +31,8 @@ namespace Api.Controllers
             var posts = await _postsRepository.GetPageAsync(pageNumber, pageSize);
             if (posts == null)
                 return Error("Not Found");
-
-            var dto = Mapper.Map<IReadOnlyList<PostListDto>>(posts);
-            return Ok(dto);
+            
+            return Ok(posts);
         }
 
         [HttpGet]

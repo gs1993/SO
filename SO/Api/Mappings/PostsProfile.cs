@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Api.Dtos;
 using AutoMapper;
+using Logic.Dtos;
 using Logic.Models;
 
 namespace Api.Mappings
