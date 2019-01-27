@@ -23,7 +23,7 @@ namespace AdminPanel.Api
 
         public static async Task<PostDetailsDto> GetPost(int id)
         {
-            var result = await SendRequest<PostDetailsDto>($"Posts?id={id}", HttpMethod.Get).ConfigureAwait(false);
+            var result = await SendRequest<PostDetailsDto>($"Posts/{id}", HttpMethod.Get).ConfigureAwait(false);
             if (result.IsFailure)
             {
                 // TODO: add fail user message
@@ -45,9 +45,17 @@ namespace AdminPanel.Api
 
         public static async Task<bool> DeletePost(int id)
         {
-            var result = await SendRequest<PostDetailsDto>($"Posts?id={id}", HttpMethod.Delete).ConfigureAwait(false);
+            var result = await SendRequest<string>($"Posts/{id}", HttpMethod.Delete).ConfigureAwait(false);
 
             return !result.IsFailure;
+        }
+
+        public static async Task<bool> UpdatePost(PostListDto post)
+        {
+            //var result = true;//await SendRequest<string>($"Posts/{id}", HttpMethod.Post).ConfigureAwait(false);
+
+            //return !result.IsFailure;
+            return true;
         }
 
 

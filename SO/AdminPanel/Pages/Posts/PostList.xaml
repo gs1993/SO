@@ -20,7 +20,7 @@
             </StackPanel>
 
         <Grid>
-            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding PostList}" >
+            <DataGrid x:Name="grdPosts" AutoGenerateColumns="False" ItemsSource="{Binding PostList}" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Title" Binding="{Binding Title}"/>
                         <DataGridTextColumn Header="Views" Binding="{Binding ViewCount}"/>

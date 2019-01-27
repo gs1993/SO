@@ -9,7 +9,7 @@ namespace AdminPanel
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel();
+            //DataContext = new MainViewModel();
         }
     }
 }

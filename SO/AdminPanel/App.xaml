@@ -6,6 +6,7 @@
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml"/>
                 <ResourceDictionary Source="/MahApps.Metro;component/Styles/Controls.xaml"/>
                 <ResourceDictionary Source="/MahApps.Metro;component/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="Pages/Posts/Post.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

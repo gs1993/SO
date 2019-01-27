@@ -50,6 +50,21 @@ namespace Api.Controllers
             return Ok(dto);
         }
 
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(int id)
+        {
+            if (id <= 0)
+                return Error("Invalid id");
+
+            var result = await _postsRepository.Delete(id);
+
+            if (result.IsFailure)
+                return Error(result.Error);
+
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)

@@ -7,6 +7,19 @@ namespace AdminPanel.Utils
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+        protected static readonly DialogService _dialogService = new DialogService();
+        private bool? _dialogResult;
+
+        public bool? DialogResult
+        {
+            get => _dialogResult;
+            protected set
+            {
+                _dialogResult = value;
+                Notify();
+            }
+        }
+
         public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

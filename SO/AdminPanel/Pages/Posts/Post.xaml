@@ -1,0 +1,35 @@
+﻿<ResourceDictionary x:Class="AdminPanel.Pages.Posts.Post"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdminPanel.Pages.Posts"
+             mc:Ignorable="d">
+    <DataTemplate x:Key="Post" DataType="local:PostViewModel">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="Title:" Margin="10" Padding="5" FontSize="18" />
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Post.Title, Mode=TwoWay}" Padding="5" Margin="10" FontSize="18" />
+
+            <Label Grid.Column="0" Grid.Row="1" Content="Body:" Margin="10" Padding="5" FontSize="18" />
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Post.Body, Mode=TwoWay}" Padding="5" Margin="10" FontSize="18" />
+
+            <Button Grid.Column="0" Grid.Row="0" Command="{Binding OkCommand}" Padding="5" Margin="10" FontSize="18" Content="OK" />
+            <Button Grid.Column="1" Grid.Row="0" Command="{Binding CancelCommand}" Padding="5" Margin="10" FontSize="18" Content="Cancel" />
+            
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

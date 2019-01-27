@@ -12,11 +12,13 @@ namespace AdminPanel.Pages.Posts
             PageSize = 25;
 
             DeletePostCommand = new Command<PostListDto>(x => x != null, DeletePost);
-
+            UpdatePostCommand = new Command<PostListDto>(x => x != null, UpdatePost);
+            
             GetPostPage(1, PageSize);
         }
 
         public Command<PostListDto> DeletePostCommand { get; }
+        public Command<PostListDto> UpdatePostCommand { get; }
 
 
         private IReadOnlyList<PostListDto> _postList;
@@ -49,9 +51,19 @@ namespace AdminPanel.Pages.Posts
             Notify(nameof(PostList));
         }
 
-        private void DeletePost(PostListDto post)
+        private async void UpdatePost(PostListDto post)
         {
-            var result = ApiClient.DeletePost(post.Id).ConfigureAwait(false).GetAwaiter().GetResult();
+            var postDetails = await ApiClient.GetPost(post.Id).ConfigureAwait(false);
+
+            var vm = new PostViewModel(postDetails);
+            _dialogService.ShowDialog(vm);
+
+            GetPostPage(1, 25);
+        }
+
+        private async void DeletePost(PostListDto post)
+        {
+            var result = await ApiClient.DeletePost(post.Id).ConfigureAwait(false);
             // TODO: Add popup with delete status info
 
             GetPostPage(1, 25);
