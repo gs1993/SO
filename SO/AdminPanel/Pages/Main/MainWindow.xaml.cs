@@ -1,5 +1,4 @@
-﻿using AdminPanel.Utils;
-using FirstFloor.ModernUI.Windows.Controls;
+﻿using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AdminPanel
 {
@@ -8,8 +7,6 @@ namespace AdminPanel
         public MainWindow()
         {
             InitializeComponent();
-
-            //DataContext = new MainViewModel();
         }
     }
 }

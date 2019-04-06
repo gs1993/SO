@@ -20,7 +20,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("GetPage")]
-        public async Task<IActionResult> GetList([FromQuery]int pageNumber, [FromQuery]int pageSize)
+        public async Task<IActionResult> GetList([FromQuery]int pageNumber, int pageSize)
         {
             if (pageNumber < 1)
                 pageNumber = 1;

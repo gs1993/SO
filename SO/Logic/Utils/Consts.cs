@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Logic.Utils
+﻿namespace Logic.Utils
 {
     public static class Consts
     {
