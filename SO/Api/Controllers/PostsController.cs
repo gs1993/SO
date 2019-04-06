@@ -57,11 +57,27 @@ namespace Api.Controllers
             if (id <= 0)
                 return Error("Invalid id");
 
-            var result = await _postsRepository.Delete(id);
+            throw new NotImplementedException();
 
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("Close")]
+        public async Task<IActionResult> Close([FromQuery]int id)
+        {
+            if (id < 1)
+                return Error($"Parameter pageNumber cannot have value: {id}");
+
+            var post = await _postsRepository.GetByIdAsync(id);
+            if (post == null)
+                return Error("Not Found");
+
+            var result = post.Close();
             if (result.IsFailure)
                 return Error(result.Error);
 
+            UnitOfWork.Commit();
             return Ok();
         }
 

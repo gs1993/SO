@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CSharpFunctionalExtensions;
+using System;
 
 namespace Logic.Models
 {
     public partial class Posts : Entity
     {
+        #region Properties
         public int? AcceptedAnswerId { get; set; }
         public int? AnswerCount { get; set; }
         public string Body { get; set; }
@@ -22,8 +24,18 @@ namespace Logic.Models
         public int Score { get; set; }
         public string Tags { get; set; }
         public string Title { get; set; }
-        public int ViewCount { get; set; }
+        public int ViewCount { get; set; } 
+        #endregion
 
 
+        public Result Close()
+        {
+            if (ClosedDate != null)
+                return Result.Fail("Post was already closed");
+
+            ClosedDate = DateTime.UtcNow;
+
+            return Result.Ok();
+        }
     }
 }

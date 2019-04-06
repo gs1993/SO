@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using AdminPanel.Api;
 using AdminPanel.Utils;
 
@@ -14,11 +15,13 @@ namespace AdminPanel.Pages.Posts
             DeletePostCommand = new Command<PostListDto>(x => x != null, DeletePost);
             UpdatePostCommand = new Command<PostListDto>(x => x != null, UpdatePost);
             
+            
             GetPostPage(1, PageSize);
         }
 
         public Command<PostListDto> DeletePostCommand { get; }
         public Command<PostListDto> UpdatePostCommand { get; }
+        public ICommand ClosePostCommand { get; }
 
 
         private IReadOnlyList<PostListDto> _postList;
@@ -46,16 +49,22 @@ namespace AdminPanel.Pages.Posts
 
         public async void GetPostPage(int pageNumber, int pageSize)
         {
-            PostList = await ApiClient.GetPostPage(1, 25) ?? new List<PostListDto>();
+            var postListResult = await ApiClient.GetPostPage(1, 25);
+            if (postListResult.IsFailure)
+                return; //TODO add error message
 
+            PostList = postListResult.Value;
             Notify(nameof(PostList));
         }
 
         private async void UpdatePost(PostListDto post)
         {
-            var postDetails = await ApiClient.GetPost(post.Id).ConfigureAwait(false);
+            var postDetailsResult = await ApiClient.GetPost(post.Id).ConfigureAwait(false);
 
-            var vm = new PostViewModel(postDetails);
+            if (postDetailsResult.IsFailure)
+                return; //TODO: Add error message
+
+            var vm = new PostViewModel(postDetailsResult.Value);
             _dialogService.ShowDialog(vm);
 
             GetPostPage(1, 25);

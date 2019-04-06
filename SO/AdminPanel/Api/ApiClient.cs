@@ -21,43 +21,31 @@ namespace AdminPanel.Api
             _endpointUrl = endpointUrl;
         }
 
-        public static async Task<PostDetailsDto> GetPost(int id)
+        public static async Task<Result<PostDetailsDto>> GetPost(int id)
         {
-            var result = await SendRequest<PostDetailsDto>($"Posts/{id}", HttpMethod.Get).ConfigureAwait(false);
-            if (result.IsFailure)
-            {
-                // TODO: add fail user message
-            }
-
-            return result.Value;
+            return await SendRequest<PostDetailsDto>($"Posts/{id}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<IReadOnlyList<PostListDto>> GetPostPage(int pageNumber, int pageSize)
+        public static async Task<Result<IReadOnlyList<PostListDto>>> GetPostPage(int pageNumber, int pageSize)
         {
-            var result = await SendRequest<IReadOnlyList<PostListDto>>($"Posts/GetPage?pageNumber={pageNumber}&pageSize={pageSize}", HttpMethod.Get).ConfigureAwait(false);
-            if (result.IsFailure)
-            {
-                // TODO: add fail user message
-            }
-
-            return result.Value;
+            return await SendRequest<IReadOnlyList<PostListDto>>
+                ($"Posts/GetPage?pageNumber={pageNumber}&pageSize={pageSize}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<bool> DeletePost(int id)
+        public static async Task<Result> DeletePost(int id)
         {
-            var result = await SendRequest<string>($"Posts/{id}", HttpMethod.Delete).ConfigureAwait(false);
-
-            return !result.IsFailure;
+            return await SendRequest<string>($"Posts/{id}", HttpMethod.Delete).ConfigureAwait(false);
         }
 
-        public static async Task<bool> UpdatePost(PostListDto post)
+        public static async Task<Result> UpdatePost(PostListDto post)
         {
-            //var result = true;//await SendRequest<string>($"Posts/{id}", HttpMethod.Post).ConfigureAwait(false);
-
-            //return !result.IsFailure;
-            return true;
+            return await SendRequest<string>($"Posts", HttpMethod.Post).ConfigureAwait(false);
         }
 
+        public static async Task<Result> ClosePost(int id)
+        {
+            return await SendRequest<string>($"Posts/Close", HttpMethod.Post, new { id }).ConfigureAwait(false);
+        }
 
         private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
             where T : class
