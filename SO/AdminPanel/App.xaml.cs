@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using AdminPanel.Api;
+using AdminPanel.Pages.Users;
 using AdminPanel.Startup;
 using Autofac;
 
@@ -16,6 +17,7 @@ namespace AdminPanel
             var container = bootstrapper.Bootstrap();
 
             var mainWindow = container.Resolve<MainWindow>();
+            //new MainWindow(new Pages.Main.MainWindowViewModel(new UserNavigationViewModel()));
             mainWindow.Show();
         }
 

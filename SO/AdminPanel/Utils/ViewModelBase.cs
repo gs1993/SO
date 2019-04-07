@@ -10,6 +10,9 @@ namespace AdminPanel.Utils
         protected static readonly DialogService _dialogService = new DialogService();
         private bool? _dialogResult;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
         public bool? DialogResult
         {
             get => _dialogResult;
@@ -24,7 +27,7 @@ namespace AdminPanel.Utils
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
         protected void Notify<T>(Expression<Func<T>> propertyExpression)
         {

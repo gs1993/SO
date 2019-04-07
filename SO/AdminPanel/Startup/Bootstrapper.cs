@@ -1,4 +1,5 @@
 ﻿using AdminPanel.Pages.Main;
+using AdminPanel.Pages.Users;
 using Autofac;
 
 namespace AdminPanel.Startup
@@ -10,20 +11,13 @@ namespace AdminPanel.Startup
             var builder = new ContainerBuilder();
 
             builder.RegisterType<MainWindow>().AsSelf();
-
-            builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainWindowViewModel>().AsSelf();
+            builder.RegisterType<UserNavigationViewModel>().As<IUserNavigationViewModel>();
 
-            return builder.Build();
 
             //builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
-            //builder.RegisterType<ReportFilesManager>()
-            //    .As<IReportFilesManager>()
-            //    .WithParameter(new TypedParameter(typeof(string), Consts.ReportsFolder));
-
-            //builder.RegisterType<FileListViewModel>().As<IFileListViewModel>();
-            //builder.RegisterType<FileDetailViewModel>().As<IFileDetailViewModel>();
+            return builder.Build();
         }
     }
 }

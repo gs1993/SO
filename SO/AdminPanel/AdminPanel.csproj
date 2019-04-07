@@ -82,24 +82,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\UsersDto.cs" />
     <Compile Include="Pages\Main\MainWindowViewModel.cs" />
-    <Compile Include="Pages\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
+    <Compile Include="Pages\Users\IUserNavigationViewModel.cs" />
+    <Compile Include="Pages\Users\UserNavigationView.xaml.cs">
+      <DependentUpon>UserNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Posts\Post.xaml.cs">
-      <DependentUpon>Post.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Posts\PostList.xaml.cs">
-      <DependentUpon>PostList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Posts\PostListViewModel.cs" />
-    <Compile Include="Pages\Posts\PostViewModel.cs" />
-    <Compile Include="Pages\SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Settings\About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Pages\Users\UserNavigationViewModel.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="Utils\Command.cs" />
     <Compile Include="Utils\CustomWindow.xaml.cs">
@@ -109,7 +98,6 @@
     <Compile Include="Utils\DialogService.cs" />
     <Compile Include="Utils\Envelope.cs" />
     <Compile Include="Utils\MainDataTemplateSelector.cs" />
-    <Compile Include="Utils\MainViewModel.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
     <Page Include="Pages\Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,23 +113,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\Home.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Posts\Post.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Posts\PostList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\SettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Settings\About.xaml">
+    <Page Include="Pages\Users\UserNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
