@@ -4,6 +4,7 @@ namespace Logic.Models
 {
     public partial class Users : Entity
     {
+        #region Properties
         public string AboutMe { get; set; }
         public int? Age { get; set; }
         public DateTime CreationDate { get; set; }
@@ -16,6 +17,9 @@ namespace Logic.Models
         public int UpVotes { get; set; }
         public int Views { get; set; }
         public string WebsiteUrl { get; set; }
-        public int? AccountId { get; set; }
+        public int? AccountId { get; set; } 
+        #endregion
+
+
     }
 }

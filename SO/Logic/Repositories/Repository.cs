@@ -6,26 +6,26 @@ namespace Logic.Repositories
 {
     public abstract class Repository<T> where T : Entity
     {
-        protected readonly UnitOfWork _unitOfWork;
+        protected readonly UnitOfWork unitOfWork;
 
         protected Repository(UnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            this.unitOfWork = unitOfWork;
         }
 
         public T GetById(int id)
         {
-            return _unitOfWork.Get<T>(id);
+            return unitOfWork.Get<T>(id);
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _unitOfWork.GetAsync<T>(id);
+            return await unitOfWork.GetAsync<T>(id);
         }
 
         public void Add(T entity)
         {
-            _unitOfWork.SaveOrUpdate(entity);
+            unitOfWork.SaveOrUpdate(entity);
         }
     }
 }
