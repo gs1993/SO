@@ -11,7 +11,7 @@ namespace AdminPanel.Pages.Users
 
         public UserNavigationViewModel()
         {
-            Users = new ObservableCollection<LastUserDto>();
+            _users = new ObservableCollection<LastUserDto>();
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Logic.Dtos;
 using Logic.Repositories;
 using Logic.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,21 @@ namespace Api.Controllers
                 return Error("Not Found");
 
             return Ok(lastUsersDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
+        {
+            if (id < 1)
+                return Error($"Parameter id cannot have value: {id}");
+
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return Error("Not Found");
+
+            var userDto = Mapper.Map<UserDetailsDto>(user);
+
+            return Ok(userDto);
         }
 
         [HttpDelete]

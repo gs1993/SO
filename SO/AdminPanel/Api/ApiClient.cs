@@ -47,11 +47,16 @@ namespace AdminPanel.Api
             return await SendRequest<string>($"Posts/Close", HttpMethod.Post, new { id }).ConfigureAwait(false);
         }
 
-
+        
         public static async Task<Result<IReadOnlyList<LastUserDto>>> GetLastCreatedUsersAsync(int size = 10)
         {
             return await SendRequest<IReadOnlyList<LastUserDto>>
                 ($"Users/GetLast?size={size}", HttpMethod.Get).ConfigureAwait(false);
+        }
+
+        public static async Task<Result<UserDetailsDto>> GetUser(int id)
+        {
+            return await SendRequest<UserDetailsDto>($"Users/{id}", HttpMethod.Get).ConfigureAwait(false);
         }
 
 
