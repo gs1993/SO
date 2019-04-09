@@ -1,11 +1,12 @@
 ﻿using Logic.Dtos;
-using Logic.Models;
 using Logic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Logic.Models.Users;
+using Logic.Models;
 
 namespace Logic.Repositories
 {
@@ -40,6 +41,12 @@ namespace Logic.Repositories
             unitOfWork.Commit();
 
             return Result.Ok();
+        }
+
+        public Task<int> GetCreatedPostCount(int id)
+        {
+            return unitOfWork.Query<Posts>()
+                .CountAsync(p => p.OwnerUserId == id);
         }
     }
 }

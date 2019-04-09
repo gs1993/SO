@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Logic.Dtos;
+using Logic.Models.Users;
 using Logic.Repositories;
 using Logic.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,12 @@ namespace Api.Controllers
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
                 return Error("Not Found");
+
+            int createdPostCount = await _userRepository.GetCreatedPostCount(id);
+
+            var createdPostCountResult = user.SetCreatedPostCount(createdPostCount);
+            if (createdPostCountResult.IsFailure)
+                return Error(createdPostCountResult.Error);
 
             var userDto = Mapper.Map<UserDetailsDto>(user);
 

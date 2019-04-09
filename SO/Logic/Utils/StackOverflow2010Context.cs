@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Logic.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Logic.Models.Users;
 
 namespace Logic.Utils
 {
@@ -105,7 +106,10 @@ namespace Logic.Utils
                     .IsRequired()
                     .HasMaxLength(40);
 
-                entity.Property(e => e.EmailHash).HasMaxLength(40);
+                entity.OwnsOne(e => e.VoteSummary, x => {
+                    x.Property(p => p.UpVotes).HasColumnName("UpVotes");
+                    x.Property(p => p.DownVotes).HasColumnName("DownVotes");
+                });
 
                 entity.Property(e => e.LastAccessDate).HasColumnType("datetime");
 
