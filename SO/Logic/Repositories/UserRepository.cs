@@ -24,7 +24,7 @@ namespace Logic.Repositories
             return await unitOfWork.Query<Users>()
                 .OrderByDescending(u => u.CreationDate)
                 .Take(count)
-                .Select(u => new LastUserDto { CreationDate = u.CreationDate, DisplayName = u.DisplayName })
+                .Select(u => new LastUserDto { Id = u.Id, DisplayName = u.DisplayName })
                 .ToListAsync();
         }
 

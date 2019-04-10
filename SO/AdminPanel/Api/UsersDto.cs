@@ -5,7 +5,7 @@ namespace AdminPanel.Api
 {
     public class LastUserDto
     {
-        public DateTime CreationDate { get; set; }
+        public int Id { get; set; }
         public string DisplayName { get; set; }
 
 
@@ -17,8 +17,9 @@ namespace AdminPanel.Api
 
     public class UserDetailsDto
     {
+        public int Id { get; set; }
         public string AboutMe { get; set; }
-        public int? Age { get; }
+        public int? Age { get; set; }
         public DateTime CreationDate { get; set; }
         public string DisplayName { get; set; }
         public DateTime LastAccessDate { get; set; }

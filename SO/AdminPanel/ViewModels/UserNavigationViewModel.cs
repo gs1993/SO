@@ -1,5 +1,7 @@
 ﻿using AdminPanel.Api;
+using AdminPanel.Events;
 using AdminPanel.Utils;
+using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -8,9 +10,12 @@ namespace AdminPanel.ViewModels
     public class UserNavigationViewModel : ViewModelBase, IUserNavigationViewModel
     {
         private ObservableCollection<LastUserDto> _users;
+        private LastUserDto _selectedUserDto;
+        private IEventAggregator _eventAggregator;
 
-        public UserNavigationViewModel()
+        public UserNavigationViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _users = new ObservableCollection<LastUserDto>();
         }
 
@@ -22,6 +27,18 @@ namespace AdminPanel.ViewModels
             {
                 _users = value;
                 Notify();
+            }
+        }
+
+        public LastUserDto SelectedUserDto
+        {
+            get { return _selectedUserDto; }
+            set {
+                _selectedUserDto = value;
+                Notify();
+                if (_selectedUserDto != null)
+                    _eventAggregator.GetEvent<OpenUserDetailsEvent>()
+                        .Publish(_selectedUserDto.Id);
             }
         }
 

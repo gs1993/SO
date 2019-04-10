@@ -1,6 +1,7 @@
 ﻿using AdminPanel.ViewModels;
 using AdminPanel.Views;
 using Autofac;
+using Prism.Events;
 
 namespace AdminPanel.Startup
 {
@@ -12,10 +13,11 @@ namespace AdminPanel.Startup
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainWindowViewModel>().AsSelf();
+
             builder.RegisterType<UserNavigationViewModel>().As<IUserNavigationViewModel>();
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
 
-            //builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
+            builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
             return builder.Build();
         }
