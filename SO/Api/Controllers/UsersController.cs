@@ -34,6 +34,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             if (id < 1)
@@ -50,7 +51,6 @@ namespace Api.Controllers
                 return Error(createdPostCountResult.Error);
 
             var userDto = Mapper.Map<UserDetailsDto>(user);
-
             return Ok(userDto);
         }
 

@@ -54,7 +54,7 @@ namespace AdminPanel.Api
                 ($"Users/GetLast?size={size}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<Result<UserDetailsDto>> GetUser(int id)
+        public static async Task<Result<UserDetailsDto>> GetUserDetails(int id)
         {
             return await SendRequest<UserDetailsDto>($"Users/{id}", HttpMethod.Get).ConfigureAwait(false);
         }

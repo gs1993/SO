@@ -17,19 +17,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <view:UserNavigationView DataContext ="{Binding UserNavigationViewModel}"/>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Label Content="User name" Margin="10 10 10 0"/>
-            <TextBox Grid.Row="1" Text="{Binding SelectedUser.DisplayName}" Margin="10 0 10 10"></TextBox>
-            <Label Grid.Row="2" Content="Created Date" Margin="10 10 10 0"/>
-            <TextBox Grid.Row="3" Text="{Binding SelectedUser.CreatedDate}" Margin="10 0 10 10"></TextBox>
-
-        </Grid>
+        <view:UserDetailView DataContext ="{Binding UserDetailViewModel}" Grid.Column="1"/>
     </Grid>
 
 </Window>

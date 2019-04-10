@@ -9,14 +9,15 @@ namespace AdminPanel.Pages.Main
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public MainWindowViewModel(IUserNavigationViewModel userNavigationViewModel)
+        public MainWindowViewModel(IUserNavigationViewModel userNavigationViewModel, IUserDetailViewModel userDetailViewModel)
         {
             UserNavigationViewModel = userNavigationViewModel;
+            UserDetailViewModel = userDetailViewModel;
         }
 
 
-        public IUserNavigationViewModel UserNavigationViewModel { get; set; }
-
+        public IUserNavigationViewModel UserNavigationViewModel { get; }
+        public IUserDetailViewModel UserDetailViewModel { get; }
 
         public async Task Load()
         {
