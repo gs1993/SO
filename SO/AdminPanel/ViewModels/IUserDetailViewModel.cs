@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AdminPanel.Api;
 
-namespace AdminPanel.Pages.Users
+namespace AdminPanel.ViewModels
 {
     public interface IUserDetailViewModel
     {

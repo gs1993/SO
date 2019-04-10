@@ -1,11 +1,7 @@
-﻿using AdminPanel.Api;
-using AdminPanel.Pages.Users;
-using AdminPanel.Utils;
-using System;
-using System.Collections.ObjectModel;
+﻿using AdminPanel.Utils;
 using System.Threading.Tasks;
 
-namespace AdminPanel.Pages.Main
+namespace AdminPanel.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
@@ -19,9 +15,10 @@ namespace AdminPanel.Pages.Main
         public IUserNavigationViewModel UserNavigationViewModel { get; }
         public IUserDetailViewModel UserDetailViewModel { get; }
 
+
         public async Task Load()
         {
             await UserNavigationViewModel.LoadAsync();
-        } 
+        }
     }
 }

@@ -85,17 +85,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Api\UsersDto.cs" />
-    <Compile Include="Pages\Main\MainWindowViewModel.cs" />
-    <Compile Include="Pages\Users\IUserDetailViewModel.cs" />
-    <Compile Include="Pages\Users\IUserNavigationViewModel.cs" />
-    <Compile Include="Pages\Users\UserDetailView.xaml.cs">
+    <Compile Include="ViewModels\IUserDetailViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\IUserNavigationViewModel.cs" />
+    <Compile Include="Views\UserDetailView.xaml.cs">
       <DependentUpon>UserDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Users\UserDetailViewModel.cs" />
-    <Compile Include="Pages\Users\UserNavigationView.xaml.cs">
+    <Compile Include="ViewModels\UserDetailViewModel.cs" />
+    <Compile Include="Views\UserNavigationView.xaml.cs">
       <DependentUpon>UserNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Users\UserNavigationViewModel.cs" />
+    <Compile Include="ViewModels\UserNavigationViewModel.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="Utils\Command.cs" />
     <Compile Include="Utils\CustomWindow.xaml.cs">
@@ -106,7 +106,7 @@
     <Compile Include="Utils\Envelope.cs" />
     <Compile Include="Utils\MainDataTemplateSelector.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
-    <Page Include="Pages\Main\MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -116,15 +116,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\Main\MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\Users\UserDetailView.xaml">
+    <Page Include="Views\UserDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Users\UserNavigationView.xaml">
+    <Page Include="Views\UserNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

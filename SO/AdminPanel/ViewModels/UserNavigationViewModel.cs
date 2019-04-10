@@ -3,7 +3,7 @@ using AdminPanel.Utils;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace AdminPanel.Pages.Users
+namespace AdminPanel.ViewModels
 {
     public class UserNavigationViewModel : ViewModelBase, IUserNavigationViewModel
     {
@@ -15,8 +15,11 @@ namespace AdminPanel.Pages.Users
         }
 
 
-        public ObservableCollection<LastUserDto> Users { get { return _users; }
-            set {
+        public ObservableCollection<LastUserDto> Users
+        {
+            get { return _users; }
+            set
+            {
                 _users = value;
                 Notify();
             }

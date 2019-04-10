@@ -1,12 +1,8 @@
 ﻿using AdminPanel.Api;
 using AdminPanel.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPanel.Pages.Users
+namespace AdminPanel.ViewModels
 {
     public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     {

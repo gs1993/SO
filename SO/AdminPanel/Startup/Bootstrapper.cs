@@ -1,5 +1,5 @@
-﻿using AdminPanel.Pages.Main;
-using AdminPanel.Pages.Users;
+﻿using AdminPanel.ViewModels;
+using AdminPanel.Views;
 using Autofac;
 
 namespace AdminPanel.Startup

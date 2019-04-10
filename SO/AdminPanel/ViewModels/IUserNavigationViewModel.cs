@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AdminPanel.Pages.Users
+namespace AdminPanel.ViewModels
 {
     public interface IUserNavigationViewModel
     {

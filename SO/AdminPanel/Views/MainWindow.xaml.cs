@@ -1,8 +1,7 @@
 ﻿using System.Windows;
-using AdminPanel.Pages.Main;
-using FirstFloor.ModernUI.Windows.Controls;
+using AdminPanel.ViewModels;
 
-namespace AdminPanel
+namespace AdminPanel.Views
 {
     public partial class MainWindow : Window
     {
