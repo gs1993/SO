@@ -55,7 +55,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        [Route("PermaBan")]
+        [Route("PermaBan/{id}")]
         public async Task<IActionResult> PermaBan(int id)
         {
             if (id < 1)

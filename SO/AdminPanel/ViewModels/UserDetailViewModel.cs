@@ -1,9 +1,11 @@
 ﻿using AdminPanel.Api;
 using AdminPanel.Events;
 using AdminPanel.Utils;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AdminPanel.ViewModels
 {
@@ -17,8 +19,12 @@ namespace AdminPanel.ViewModels
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<OpenUserDetailsEvent>()
                 .Subscribe(OnOpenUserDetailView);
+
+            BanUserCommand = new DelegateCommand(OnBanExecute);
         }
-        
+
+        public ICommand BanUserCommand { get; }
+
         public UserDetailsDto User
         {
             get { return _user; }
@@ -29,7 +35,6 @@ namespace AdminPanel.ViewModels
             }
         }
 
-
         public async Task LoadAsync(int id)
         {
             var result = await ApiClient.GetUserDetails(id);
@@ -38,10 +43,14 @@ namespace AdminPanel.ViewModels
             User = result.Value;
         }
 
-
         private async void OnOpenUserDetailView(int id)
         {
             await LoadAsync(id);
+        }
+
+        private async void OnBanExecute()
+        {
+            var result = await ApiClient.BanUser(User.Id);
         }
     }
 }

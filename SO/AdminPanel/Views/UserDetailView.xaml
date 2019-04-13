@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Content="User name" Margin="10 10 10 0"/>
         <TextBox Grid.Row="1" Text="{Binding User.DisplayName}" Margin="10 0 10 10"></TextBox>
@@ -49,5 +50,9 @@
         <TextBox Grid.Row="17" Text="{Binding User.UpVotes}" Margin="10 0 10 10"></TextBox>
         <Label Grid.Row="18" Content="Down votes" Margin="10 10 10 0"/>
         <TextBox Grid.Row="19" Text="{Binding User.DownVotes}" Margin="10 0 10 10"></TextBox>
+
+        <StackPanel Grid.Row="20" Orientation="Horizontal">
+            <Button Content="Ban" Width="125" Margin="10" Command="{Binding BanUserCommand}"></Button>
+        </StackPanel>
     </Grid>
 </UserControl>

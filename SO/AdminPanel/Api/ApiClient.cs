@@ -46,8 +46,8 @@ namespace AdminPanel.Api
         {
             return await SendRequest<string>($"Posts/Close", HttpMethod.Post, new { id }).ConfigureAwait(false);
         }
-
         
+
         public static async Task<Result<IReadOnlyList<LastUserDto>>> GetLastCreatedUsersAsync(int size = 10)
         {
             return await SendRequest<IReadOnlyList<LastUserDto>>
@@ -58,6 +58,12 @@ namespace AdminPanel.Api
         {
             return await SendRequest<UserDetailsDto>($"Users/{id}", HttpMethod.Get).ConfigureAwait(false);
         }
+
+        public static async Task<Result<UserDetailsDto>> BanUser(int id)
+        {
+            return await SendRequest<UserDetailsDto>($"Users/PermaBan/{id}", HttpMethod.Delete).ConfigureAwait(false);
+        }
+
 
 
         private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
