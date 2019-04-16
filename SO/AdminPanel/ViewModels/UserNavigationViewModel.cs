@@ -58,13 +58,15 @@ namespace AdminPanel.ViewModels
             Users = new ObservableCollection<LastUserDto>(result.Value);
         }
 
-        private void AfterUserBan(int deletedUserId)
+        private async void AfterUserBan(int deletedUserId)
         {
             var userToRemove = Users.FirstOrDefault(u => u.Id == deletedUserId);
             if (userToRemove != null)
                 Users.Remove(userToRemove);
 
-            // TODO: Load next user on the bottom of the table
+            var userResult = await ApiClient.GetLastCreatedUserForSpecyficIndexAsync(Users.Count);
+            if (userResult.IsSuccess)
+                Users.Add(userResult.Value);
         }
     }
 }

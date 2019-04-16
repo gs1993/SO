@@ -11,55 +11,60 @@ using Newtonsoft.Json;
 
 namespace AdminPanel.Api
 {
-    public static class ApiClient
+    internal static class ApiClient
     {
         private static readonly HttpClient _client = new HttpClient();
         private static string _endpointUrl;
 
-        public static void Init(string endpointUrl)
+        internal static void Init(string endpointUrl)
         {
             _endpointUrl = endpointUrl;
         }
 
-        public static async Task<Result<PostDetailsDto>> GetPost(int id)
+        internal static async Task<Result<PostDetailsDto>> GetPost(int id)
         {
             return await SendRequest<PostDetailsDto>($"Posts/{id}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<Result<IReadOnlyList<PostListDto>>> GetPostPage(int pageNumber, int pageSize)
+        internal static async Task<Result<IReadOnlyList<PostListDto>>> GetPostPage(int pageNumber, int pageSize)
         {
             return await SendRequest<IReadOnlyList<PostListDto>>
                 ($"Posts/GetPage?pageNumber={pageNumber}&pageSize={pageSize}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<Result> DeletePost(int id)
+        internal static async Task<Result> DeletePost(int id)
         {
             return await SendRequest<string>($"Posts/{id}", HttpMethod.Delete).ConfigureAwait(false);
         }
 
-        public static async Task<Result> UpdatePost(PostListDto post)
+        internal static async Task<Result> UpdatePost(PostListDto post)
         {
             return await SendRequest<string>($"Posts", HttpMethod.Post).ConfigureAwait(false);
         }
 
-        public static async Task<Result> ClosePost(int id)
+        internal static async Task<Result> ClosePost(int id)
         {
             return await SendRequest<string>($"Posts/Close", HttpMethod.Post, new { id }).ConfigureAwait(false);
         }
-        
 
-        public static async Task<Result<IReadOnlyList<LastUserDto>>> GetLastCreatedUsersAsync(int size = 10)
+
+        internal static async Task<Result<IReadOnlyList<LastUserDto>>> GetLastCreatedUsersAsync(int size = 10)
         {
             return await SendRequest<IReadOnlyList<LastUserDto>>
                 ($"Users/GetLast?size={size}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<Result<UserDetailsDto>> GetUserDetails(int id)
+        internal static async Task<Result<UserDetailsDto>> GetUserDetails(int id)
         {
             return await SendRequest<UserDetailsDto>($"Users/{id}", HttpMethod.Get).ConfigureAwait(false);
         }
 
-        public static async Task<Result<UserDetailsDto>> BanUser(int id)
+        internal static async Task<Result<LastUserDto>> GetLastCreatedUserForSpecyficIndexAsync(int index)
+        {
+            return await SendRequest<LastUserDto>($"Users/GetLastCreatedByIndex/{index}", HttpMethod.Get).ConfigureAwait(false);
+        }
+
+        internal static async Task<Result<UserDetailsDto>> BanUser(int id)
         {
             return await SendRequest<UserDetailsDto>($"Users/PermaBan/{id}", HttpMethod.Delete).ConfigureAwait(false);
         }

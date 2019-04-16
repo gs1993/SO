@@ -54,6 +54,20 @@ namespace Api.Controllers
             return Ok(userDto);
         }
 
+        [HttpGet]
+        [Route("GetLastCreatedByIndex/{index}")]
+        public async Task<IActionResult> GetLastCreatedByIndex(int index)
+        {
+            if (index < 1)
+                return Error($"Parameter index cannot have value: {index}");
+
+            var lastUserDto = await _userRepository.GetLastUsersWithIndex(index);
+            if (lastUserDto == null)
+                return Error("Not Found");
+
+            return Ok(lastUserDto);
+        }
+
         [HttpDelete]
         [Route("PermaBan/{id}")]
         public async Task<IActionResult> PermaBan(int id)

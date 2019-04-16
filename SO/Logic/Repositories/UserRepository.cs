@@ -28,6 +28,18 @@ namespace Logic.Repositories
                 .ToListAsync();
         }
 
+        public async Task<LastUserDto> GetLastUsersWithIndex(int index)
+        {
+            if (index <= 0)
+                throw new ArgumentException($"Invalid argument index = {index}");
+
+            return await unitOfWork.Query<Users>()
+                .OrderByDescending(u => u.CreationDate)
+                .Skip(index)
+                .Select(u => new LastUserDto { Id = u.Id, DisplayName = u.DisplayName })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Result> PermaBanUser(int id)
         {
             if (id <= 0) 
