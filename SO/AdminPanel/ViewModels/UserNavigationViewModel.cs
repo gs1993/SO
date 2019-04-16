@@ -2,7 +2,9 @@
 using AdminPanel.Events;
 using AdminPanel.Utils;
 using Prism.Events;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdminPanel.ViewModels
@@ -16,10 +18,12 @@ namespace AdminPanel.ViewModels
         public UserNavigationViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<AfterUserBannedEvent>().Subscribe(AfterUserBan);
+
             _users = new ObservableCollection<LastUserDto>();
         }
 
-
+        
         public ObservableCollection<LastUserDto> Users
         {
             get { return _users; }
@@ -45,13 +49,22 @@ namespace AdminPanel.ViewModels
 
         public async Task LoadAsync()
         {
-            var result = await ApiClient.GetLastCreatedUsersAsync();
+            var result = await ApiClient.GetLastCreatedUsersAsync(25);
             if (result.IsFailure)
             {
                 // TODO: message
             }
 
             Users = new ObservableCollection<LastUserDto>(result.Value);
+        }
+
+        private void AfterUserBan(int deletedUserId)
+        {
+            var userToRemove = Users.FirstOrDefault(u => u.Id == deletedUserId);
+            if (userToRemove != null)
+                Users.Remove(userToRemove);
+
+            // TODO: Load next user on the bottom of the table
         }
     }
 }

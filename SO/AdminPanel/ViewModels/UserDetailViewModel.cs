@@ -50,7 +50,9 @@ namespace AdminPanel.ViewModels
 
         private async void OnBanExecute()
         {
-            var result = await ApiClient.BanUser(User.Id);
+            await ApiClient.BanUser(User.Id);
+
+            _eventAggregator.GetEvent<AfterUserBannedEvent>().Publish(User.Id);
         }
     }
 }
