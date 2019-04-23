@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using Dawn;
 using Logic.Dtos;
 using Logic.Repositories;
 using Logic.Utils;
@@ -22,11 +23,8 @@ namespace Api.Controllers
         [Route("GetPage")]
         public async Task<IActionResult> GetList([FromQuery]int pageNumber, int pageSize)
         {
-            if (pageNumber < 1)
-                pageNumber = 1;
-
-            if (pageSize < 1)
-                return Error($"Parameter pageNumber cannot have value: {pageSize}");
+            Guard.Argument(pageNumber, nameof(pageNumber)).Positive();
+            Guard.Argument(pageSize, nameof(pageSize)).Positive();
 
             var posts = await _postsRepository.GetPageAsync(pageNumber, pageSize);
             if (posts == null)
@@ -39,8 +37,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            if (id <= 0)
-                return Error("Invalid id");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var post = await _postsRepository.GetByIdAsync(id);
             if (post == null)
@@ -54,8 +51,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0)
-                return Error("Invalid id");
+            Guard.Argument(id, nameof(id)).Positive();
 
             throw new NotImplementedException();
 
@@ -66,8 +62,7 @@ namespace Api.Controllers
         [Route("Close")]
         public async Task<IActionResult> Close([FromQuery]int id)
         {
-            if (id < 1)
-                return Error($"Parameter pageNumber cannot have value: {id}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var post = await _postsRepository.GetByIdAsync(id);
             if (post == null)
@@ -85,8 +80,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0)
-                return Error("Invalid id");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var result = await _postsRepository.Delete(id);
 

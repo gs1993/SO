@@ -1,12 +1,12 @@
 ﻿using Logic.Dtos;
 using Logic.Utils;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Logic.Models.Users;
 using Logic.Models;
+using Dawn;
 
 namespace Logic.Repositories
 {
@@ -18,8 +18,7 @@ namespace Logic.Repositories
 
         public async Task<IReadOnlyList<LastUserDto>> GetLastUsers(int count)
         {
-            if (count <= 0) // TODO: Add Guard
-                throw new ArgumentException($"Invalid argument count = {count}");
+            Guard.Argument(count, nameof(count)).Positive();
 
             return await unitOfWork.Query<Users>()
                 .OrderByDescending(u => u.CreationDate)
@@ -30,8 +29,7 @@ namespace Logic.Repositories
 
         public async Task<LastUserDto> GetLastUsersWithIndex(int index)
         {
-            if (index <= 0)
-                throw new ArgumentException($"Invalid argument index = {index}");
+            Guard.Argument(index, nameof(index)).Positive();
 
             return await unitOfWork.Query<Users>()
                 .OrderByDescending(u => u.CreationDate)
@@ -42,8 +40,7 @@ namespace Logic.Repositories
 
         public async Task<Result> PermaBanUser(int id)
         {
-            if (id <= 0) 
-                throw new ArgumentException($"Invalid argument id: {id}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var user = await unitOfWork.Query<Users>().FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
@@ -57,6 +54,8 @@ namespace Logic.Repositories
 
         public Task<int> GetCreatedPostCount(int id)
         {
+            Guard.Argument(id, nameof(id)).Positive();
+
             return unitOfWork.Query<Posts>()
                 .CountAsync(p => p.OwnerUserId == id);
         }

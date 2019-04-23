@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Logic.Dtos;
 using Logic.Models;
 using Logic.Utils;
@@ -17,8 +18,8 @@ namespace Logic.Repositories
 
         public async Task<IReadOnlyList<PostListDto>> GetPageAsync(int pageNumber, int pageSize)
         {
-            if(pageNumber < 1 || pageSize < 1)
-                throw new ArgumentException($"Invalid arguments: pageNumber: {pageNumber}, pageSize: {pageSize}");
+            Guard.Argument(pageNumber, nameof(pageNumber)).Positive();
+            Guard.Argument(pageSize, nameof(pageSize)).Positive();
 
             return await unitOfWork.Query<Posts>()
                 .Where(p => !string.IsNullOrEmpty(p.Title))
@@ -33,8 +34,7 @@ namespace Logic.Repositories
 
         public async Task<Result> Delete(int id)
         {
-            if(id <= 0)
-                return Result.Fail($"Id cannot be: {id}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var post = await unitOfWork.Query<Posts>()
                 .FirstOrDefaultAsync(p => p.Id == id);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dawn;
 using Logic.Dtos;
 using Logic.Models.Users;
 using Logic.Repositories;
@@ -23,8 +24,7 @@ namespace Api.Controllers
         [Route("GetLast")]
         public async Task<IActionResult> GetLastCreated(int size = 10)
         {
-            if (size < 1)
-                return Error($"Parameter size cannot have value: {size}");
+            Guard.Argument(size, nameof(size)).Positive();
 
             var lastUsersDto = await _userRepository.GetLastUsers(size);
             if (lastUsersDto == null)
@@ -37,8 +37,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            if (id < 1)
-                return Error($"Parameter id cannot have value: {id}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
@@ -58,8 +57,7 @@ namespace Api.Controllers
         [Route("GetLastCreatedByIndex/{index}")]
         public async Task<IActionResult> GetLastCreatedByIndex(int index)
         {
-            if (index < 1)
-                return Error($"Parameter index cannot have value: {index}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var lastUserDto = await _userRepository.GetLastUsersWithIndex(index);
             if (lastUserDto == null)
@@ -72,8 +70,7 @@ namespace Api.Controllers
         [Route("PermaBan/{id}")]
         public async Task<IActionResult> PermaBan(int id)
         {
-            if (id < 1)
-                return Error($"Parameter id cannot have value: {id}");
+            Guard.Argument(id, nameof(id)).Positive();
 
             var result = await _userRepository.PermaBanUser(id);
             if (result.IsFailure)
