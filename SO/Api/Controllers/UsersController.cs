@@ -57,7 +57,7 @@ namespace Api.Controllers
         [Route("GetLastCreatedByIndex/{index}")]
         public async Task<IActionResult> GetLastCreatedByIndex(int index)
         {
-            Guard.Argument(id, nameof(id)).Positive();
+            Guard.Argument(index, nameof(index)).Positive();
 
             var lastUserDto = await _userRepository.GetLastUsersWithIndex(index);
             if (lastUserDto == null)

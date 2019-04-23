@@ -7,52 +7,46 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Content="User name" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="1" Text="{Binding User.DisplayName}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="2" Content="Age" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="3" Text="{Binding User.Age}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="4" Content="Creation date" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="5" Text="{Binding User.CreationDate}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="6" Content="Last access date" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="7" Text="{Binding User.LastAccessDate}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="8" Content="Location" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="9" Text="{Binding User.Location}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="10" Content="Website" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="11" Text="{Binding User.WebsiteUrl}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="12" Content="Created posts" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="13" Text="{Binding User.CreatedPostCount}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="14" Content="Vote count" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="15" Text="{Binding User.VoteCount}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="16" Content="Up Votes" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="17" Text="{Binding User.UpVotes}" Margin="10 0 10 10"></TextBox>
-        <Label Grid.Row="18" Content="Down votes" Margin="10 10 10 0"/>
-        <TextBox Grid.Row="19" Text="{Binding User.DownVotes}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="0" Grid.Column="0" Content="User name" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding User.DisplayName}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="1" Grid.Column="0" Content="Age" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding User.Age}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="2" Grid.Column="0" Content="Creation date" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding User.CreationDate}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="3" Grid.Column="0" Content="Last access date" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding User.LastAccessDate}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="4" Grid.Column="0" Content="Location" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding User.Location}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="5" Grid.Column="0" Content="Website" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding User.WebsiteUrl}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="6" Grid.Column="0" Content="Created posts" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding User.CreatedPostCount}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="7" Grid.Column="0" Content="Vote count" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding User.VoteCount}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="8" Grid.Column="0" Content="Up Votes" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding User.UpVotes}" Margin="10 0 10 10"></TextBox>
+        <Label Grid.Row="9" Grid.Column="0" Content="Down votes" Margin="10 10 10 0"/>
+        <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding User.DownVotes}" Margin="10 0 10 10"></TextBox>
 
-        <StackPanel Grid.Row="20" Orientation="Horizontal">
-            <Button Content="Ban" Width="125" Margin="10" Command="{Binding BanUserCommand}"></Button>
+        <StackPanel Grid.Row="10" Grid.Column="1">
+            <Button Content="Ban" Width="125" Margin="0,0,10,10" Command="{Binding BanUserCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="None"/>
         </StackPanel>
     </Grid>
 </UserControl>
