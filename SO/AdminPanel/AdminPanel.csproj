@@ -43,6 +43,9 @@
     <Reference Include="CSharpFunctionalExtensions, Version=1.15.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpFunctionalExtensions.1.15.2\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="Dawn.Guard, Version=1.8.0.0, Culture=neutral, PublicKeyToken=234740ae15f786ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dawn.Guard.1.8.0\lib\netstandard2.0\Dawn.Guard.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>

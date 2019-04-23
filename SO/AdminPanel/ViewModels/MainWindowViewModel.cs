@@ -9,6 +9,7 @@ namespace AdminPanel.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private IEventAggregator _eventAggregator;
+        private IUserDetailViewModel _userDetailViewModel;
 
 
         public MainWindowViewModel(IUserNavigationViewModel userNavigationViewModel, IUserDetailViewModel userDetailViewModel,
@@ -23,7 +24,17 @@ namespace AdminPanel.ViewModels
 
         
         public IUserNavigationViewModel UserNavigationViewModel { get; }
-        public IUserDetailViewModel UserDetailViewModel { get; }
+        public IUserDetailViewModel UserDetailViewModel {
+            get
+            {
+                return _userDetailViewModel;
+            }
+            private set
+            {
+                _userDetailViewModel = value;
+                Notify();
+            }
+        }
 
 
         public async Task Load()
@@ -33,7 +44,7 @@ namespace AdminPanel.ViewModels
 
         private void RemoveUserDetailAfterBan(int bannedUserId)
         {
-            
+            UserDetailViewModel = null;
         }
     }
 }
