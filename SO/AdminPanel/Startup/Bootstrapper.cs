@@ -1,4 +1,5 @@
-﻿using AdminPanel.ViewModels;
+﻿using AdminPanel.Utils;
+using AdminPanel.ViewModels;
 using AdminPanel.Views;
 using Autofac;
 using Prism.Events;
@@ -16,6 +17,8 @@ namespace AdminPanel.Startup
 
             builder.RegisterType<UserNavigationViewModel>().As<IUserNavigationViewModel>();
             builder.RegisterType<UserDetailViewModel>().As<IUserDetailViewModel>();
+
+            builder.RegisterType<MessageService>().As<IMessageService>();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 

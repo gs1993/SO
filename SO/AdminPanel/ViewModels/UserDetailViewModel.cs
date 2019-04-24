@@ -13,10 +13,12 @@ namespace AdminPanel.ViewModels
     {
         private UserDetailsDto _user;
         private IEventAggregator _eventAggregator;
+        private IMessageService _messageService;
 
-        public UserDetailViewModel(IEventAggregator eventAggregator)
+        public UserDetailViewModel(IEventAggregator eventAggregator, IMessageService messageService)
         {
             _eventAggregator = eventAggregator;
+            _messageService = messageService;
             _eventAggregator.GetEvent<OpenUserDetailsEvent>()
                 .Subscribe(OnOpenUserDetailView);
 
@@ -34,6 +36,7 @@ namespace AdminPanel.ViewModels
                 Notify();
             }
         }
+
 
         public async Task LoadAsync(int id)
         {

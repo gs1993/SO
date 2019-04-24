@@ -94,6 +94,8 @@
     <Compile Include="Events\AfterUserBannedEvent.cs" />
     <Compile Include="Events\ClosePostViewEvent.cs" />
     <Compile Include="Events\OpenUserDetailEvent.cs" />
+    <Compile Include="Utils\IMessageService.cs" />
+    <Compile Include="Utils\MessageService.cs" />
     <Compile Include="ViewModels\IUserDetailViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\IUserNavigationViewModel.cs" />
