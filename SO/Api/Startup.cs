@@ -20,20 +20,32 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
-            var connectionString = "Data Source=.;Initial Catalog=StackOverflow2010;Integrated Security=True;";//Configuration["ConnectionString"];
+            var connectionString = "Data Source=.;Initial Catalog=StackOverflow2013;Integrated Security=True;";//Configuration["ConnectionString"];
             services.AddDbContext<StackOverflow2010Context>(options =>
                 options.UseSqlServer(connectionString));
             services.AddScoped<UnitOfWork>();
             services.AddTransient<PostsRepository>();
             services.AddAutoMapper();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyOrigin",
+                builder => builder.WithOrigins("http://localhost:8100")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader());
+            });
+
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionHandler>();
+
+            app.UseCors("AllowMyOrigin");
             app.UseMvc();
+
+            
 
             //app.UseCors(builder => builder
             //    .WithOrigins(Consts.ApiUrl)

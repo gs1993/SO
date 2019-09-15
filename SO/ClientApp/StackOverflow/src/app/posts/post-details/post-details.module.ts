@@ -4,14 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-import {TimeAgoPipe} from 'time-ago-pipe';
 
-import { PostsPage } from './posts.page';
+import { PostDetailsPage } from './post-details.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PostsPage
+    component: PostDetailsPage
   }
 ];
 
@@ -22,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PostsPage, TimeAgoPipe]
+  declarations: [PostDetailsPage]
 })
-export class PostsPageModule {}
+export class PostDetailsPageModule {}

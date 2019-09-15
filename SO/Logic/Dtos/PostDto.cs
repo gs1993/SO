@@ -23,27 +23,33 @@ namespace Logic.Dtos
 
     public class PostListDto
     {
-        public PostListDto(int id, string title, int? answerCount, int? commentCount,
+        private const int BodyMaxLength = 150;
+
+        public PostListDto(int id, string title, string body, int? answerCount, int? commentCount,
             DateTime creationDate, int score, int viewCount, DateTime? closedDate)
         {
             Id = id;
             Title = title;
             AnswerCount = answerCount ?? 0;
             CommentCount = commentCount ?? 0;
-            CreationDate = creationDate.ToString(Consts.ShortDateFormat);
+            CreationDate = creationDate;
             Score = score;
             ViewCount = viewCount;
 
             IsClosed = closedDate == null;
+            ShortBody = body.Length > BodyMaxLength 
+                ? $"{body.Substring(0, 150)}..."
+                : body;
         }
 
         public int Id { get; set; }
         public int AnswerCount { get; set; }
         public bool IsClosed { get; set; }
         public int CommentCount { get; set; }
-        public string CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
         public int Score { get; set; }
         public string Title { get; set; }
+        public string ShortBody { get; set; }
         public int ViewCount { get; set; }
     }
 }

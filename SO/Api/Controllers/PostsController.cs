@@ -5,11 +5,13 @@ using Dawn;
 using Logic.Dtos;
 using Logic.Repositories;
 using Logic.Utils;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [Route("api/posts")]
+    [EnableCors("AllowMyOrigin")]
     public class PostsController : BaseController
     {
         private readonly PostsRepository _postsRepository;
@@ -30,6 +32,20 @@ namespace Api.Controllers
             if (posts == null)
                 return Error("Not Found");
             
+            return Ok(posts);
+        }
+
+        [HttpGet]
+        [Route("GetLastest")]
+        [EnableCors("AllowMyOrigin")]
+        public async Task<IActionResult> GetLastest([FromQuery]int size)
+        {
+            Guard.Argument(size, nameof(size)).Positive();
+
+            var posts = await _postsRepository.GetLastest(size);
+            if (posts == null)
+                return Error("Not Found");
+
             return Ok(posts);
         }
 

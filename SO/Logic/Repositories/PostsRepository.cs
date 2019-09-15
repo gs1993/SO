@@ -27,7 +27,21 @@ namespace Logic.Repositories
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => 
-                    new PostListDto(p.Id, p.Title, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
+                    new PostListDto(p.Id, p.Title, p.Body, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
+                )
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<PostListDto>> GetLastest(int size)
+        {
+            Guard.Argument(size, nameof(size)).Positive();
+
+            return await unitOfWork.Query<Posts>()
+                .Where(p => !string.IsNullOrEmpty(p.Title))
+                .OrderByDescending(p => p.Id)
+                .Take(size)
+                .Select(p =>
+                    new PostListDto(p.Id, p.Title, p.Body, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
                 )
                 .ToListAsync();
         }
