@@ -1,14 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using Logic.Utils;
 
 namespace Logic.Dtos
 {
     public class PostDetailsDto
     {
+        public PostDetailsDto(int id, string title, string body, int? answerCount, int? commentCount,
+            DateTime creationDate, int score, int viewCount, DateTime? closedDate) // TODO automapper
+        {
+            Id = id;
+            Title = title;
+            AnswerCount = answerCount ?? 0;
+            CommentCount = commentCount ?? 0;
+            CreationDate = creationDate;
+            Score = score;
+            ViewCount = viewCount;
+            IsClosed = closedDate == null;
+            Body = body;
+        }
+
+        public int Id { get; set; }
         public int? AnswerCount { get; set; }
         public string Body { get; set; }
         public DateTime? ClosedDate { get; set; }
         public int? CommentCount { get; set; }
+        public bool IsClosed { get; set; }
         public DateTime? CommunityOwnedDate { get; set; }
         public DateTime CreationDate { get; set; }
         public int? FavoriteCount { get; set; }
@@ -19,6 +36,8 @@ namespace Logic.Dtos
         public string Tags { get; set; }
         public string Title { get; set; }
         public int ViewCount { get; set; }
+
+        public IEnumerable<CommentDto> Comments { get; set; }
     }
 
     public class PostListDto

@@ -28,7 +28,7 @@ export interface PostDetails {
 }
 
 export interface Result<T> {
-    result: T[];
+    result: T;
     errorMessage: string;
     timeGenerated: string;
 }

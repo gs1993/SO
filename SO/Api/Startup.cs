@@ -41,7 +41,8 @@ namespace Api
         public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionHandler>();
-
+            //app.UseMiddleware<StackifyMiddleware.RequestTracerMiddleware>(); jebane gówno nie działa....
+             
             app.UseCors("AllowMyOrigin");
             app.UseMvc();
 

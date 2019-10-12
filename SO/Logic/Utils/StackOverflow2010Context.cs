@@ -29,6 +29,8 @@ namespace Logic.Utils
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
+
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=StackOverflow2010;Integrated Security=True");
@@ -55,6 +57,10 @@ namespace Logic.Utils
                 entity.Property(e => e.Text)
                     .IsRequired()
                     .HasMaxLength(700);
+
+                //entity.HasOne<Posts>(c => c.Post)
+                //    .WithMany(p => p.Comments)
+                //    .HasForeignKey(c => c.PostId);
             });
 
             modelBuilder.Entity<LinkTypes>(entity =>
@@ -80,21 +86,13 @@ namespace Logic.Utils
             modelBuilder.Entity<Posts>(entity =>
             {
                 entity.Property(e => e.Body).IsRequired();
-
                 entity.Property(e => e.ClosedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.CommunityOwnedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
                 entity.Property(e => e.LastActivityDate).HasColumnType("datetime");
-
                 entity.Property(e => e.LastEditDate).HasColumnType("datetime");
-
                 entity.Property(e => e.LastEditorDisplayName).HasMaxLength(40);
-
                 entity.Property(e => e.Tags).HasMaxLength(150);
-
                 entity.Property(e => e.Title).HasMaxLength(250);
             });
 
@@ -106,7 +104,8 @@ namespace Logic.Utils
                     .IsRequired()
                     .HasMaxLength(40);
 
-                entity.OwnsOne(e => e.VoteSummary, x => {
+                entity.OwnsOne(e => e.VoteSummary, x =>
+                {
                     x.Property(p => p.UpVotes).HasColumnName("UpVotes");
                     x.Property(p => p.DownVotes).HasColumnName("DownVotes");
                 });

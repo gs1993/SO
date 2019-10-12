@@ -8,30 +8,35 @@ import { retry, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PostsService {
-  private endpoint = 'http://localhost:5100/api/posts/';
+  private endpoint = 'http://localhost:5100/api/posts';
 
   constructor(private http: HttpClient) { }
 
 
   private getByRoute<T>(route: string, retry: number = 1): Observable<T> {
     const url = `${this.endpoint}${route}`;
-    return this.http.get<T>(url);
+    return this.http.get<Result<T>>(url)
+    .pipe(
+      map(r => {
+        if (r.errorMessage !== null) {
+          console.log('ERROR OCCURRED: ' + r.errorMessage + ' - ' + r.timeGenerated);
+        }
+        return r.result;
+      })
+    );
   }
 
   getLatest(size: number): Observable<PostList[]> {
-    const route = `getLastest?size=` + size;
+    const route = `/getLastest?size=` + size;
 
-    return this.getByRoute<Result<PostList>>(route)
-    .pipe(
-      map(r => r.result)
-    );
+    return this.getByRoute<PostList[]>(route);
   }
 
   get(id: number): Observable<PostDetails> {
-    const route = `` + id;
-    return this.getByRoute<any>(route)
-    .pipe(
-      map(r => r.result)
-    );
+    const route = `/` + id;
+    return this.getByRoute<PostDetails >(route);
+    // .pipe(
+    //   map(r => r.result)
+    // );
   }
 }

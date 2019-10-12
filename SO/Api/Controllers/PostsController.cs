@@ -18,7 +18,7 @@ namespace Api.Controllers
 
         public PostsController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            _postsRepository = new PostsRepository(unitOfWork);
+            _postsRepository = new PostsRepository(unitOfWork, mapper);
         }
 
         [HttpGet]
@@ -56,6 +56,20 @@ namespace Api.Controllers
             Guard.Argument(id, nameof(id)).Positive();
 
             var post = await _postsRepository.GetByIdAsync(id);
+            if (post == null)
+                return Error("Not Found");
+
+            var dto = Mapper.Map<PostDetailsDto>(post);
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        [Route("GetDetails")]
+        public async Task<IActionResult> GetDetails([FromQuery]int id)
+        {
+            Guard.Argument(id, nameof(id)).Positive();
+
+            var post = await _postsRepository.GetWithAnswers(id);
             if (post == null)
                 return Error("Not Found");
 

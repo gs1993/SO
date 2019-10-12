@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Logic.Dtos;
+using AutoMapper;
 using Logic.Models;
 using Logic.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,10 @@ namespace Logic.Repositories
 {
     public class PostsRepository : Repository<Posts>
     {
-        public PostsRepository(UnitOfWork unitOfWork) : base(unitOfWork)
+        protected readonly IMapper Mapper;
+        public PostsRepository(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
         {
+            Mapper = mapper;
         }
 
         public async Task<IReadOnlyList<PostListDto>> GetPageAsync(int pageNumber, int pageSize)
@@ -40,7 +43,7 @@ namespace Logic.Repositories
                 .Where(p => !string.IsNullOrEmpty(p.Title))
                 .OrderByDescending(p => p.Id)
                 .Take(size)
-                .Select(p =>
+                .Select(p => 
                     new PostListDto(p.Id, p.Title, p.Body, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
                 )
                 .ToListAsync();
@@ -57,6 +60,21 @@ namespace Logic.Repositories
 
             unitOfWork.Delete(post);
             return Result.Ok();
+        }
+
+        public async Task<PostDetailsDto> GetWithAnswers(int id)
+        {
+            Guard.Argument(id, nameof(id)).Positive();
+
+
+            var post = await unitOfWork.Query<Posts>()
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            var comments = await unitOfWork.Query<Comments>()
+                .Where(c => c.PostId == id)
+                .ToListAsync();
+
+            return new PostDetailsDto()
         }
     }
 }
