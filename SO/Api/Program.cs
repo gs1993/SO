@@ -14,7 +14,9 @@ namespace Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
+                .UseIIS()
+                //.UseKestrel()
+                //.UseIISIntegration()
                 .UseUrls(Consts.ApiUrl)
                 .UseStartup<Startup>();
         }

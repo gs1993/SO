@@ -62,11 +62,10 @@ namespace Logic.Repositories
             return Result.Ok();
         }
 
-        public async Task<PostDetailsDto> GetWithAnswers(int id)
+        public async Task<Posts> GetWithAnswers(int id)
         {
             Guard.Argument(id, nameof(id)).Positive();
-
-
+            
             var post = await unitOfWork.Query<Posts>()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -74,7 +73,8 @@ namespace Logic.Repositories
                 .Where(c => c.PostId == id)
                 .ToListAsync();
 
-            return new PostDetailsDto()
+            post.Comments = comments; // TODO: Fix
+            return post;
         }
     }
 }

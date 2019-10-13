@@ -1,4 +1,5 @@
-﻿using Api.Utils;
+﻿using Api.Mappings;
+using Api.Utils;
 using AutoMapper;
 using Logic.Repositories;
 using Logic.Utils;
@@ -25,7 +26,17 @@ namespace Api
                 options.UseSqlServer(connectionString));
             services.AddScoped<UnitOfWork>();
             services.AddTransient<PostsRepository>();
-            services.AddAutoMapper();
+
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new PostsProfile());
+                mc.AddProfile(new UsersProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddCors(options =>
             {
@@ -41,19 +52,9 @@ namespace Api
         public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionHandler>();
-            //app.UseMiddleware<StackifyMiddleware.RequestTracerMiddleware>(); jebane gówno nie działa....
-             
+
             app.UseCors("AllowMyOrigin");
             app.UseMvc();
-
-            
-
-            //app.UseCors(builder => builder
-            //    .WithOrigins(Consts.ApiUrl)
-            //    .AllowAnyHeader()
-            //    .AllowAnyMethod());
-
-
         }
     }
 }
