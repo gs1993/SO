@@ -2,6 +2,7 @@
 using Api.Utils;
 using AutoMapper;
 using Logic.Repositories;
+using Microsoft.OpenApi.Models;
 using Logic.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,11 @@ namespace Api
             });
 
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -55,6 +61,8 @@ namespace Api
 
             app.UseCors("AllowMyOrigin");
             app.UseMvc();
+
+            app.UseSwagger();
         }
     }
 }
