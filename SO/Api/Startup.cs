@@ -8,6 +8,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Api.Controllers;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Api
 {
@@ -28,6 +36,9 @@ namespace Api
             services.AddScoped<UnitOfWork>();
             services.AddTransient<PostsRepository>();
 
+
+            services.AddHealthChecks()
+                .AddCheck<ApiHealthCheck>("api"); ;
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
@@ -62,7 +73,28 @@ namespace Api
             app.UseCors("AllowMyOrigin");
             app.UseMvc();
 
+            app.UseHealthChecks("/health", new HealthCheckOptions()
+            {
+                ResponseWriter = WriteHealthCheckResponse,
+                AllowCachingResponses = true
+            });
+
             app.UseSwagger();
+        }
+
+        private static Task WriteHealthCheckResponse(HttpContext httpContext, HealthReport result)
+        {
+            httpContext.Response.ContentType = "application/json";
+            var json = new JObject(
+                new JProperty("status", result.Status.ToString()),
+                new JProperty("results", new JObject(result.Entries.Select(pair =>
+                    new JProperty(pair.Key, new JObject(
+                    new JProperty("status", pair.Value.Status.ToString()),
+                    new JProperty("description", pair.Value.Description),
+                    new JProperty("data", new JObject(pair.Value.Data.Select(
+                    p => new JProperty(p.Key, p.Value))))))))));
+
+            return httpContext.Response.WriteAsync(json.ToString(Formatting.Indented));
         }
     }
 }
