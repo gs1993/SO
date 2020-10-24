@@ -50,13 +50,13 @@ namespace Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowMyOrigin",
-                builder => builder.WithOrigins("http://localhost:8100")
-                                .AllowAnyMethod()
-                                .AllowAnyHeader());
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowMyOrigin",
+            //    builder => builder.WithOrigins("http://localhost:8100")
+            //                    .AllowAnyMethod()
+            //                    .AllowAnyHeader());
+            //});
 
             services.AddMvc();
 
@@ -70,7 +70,7 @@ namespace Api
         {
             app.UseMiddleware<ExceptionHandler>();
 
-            app.UseCors("AllowMyOrigin");
+            //app.UseCors("AllowMyOrigin");
             app.UseMvc();
 
             app.UseHealthChecks("/health", new HealthCheckOptions()
