@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Dawn;
@@ -23,6 +24,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("GetPage")]
+        [ProducesResponseType(typeof(IReadOnlyList<PostListDto>), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> GetList([FromQuery]int pageNumber, int pageSize)
         {
             Guard.Argument(pageNumber, nameof(pageNumber)).Positive();
@@ -38,6 +41,8 @@ namespace WebApp.Controllers
         [HttpGet]
         [Route("GetLastest")]
         [EnableCors("AllowMyOrigin")]
+        [ProducesResponseType(typeof(IReadOnlyList<PostListDto>), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> GetLastest([FromQuery]int size)
         {
             Guard.Argument(size, nameof(size)).Positive();
@@ -51,6 +56,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(typeof(PostListDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Get(int id)
         {
             Guard.Argument(id, nameof(id)).Positive();

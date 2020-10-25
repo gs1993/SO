@@ -4,6 +4,7 @@ using Logic.Dtos;
 using Logic.Repositories;
 using Logic.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebApp.Controllers
@@ -21,6 +22,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("GetLast")]
+        [ProducesResponseType(typeof(IReadOnlyList<LastUserDto>), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> GetLastCreated(int size = 10)
         {
             Guard.Argument(size, nameof(size)).Positive();
@@ -34,6 +37,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(typeof(LastUserDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Get(int id)
         {
             Guard.Argument(id, nameof(id)).Positive();
@@ -54,6 +59,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("GetLastCreatedByIndex/{index}")]
+        [ProducesResponseType(typeof(LastUserDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> GetLastCreatedByIndex(int index)
         {
             Guard.Argument(index, nameof(index)).Positive();
