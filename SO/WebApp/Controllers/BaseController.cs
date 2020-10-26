@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Logic.Utils;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Utils;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("MyPolicy")]
     public class BaseController : Controller
     {
         protected readonly UnitOfWork UnitOfWork;
