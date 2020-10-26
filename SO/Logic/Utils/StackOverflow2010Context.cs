@@ -32,9 +32,7 @@ namespace Logic.Utils
             optionsBuilder.EnableSensitiveDataLogging();
 
             if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=StackOverflow2010;Integrated Security=True");
-            }
+                optionsBuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=StackOverflow2013;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
