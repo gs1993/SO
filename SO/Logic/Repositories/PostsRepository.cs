@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Logic.Dtos;
-using AutoMapper;
 using Logic.Models;
 using Logic.Utils;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
+using Dapper;
 
 namespace Logic.Repositories
 {
     public class PostsRepository : Repository<Posts>
     {
-        protected readonly IMapper Mapper;
-        public PostsRepository(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
+        public PostsRepository(UnitOfWork unitOfWork, QueriesConnectionString connectionString) : base(unitOfWork, connectionString)
         {
-            Mapper = mapper;
         }
 
         public async Task<IReadOnlyList<PostListDto>> GetPageAsync(int pageNumber, int pageSize)
@@ -24,15 +22,27 @@ namespace Logic.Repositories
             Guard.Argument(pageNumber, nameof(pageNumber)).Positive();
             Guard.Argument(pageSize, nameof(pageSize)).Positive();
 
-            return await unitOfWork.Query<Posts>()
-                .Where(p => !string.IsNullOrEmpty(p.Title))
-                .OrderBy(p => p.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(p => 
-                    new PostListDto(p.Id, p.Title, p.Body, p.AnswerCount, p.CommentCount, p.CreationDate, p.Score, p.ViewCount, p.ClosedDate)
-                )
-                .ToListAsync();
+            int offset = pageNumber * pageSize;
+
+            string sql = @"
+                    SELECT [p].[Id], [p].[Title], [p].[Body], [p].[AnswerCount], [p].[CommentCount], [p].[CreationDate], [p].[Score], 
+                           [p].[ViewCount], [p].[ClosedDate]
+                    FROM [Posts] AS [p]
+                    WHERE [p].[Title] IS NOT NULL
+                    ORDER BY p.Id
+                    OFFSET @Offset ROWS
+                    FETCH NEXT @PageSize ROWS ONLY";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString.Value))
+            {
+                var posts = await connection.QueryAsync<PostListDto>(sql, new
+                {
+                    Offset = offset,
+                    PageSize = pageSize
+                });
+
+                return posts.ToList();
+            }
         }
 
         public async Task<IReadOnlyList<PostListDto>> GetLastest(int size)

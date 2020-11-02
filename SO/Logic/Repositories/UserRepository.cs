@@ -12,7 +12,7 @@ namespace Logic.Repositories
 {
     public class UserRepository : Repository<Users>
     {
-        public UserRepository(UnitOfWork unitOfWork) : base(unitOfWork)
+        public UserRepository(UnitOfWork unitOfWork, QueriesConnectionString connectionString) : base(unitOfWork, connectionString)
         {
         }
 

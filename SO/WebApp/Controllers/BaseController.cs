@@ -10,11 +10,9 @@ namespace WebApp.Controllers
     public class BaseController : Controller
     {
         protected readonly UnitOfWork UnitOfWork;
-        protected readonly IMapper Mapper;
 
-        public BaseController(UnitOfWork unitOfWork, IMapper mapper)
+        public BaseController(UnitOfWork unitOfWork)
         {
-            Mapper = mapper;
             UnitOfWork = unitOfWork;
         }
 

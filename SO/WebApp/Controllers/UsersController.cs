@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     {
         private UserRepository _userRepository;
 
-        public UsersController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public UsersController(UnitOfWork unitOfWork, QueriesConnectionString connectionString) : base(unitOfWork)
         {
-            _userRepository = new UserRepository(unitOfWork);
+            _userRepository = new UserRepository(unitOfWork, connectionString);
         }
 
 

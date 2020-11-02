@@ -7,10 +7,12 @@ namespace Logic.Repositories
     public abstract class Repository<T> where T : Entity
     {
         protected readonly UnitOfWork unitOfWork;
+        protected readonly QueriesConnectionString _connectionString;
 
-        protected Repository(UnitOfWork unitOfWork)
+        protected Repository(UnitOfWork unitOfWork, QueriesConnectionString connectionString)
         {
             this.unitOfWork = unitOfWork;
+            _connectionString = connectionString;
         }
 
         public T GetById(int id)

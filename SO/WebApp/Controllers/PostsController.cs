@@ -17,9 +17,9 @@ namespace WebApp.Controllers
     {
         private readonly PostsRepository _postsRepository;
 
-        public PostsController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public PostsController(UnitOfWork unitOfWork, QueriesConnectionString connectionString) : base(unitOfWork)
         {
-            _postsRepository = new PostsRepository(unitOfWork, mapper);
+            _postsRepository = new PostsRepository(unitOfWork, connectionString);
         }
 
         [HttpGet]

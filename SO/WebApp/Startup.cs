@@ -29,11 +29,12 @@ namespace WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration["ConnectionString"];
+            var connectionString = Configuration.GetConnectionString("so"); ;
             services.AddDbContext<StackOverflow2010Context>(options =>
                 options.UseSqlServer(connectionString));
             services.AddScoped<UnitOfWork>();
             services.AddTransient<PostsRepository>();
+            services.AddSingleton(new QueriesConnectionString(connectionString));
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
