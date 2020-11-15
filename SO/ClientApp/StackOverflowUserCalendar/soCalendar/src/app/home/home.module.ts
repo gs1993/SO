@@ -6,11 +6,11 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { NgCalendarModule  } from 'ionic2-calendar';
-import { CalModalPageModule } from '../pages/cal-modal/cal-modal.module';
+import { CalModalPageModule } from '../pages/calendar/cal-modal/cal-modal.module';
  
 import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
-registerLocaleData(localeDe);
+import localePl from '@angular/common/locales/pl';
+registerLocaleData(localePl);
 
 
 @NgModule({

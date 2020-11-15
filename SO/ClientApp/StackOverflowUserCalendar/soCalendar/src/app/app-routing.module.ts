@@ -13,7 +13,11 @@ const routes: Routes = [
   },
   {
     path: 'cal-modal',
-    loadChildren: () => import('./pages/cal-modal/cal-modal.module').then( m => m.CalModalPageModule)
+    loadChildren: () => import('./pages/calendar/cal-modal/cal-modal.module').then( m => m.CalModalPageModule)
+  },
+  {
+    path: 'cal-main',
+    loadChildren: () => import('./pages/calendar/cal-main/cal-main.module').then( m => m.CalMainPageModule)
   },
 ];
 
