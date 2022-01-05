@@ -24,12 +24,12 @@ namespace Logic.Models.Users
         public static Result<VoteSummary> Create(int upVotes, int downVotes)
         {
             if (upVotes < 0)
-                return Result.Fail<VoteSummary>("UpVotes cannot be less than 0");
+                return Result.Failure<VoteSummary>("UpVotes cannot be less than 0");
 
             if (downVotes < 0)
-                return Result.Fail<VoteSummary>("DownVotes cannot be less than 0");
+                return Result.Failure<VoteSummary>("DownVotes cannot be less than 0");
 
-            return Result.Ok(new VoteSummary(upVotes, downVotes));
+            return Result.Success(new VoteSummary(upVotes, downVotes));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

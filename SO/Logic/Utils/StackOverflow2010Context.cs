@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Logic.Models;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Logic.Models.Users;
 
 namespace Logic.Utils

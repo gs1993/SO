@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Logic.Models
@@ -35,11 +34,11 @@ namespace Logic.Models
         public Result Close()
         {
             if (ClosedDate != null)
-                return Result.Fail("Post was already closed");
+                return Result.Failure("Post was already closed");
 
             ClosedDate = DateTime.UtcNow;
 
-            return Result.Ok();
+            return Result.Success();
         }
     }
 }

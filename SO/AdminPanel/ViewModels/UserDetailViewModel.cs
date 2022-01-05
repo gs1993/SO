@@ -3,7 +3,6 @@ using AdminPanel.Events;
 using AdminPanel.Utils;
 using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

@@ -51,12 +51,12 @@ namespace Logic.Models.Users
             //TODO: add length validation
 
             if (creationDate > DateTime.UtcNow)
-                return Result.Fail<Users>("Invalid user creation date");
+                return Result.Failure<Users>("Invalid user creation date");
 
             if (lastAccessDate > DateTime.UtcNow)
-                return Result.Fail<Users>("Invalid user last access date");
+                return Result.Failure<Users>("Invalid user last access date");
 
-            return Result.Ok(new Users(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation, 
+            return Result.Success(new Users(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation, 
                 views, websiteUrl, createdPostCount, voteSummary));
         }
 
@@ -64,11 +64,11 @@ namespace Logic.Models.Users
         public Result SetCreatedPostCount(int createdPostCount)
         {
             if (createdPostCount < 0)
-                return Result.Fail("View count cannot be less than zero");
+                return Result.Failure("View count cannot be less than zero");
 
             CreatedPostCount = createdPostCount;
 
-            return Result.Ok();
+            return Result.Success();
         }
     }
 }
