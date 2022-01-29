@@ -1,5 +1,4 @@
-﻿using Logic.Repositories;
-using Logic.Utils;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -9,9 +8,7 @@ namespace Api.Controllers
     [Route("api/users")]
     public class UsersController : BaseController
     {
-        private UserRepository _userRepository;
-
-        public UsersController(UnitOfWork unitOfWork) : base(unitOfWork)
+        public UsersController(IMediator mediator) : base(mediator)
         {
         }
 

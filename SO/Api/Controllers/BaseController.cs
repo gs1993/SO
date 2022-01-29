@@ -1,16 +1,16 @@
 ﻿using Api.Utils;
-using Logic.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly UnitOfWork UnitOfWork;
+        protected readonly IMediator _mediator;
 
-        public BaseController(UnitOfWork unitOfWork)
+        public BaseController(IMediator mediator)
         {
-            UnitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
 

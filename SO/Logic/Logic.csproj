@@ -23,4 +23,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Posts\Commands\" />
+    <Folder Include="Posts\Queries\" />
+  </ItemGroup>
+
 </Project>

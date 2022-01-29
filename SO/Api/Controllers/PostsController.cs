@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Logic.Repositories;
 using Logic.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +11,8 @@ namespace Api.Controllers
     [EnableCors("AllowMyOrigin")]
     public class PostsController : BaseController
     {
-        private readonly PostsRepository _postsRepository;
-
-        public PostsController(UnitOfWork unitOfWork) : base(unitOfWork)
+        public PostsController(IMediator mediator) : base(mediator)
         {
-            
         }
 
         [HttpGet]

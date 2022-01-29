@@ -31,11 +31,7 @@ namespace Api
             });
             services.AddSwaggerGen();
 
-
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-
-            services.AddHealthChecks()
-                .AddCheck<ApiHealthCheck>("api");
 
             services.AddMediatR(typeof(DatabaseContext).Assembly);
         }
