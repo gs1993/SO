@@ -1,4 +1,4 @@
-﻿namespace Logic.Dtos
+﻿namespace Logic.Users.Dto
 {
     public class LastUserDto
     {

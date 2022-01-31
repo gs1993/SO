@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Logic.Models.Users
+namespace Logic.Users.Entities
 {
     public partial class Users : Entity
     {
@@ -25,7 +25,7 @@ namespace Logic.Models.Users
             WebsiteUrl = websiteUrl;
             CreatedPostCount = createdPostCount;
             VoteSummary = voteSummary;
-        } 
+        }
         #endregion
 
         #region Properties
@@ -45,7 +45,7 @@ namespace Logic.Models.Users
         #endregion
 
 
-        public Result<Users> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
+        public static Result<Users> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
             string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
         {
             //TODO: add length validation
@@ -56,7 +56,7 @@ namespace Logic.Models.Users
             if (lastAccessDate > DateTime.UtcNow)
                 return Result.Failure<Users>("Invalid user last access date");
 
-            return Result.Success(new Users(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation, 
+            return Result.Success(new Users(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
                 views, websiteUrl, createdPostCount, voteSummary));
         }
 

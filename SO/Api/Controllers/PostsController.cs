@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
+using Logic.Posts.Commands;
 using Logic.Posts.Queries;
-using Logic.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +31,7 @@ namespace Api.Controllers
                 PageSize = pageSize
             });
 
-            return postsDto == null
-                ? Error("Not Found")
-                : Ok(postsDto);
+            return FromResult(postsDto);
         }
 
         [HttpGet]
@@ -48,9 +46,7 @@ namespace Api.Controllers
                 Size = size
             });
 
-            return postsDto == null
-                ? Error("Not Found")
-                : Ok(postsDto);
+            return FromResult(postsDto);
         }
 
         [HttpGet]
@@ -64,9 +60,7 @@ namespace Api.Controllers
                 Id = id
             });
 
-            return postsDto == null
-                ? Error("Not Found")
-                : Ok(postsDto);
+            return FromResult(postsDto);
         }
 
 
@@ -81,9 +75,7 @@ namespace Api.Controllers
                 Id = id
             });
 
-            return postsDto == null
-                ? Error("Not Found")
-                : Ok(postsDto);
+            return FromResult(result);
         }
     }
 }

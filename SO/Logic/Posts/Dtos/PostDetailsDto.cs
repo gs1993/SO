@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logic.Dtos
+namespace Logic.Posts.Dtos
 {
     public class PostDetailsDto
     {

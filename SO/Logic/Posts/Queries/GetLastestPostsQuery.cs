@@ -1,4 +1,4 @@
-﻿using Logic.Dtos;
+﻿using Logic.Posts.Dtos;
 using Logic.Posts.Entities;
 using Logic.Utils;
 using MediatR;
@@ -43,7 +43,7 @@ namespace Logic.Posts.Queries
                     IsClosed = x.ClosedDate != null
                 }).ToListAsync(cancellationToken: cancellationToken);
 
-            return posts;
+            return posts ?? new List<PostListDto>();
         }
     }
 }

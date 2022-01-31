@@ -1,14 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using System.Collections.Generic;
 
-namespace Logic.Models.Users
+namespace Logic.Users.Entities
 {
     public class VoteSummary : ValueObject
     {
-        protected VoteSummary()
-        {
-
-        }
+        protected VoteSummary() { }
         private VoteSummary(int upVotes, int downVotes)
         {
             UpVotes = upVotes;

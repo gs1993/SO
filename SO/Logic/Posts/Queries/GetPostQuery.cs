@@ -1,4 +1,4 @@
-﻿using Logic.Dtos;
+﻿using Logic.Posts.Dtos;
 using Logic.Posts.Entities;
 using Logic.Utils;
 using MediatR;

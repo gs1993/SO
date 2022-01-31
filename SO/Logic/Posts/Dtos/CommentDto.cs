@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Logic.Dtos
+namespace Logic.Posts.Dtos
 {
     public class CommentDto
     {

@@ -1,6 +1,9 @@
 ﻿using Api.Utils;
+using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -27,6 +30,27 @@ namespace Api.Controllers
         protected IActionResult Error(string errorMessage)
         {
             return BadRequest(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult FromResult<T>(T result, string errorMessage = "Not Found")
+        {
+            return result == null
+                ? Error(errorMessage)
+                : Ok(result);
+        }
+
+        protected IActionResult FromResult<T>(IEnumerable<T> result, string errorMessage = "Not Found")
+        {
+            return result == null || result.Any()
+                ? Error(errorMessage)
+                : Ok(result);
+        }
+
+        protected IActionResult FromResult(Result result, string errorMessage = "Not Found")
+        {
+            return result.IsFailure
+                ? Error(errorMessage)
+                : Ok(result);
         }
     }
 }
