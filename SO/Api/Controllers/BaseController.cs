@@ -1,19 +1,19 @@
 ﻿using Api.Utils;
-using AutoMapper;
-using Logic.Utils;
+using CSharpFunctionalExtensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly UnitOfWork UnitOfWork;
-        protected readonly IMapper Mapper;
+        protected readonly IMediator _mediator;
 
-        public BaseController(UnitOfWork unitOfWork, IMapper mapper)
+        public BaseController(IMediator mediator)
         {
-            Mapper = mapper;
-            UnitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
 
@@ -30,6 +30,27 @@ namespace Api.Controllers
         protected IActionResult Error(string errorMessage)
         {
             return BadRequest(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult FromResult<T>(T result, string errorMessage = "Not Found")
+        {
+            return result == null
+                ? Error(errorMessage)
+                : Ok(result);
+        }
+
+        protected IActionResult FromResult<T>(IEnumerable<T> result, string errorMessage = "Not Found")
+        {
+            return result == null || result.Any()
+                ? Error(errorMessage)
+                : Ok(result);
+        }
+
+        protected IActionResult FromResult(Result result)
+        {
+            return result.IsFailure
+                ? Error(result.Error)
+                : Ok(result);
         }
     }
 }

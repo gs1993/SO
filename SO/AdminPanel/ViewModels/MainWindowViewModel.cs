@@ -1,7 +1,6 @@
 ﻿using AdminPanel.Events;
 using AdminPanel.Utils;
 using Prism.Events;
-using System;
 using System.Threading.Tasks;
 
 namespace AdminPanel.ViewModels

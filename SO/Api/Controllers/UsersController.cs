@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Dawn;
-using Logic.Dtos;
-using Logic.Models.Users;
-using Logic.Repositories;
-using Logic.Utils;
+﻿using Dawn;
+using Logic.Users.Command;
+using Logic.Users.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -12,11 +12,8 @@ namespace Api.Controllers
     [Route("api/users")]
     public class UsersController : BaseController
     {
-        private UserRepository _userRepository;
-
-        public UsersController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public UsersController(IMediator mediator) : base(mediator)
         {
-            _userRepository = new UserRepository(unitOfWork);
         }
 
 
@@ -26,11 +23,10 @@ namespace Api.Controllers
         {
             Guard.Argument(size, nameof(size)).Positive();
 
-            var lastUsersDto = await _userRepository.GetLastUsers(size);
-            if (lastUsersDto == null)
-                return Error("Not Found");
-
-            return Ok(lastUsersDto);
+            var lastUsersDto = await _mediator.Send(new GetLastUsersQuery { Size = size });
+            return lastUsersDto.Any()
+                ? Ok(lastUsersDto)
+                : Error("Not Found");
         }
 
         [HttpGet]
@@ -39,31 +35,8 @@ namespace Api.Controllers
         {
             Guard.Argument(id, nameof(id)).Positive();
 
-            var user = await _userRepository.GetByIdAsync(id);
-            if (user == null)
-                return Error("Not Found");
-
-            int createdPostCount = await _userRepository.GetCreatedPostCount(id);
-
-            var createdPostCountResult = user.SetCreatedPostCount(createdPostCount);
-            if (createdPostCountResult.IsFailure)
-                return Error(createdPostCountResult.Error);
-
-            var userDto = Mapper.Map<UserDetailsDto>(user);
-            return Ok(userDto);
-        }
-
-        [HttpGet]
-        [Route("GetLastCreatedByIndex/{index}")]
-        public async Task<IActionResult> GetLastCreatedByIndex(int index)
-        {
-            Guard.Argument(index, nameof(index)).Positive();
-
-            var lastUserDto = await _userRepository.GetLastUsersWithIndex(index);
-            if (lastUserDto == null)
-                return Error("Not Found");
-
-            return Ok(lastUserDto);
+            var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = id });
+            return FromResult(userDetailsDto, "User not found");
         }
 
         [HttpDelete]
@@ -72,11 +45,8 @@ namespace Api.Controllers
         {
             Guard.Argument(id, nameof(id)).Positive();
 
-            var result = await _userRepository.PermaBanUser(id);
-            if (result.IsFailure)
-                return Error(result.Error);
-
-            return Ok();
+            var result = await _mediator.Send(new BanUserCommand { Id = id });
+            return FromResult(result);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace AdminPanel.Utils
+﻿namespace AdminPanel.Utils
 {
     public partial class CustomWindow
     {
