@@ -1,17 +1,18 @@
 ﻿using CSharpFunctionalExtensions;
+using Logic.Models;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Logic.Users.Entities
 {
-    public partial class Users : Entity
+    public partial class User : BaseEntity
     {
         #region ctors
-        protected Users()
+        protected User()
         {
 
         }
-        public Users(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
+        public User(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
             string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
         {
             AboutMe = aboutMe;
@@ -45,18 +46,18 @@ namespace Logic.Users.Entities
         #endregion
 
 
-        public static Result<Users> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
+        public static Result<User> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
             string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
         {
             //TODO: add length validation
 
             if (creationDate > DateTime.UtcNow)
-                return Result.Failure<Users>("Invalid user creation date");
+                return Result.Failure<User>("Invalid user creation date");
 
             if (lastAccessDate > DateTime.UtcNow)
-                return Result.Failure<Users>("Invalid user last access date");
+                return Result.Failure<User>("Invalid user last access date");
 
-            return Result.Success(new Users(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
+            return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
                 views, websiteUrl, createdPostCount, voteSummary));
         }
 
@@ -69,6 +70,14 @@ namespace Logic.Users.Entities
             CreatedPostCount = createdPostCount;
 
             return Result.Success();
+        }
+
+        public void Ban(DateTime banDate)
+        {
+            if (IsDeleted)
+                throw new InvalidOperationException("User not exists");
+
+            Delete(banDate);
         }
     }
 }

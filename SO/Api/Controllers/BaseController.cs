@@ -46,10 +46,10 @@ namespace Api.Controllers
                 : Ok(result);
         }
 
-        protected IActionResult FromResult(Result result, string errorMessage = "Not Found")
+        protected IActionResult FromResult(Result result)
         {
             return result.IsFailure
-                ? Error(errorMessage)
+                ? Error(result.Error)
                 : Ok(result);
         }
     }

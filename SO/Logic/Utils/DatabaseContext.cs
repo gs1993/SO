@@ -1,5 +1,6 @@
 ﻿using Logic.Models;
 using Logic.Posts.Entities;
+using Logic.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace Logic.Utils
         private readonly IDateTimeProvider _dateTimeProvider;
 
         public DbSet<Post> Posts { get; protected set; }
+        public DbSet<User> Users { get; protected set; }
        
 
         public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
@@ -69,6 +71,12 @@ namespace Logic.Utils
 
                 x.Property(p => p.CreateDate).HasColumnName("CreationDate");
                 x.Property(p => p.LastUpdateDate).HasColumnName("LastEditDate");
+            });
+
+            modelBuilder.Entity<User>(x =>
+            {
+                x.ToTable("Users").HasKey(k => k.Id);
+                x.HasQueryFilter(x => !x.IsDeleted);
             });
 
             base.OnModelCreating(modelBuilder);

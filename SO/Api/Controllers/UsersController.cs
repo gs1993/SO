@@ -1,4 +1,5 @@
 ﻿using Dawn;
+using Logic.Users.Command;
 using Logic.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,31 +39,14 @@ namespace Api.Controllers
             return FromResult(userDetailsDto, "User not found");
         }
 
-        [HttpGet]
-        [Route("GetLastCreatedByIndex/{index}")]
-        public async Task<IActionResult> GetLastCreatedByIndex(int index)
-        {
-            Guard.Argument(index, nameof(index)).Positive();
-
-            var lastUserDto = await _userRepository.GetLastUsersWithIndex(index);
-            if (lastUserDto == null)
-                return Error("Not Found");
-
-            return Ok(lastUserDto);
-        }
-
         [HttpDelete]
         [Route("PermaBan/{id}")]
         public async Task<IActionResult> PermaBan(int id)
         {
-            throw new NotImplementedException();
-            //Guard.Argument(id, nameof(id)).Positive();
+            Guard.Argument(id, nameof(id)).Positive();
 
-            //var result = await _userRepository.PermaBanUser(id);
-            //if (result.IsFailure)
-            //    return Error(result.Error);
-
-            //return Ok();
+            var result = await _mediator.Send(new BanUserCommand { Id = id });
+            return FromResult(result);
         }
     }
 }
