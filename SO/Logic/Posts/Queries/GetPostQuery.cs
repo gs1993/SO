@@ -37,7 +37,7 @@ namespace Logic.Posts.Queries
                 AnswerCount = post.AnswerCount ?? 0,
                 CommentCount = post.CommentCount ?? 0,
                 CommunityOwnedDate = post.CommunityOwnedDate,
-                CreationDate = post.CreationDate,
+                CreationDate = post.CreateDate,
                 FavoriteCount = post.FavoriteCount ?? 0,
                 LastEditorDisplayName = post.LastEditorDisplayName,
                 Score = post.Score,
@@ -51,9 +51,7 @@ namespace Logic.Posts.Queries
                 {
                     Text = c.Text,
                     Score = c.Score,
-                    CreationDate = c.CreationDate,
-                    //UserName = c.
-                    //TODO: check UserName
+                    CreationDate = c.CreateDate
                 })
             };
         }

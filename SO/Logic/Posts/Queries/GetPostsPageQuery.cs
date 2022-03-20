@@ -44,7 +44,7 @@ namespace Logic.Posts.Queries
                     CommentCount = x.CommentCount ?? 0,
                     Score = x.Score,
                     ViewCount = x.ViewCount,
-                    CreationDate = x.CreationDate,
+                    CreationDate = x.CreateDate,
                     IsClosed = x.ClosedDate != null
                 }).ToListAsync(cancellationToken: cancellationToken);
 

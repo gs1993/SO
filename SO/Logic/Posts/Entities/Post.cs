@@ -16,7 +16,6 @@ namespace Logic.Posts.Entities
         public DateTime? ClosedDate { get; private set; }
         public int? CommentCount { get; private set; }
         public DateTime? CommunityOwnedDate { get; private set; }
-        public DateTime CreationDate { get; private set; }
         public int? FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
         public DateTime? LastEditDate { get; private set; }
@@ -39,7 +38,7 @@ namespace Logic.Posts.Entities
 
         protected Post() { }
         public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount, 
-            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime creationDate, 
+            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate, 
             int? favoriteCount, DateTime lastActivityDate, DateTime? lastEditDate, string lastEditorDisplayName, 
             int? lastEditorUserId, int? ownerUserId, int? parentId, int viewCount)
         {
@@ -52,7 +51,6 @@ namespace Logic.Posts.Entities
             ClosedDate = closedDate;
             CommentCount = commentCount;
             CommunityOwnedDate = communityOwnedDate;
-            CreationDate = creationDate;
             FavoriteCount = favoriteCount;
             LastActivityDate = lastActivityDate;
             LastEditDate = lastEditDate;
@@ -64,6 +62,7 @@ namespace Logic.Posts.Entities
             _comments = new List<Comment>();
             _votes = new List<Vote>();
             _postLinks = new List<PostLink>();
+            SetCreateDate(createDate);
         }
 
         
