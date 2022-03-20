@@ -50,33 +50,26 @@ namespace Logic.Utils
                 x.HasOne(p => p.PostType)
                     .WithMany()
                     .HasForeignKey("PostTypeId");
-
-                x.Property(p => p.CreateDate).HasColumnName("CreationDate");
-                x.Property(p => p.LastUpdateDate).HasColumnName("LastEditDate");
             });
 
             modelBuilder.Entity<Comment>(x =>
             {
                 x.ToTable("Comments").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
-
-                x.Property(p => p.CreateDate).HasColumnName("CreationDate");
-                x.Property(p => p.LastUpdateDate).HasColumnName("LastEditDate");
             });
 
             modelBuilder.Entity<PostType>(x =>
             {
                 x.ToTable("PostTypes").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
-
-                x.Property(p => p.CreateDate).HasColumnName("CreationDate");
-                x.Property(p => p.LastUpdateDate).HasColumnName("LastEditDate");
             });
 
             modelBuilder.Entity<User>(x =>
             {
                 x.ToTable("Users").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
+
+                x.OwnsOne(p => p.VoteSummary);
             });
 
             base.OnModelCreating(modelBuilder);
