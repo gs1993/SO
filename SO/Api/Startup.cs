@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Api.Controllers;
 using MediatR;
 using System.Text.Json.Serialization;
 using Api.Utils;
 using Logic.Utils;
+using FluentValidation;
 
 namespace Api
 {
@@ -24,11 +24,16 @@ namespace Api
             AddDbContext(services);
 
             services.AddCors();
-            services.AddControllers().AddJsonOptions(x =>
-            {
-                x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
+            services.AddControllers()
+                .AddJsonOptions(x =>
+                {
+                    x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
+            services.AddValidatorsFromAssemblyContaining<Startup>();
+            services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
+
             services.AddSwaggerGen();
 
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

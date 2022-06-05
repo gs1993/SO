@@ -38,4 +38,21 @@ namespace Api.Utils
             return new Envelope(errorMessage);
         }
     }
+
+    public sealed class EnvelopeSuccess<T>
+    {
+        public T Result { get; }
+        public DateTime TimeGenerated { get; }
+    }
+
+    public sealed class EnvelopeSuccess
+    {
+        public DateTime TimeGenerated { get; }
+    }
+
+    public sealed class EnvelopeError
+    {
+        public string ErrorMessage { get; }
+        public DateTime TimeGenerated { get; }
+    }
 }

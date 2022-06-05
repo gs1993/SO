@@ -1,19 +1,28 @@
 ﻿using Api.Utils;
 using CSharpFunctionalExtensions;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]/[action]")]
+    [EnableCors("AllowMyOrigin")]
     public class BaseController : Controller
     {
         protected readonly IMediator _mediator;
+        protected readonly IValidatorFactory _validatorFactory;
 
-        public BaseController(IMediator mediator)
+        public BaseController(IMediator mediator, IValidatorFactory validationFactory)
         {
             _mediator = mediator;
+            _validatorFactory = validationFactory;
         }
 
 
@@ -29,6 +38,19 @@ namespace Api.Controllers
 
         protected IActionResult Error(string errorMessage)
         {
+            return BadRequest(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult ValidationError(ValidationResult validationResult)
+        {
+            if(validationResult == null)
+                throw new ArgumentNullException(nameof(validationResult));
+            if (validationResult.IsValid)
+                throw new InvalidOperationException();
+
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
+            var errorMessage = string.Join(" ", errors);
+
             return BadRequest(Envelope.Error(errorMessage));
         }
 
