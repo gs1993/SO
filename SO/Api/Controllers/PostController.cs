@@ -20,6 +20,7 @@ namespace Api.Controllers
         }
 
         [HttpGet()]
+        [Route("GetPage")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
@@ -38,6 +39,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Route("GetLastest")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
@@ -55,36 +57,36 @@ namespace Api.Controllers
         }
 
         [HttpGet()]
+        [Route("{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<PostDetailsDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> Get([FromQuery] GetArgs args)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var validationResult = _validatorFactory.GetValidator<GetArgs>().Validate(args);
-            if (!validationResult.IsValid)
-                return ValidationError(validationResult);
-
+            if (id < 1)
+                return ValidationIdError();
+            
             var postsDto = await _mediator.Send(new GetPostQuery
             {
-                Id = args.Id
+                Id = id
             });
             return FromResult(postsDto);
         }
 
 
         [HttpPost]
+        [Route("Close/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> Close([FromQuery] CloseArgs args)
+        public async Task<IActionResult> Close([FromRoute] int id)
         {
-            var validationResult = _validatorFactory.GetValidator<CloseArgs>().Validate(args); ;
-            if (!validationResult.IsValid)
-                return ValidationError(validationResult);
+            if (id < 1)
+                return ValidationIdError();
 
             var result = await _mediator.Send(new ClosePostCommand
             {
-                Id = args.Id
+                Id = id
             });
             return FromResult(result);
         }

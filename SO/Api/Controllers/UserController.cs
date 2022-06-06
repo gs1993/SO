@@ -22,6 +22,7 @@ namespace Api.Controllers
 
 
         [HttpGet]
+        [Route("GetLast")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<LastUserDto>>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
@@ -38,30 +39,30 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<UserDetailsDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> Get([FromQuery] GetArgs args)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var validationResult = _validatorFactory.GetValidator<GetArgs>().Validate(args); ;
-            if (!validationResult.IsValid)
-                return ValidationError(validationResult);
+            if (id < 1)
+                return ValidationIdError();
 
-            var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = args.Id });
+            var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = id });
             return FromResult(userDetailsDto);
         }
 
-        [HttpDelete]
+        [HttpPost]
+        [Route("PermaBan/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> PermaBan([FromQuery] PermaBanArgs args)
+        public async Task<IActionResult> PermaBan([FromRoute] int id)
         {
-            var validationResult = _validatorFactory.GetValidator<PermaBanArgs>().Validate(args); ;
-            if (!validationResult.IsValid)
-                return ValidationError(validationResult);
+            if (id < 1)
+                return ValidationIdError();
 
-            var result = await _mediator.Send(new BanUserCommand { Id = args.Id });
+            var result = await _mediator.Send(new BanUserCommand { Id = id });
             return FromResult(result);
         }
     }

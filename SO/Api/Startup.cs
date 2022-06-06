@@ -7,6 +7,9 @@ using System.Text.Json.Serialization;
 using Api.Utils;
 using Logic.Utils;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace Api
 {
@@ -29,6 +32,21 @@ namespace Api
                 {
                     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                }).ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        var errorMessages = context.ModelState.Values
+                        .Where(x => x.Errors.Any())
+                        .Select(x => string.Join(" ", x.Errors.Select(e => e.ErrorMessage)));
+
+                        var error = new EnvelopeError
+                        {
+                            ErrorMessage = string.Join(Environment.NewLine, errorMessages),
+                            TimeGenerated = DateTime.Now
+                        };
+                        return new BadRequestObjectResult(error);
+                    };
                 });
 
             services.AddValidatorsFromAssemblyContaining<Startup>();

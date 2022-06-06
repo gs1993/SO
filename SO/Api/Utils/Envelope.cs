@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Api.Utils
 {
@@ -50,9 +51,9 @@ namespace Api.Utils
         public DateTime TimeGenerated { get; }
     }
 
-    public sealed class EnvelopeError
+    public sealed class EnvelopeError : ActionResult
     {
-        public string ErrorMessage { get; }
-        public DateTime TimeGenerated { get; }
+        public string ErrorMessage { get; init; }
+        public DateTime TimeGenerated { get; init; }
     }
 }

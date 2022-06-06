@@ -12,7 +12,7 @@ using System.Linq;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [EnableCors("AllowMyOrigin")]
     public class BaseController : Controller
     {
@@ -52,6 +52,11 @@ namespace Api.Controllers
             var errorMessage = string.Join(" ", errors);
 
             return BadRequest(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult ValidationIdError()
+        {
+            return BadRequest(Envelope.Error("Invalid id"));
         }
 
         protected IActionResult FromResult<T>(T result, string errorMessage = "Not Found")
