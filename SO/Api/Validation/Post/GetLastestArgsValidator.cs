@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Api.Validation.Post
 {
-    public class GetLastestArgsValidator : AbstractValidator<GetLastestArgs>
+    public sealed class GetLastestArgsValidator : AbstractValidator<GetLastestArgs>
     {
         public GetLastestArgsValidator()
         {

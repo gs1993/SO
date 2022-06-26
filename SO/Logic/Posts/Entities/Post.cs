@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Logic.Models;
+using Logic.Users.Entities;
 using System;
 using System.Collections.Generic;
 
@@ -37,9 +38,9 @@ namespace Logic.Posts.Entities
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
 
         protected Post() { }
-        public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount, 
-            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate, 
-            int? favoriteCount, DateTime lastActivityDate, DateTime? lastEditDate, string lastEditorDisplayName, 
+        public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount,
+            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate,
+            int? favoriteCount, DateTime lastActivityDate, DateTime? lastEditDate, string lastEditorDisplayName,
             int? lastEditorUserId, int? ownerUserId, int? parentId, int viewCount)
         {
             Title = title;
@@ -65,14 +66,44 @@ namespace Logic.Posts.Entities
             SetCreateDate(createDate);
         }
 
-        
+
+
+        public Result AddComment(User user, string comment)
+        {
+            if (user == null)
+                return Result.Failure("User cannot be null");
+
+            if (string.IsNullOrWhiteSpace(comment))
+                return Result.Failure("Comment cannot be empty");
+
+            _comments.Add(new Comment(user.Id, comment));
+            return Result.Success();
+        }
+
+        public Result UpVote(User user)
+        {
+            if (user == null)
+                return Result.Failure("User cannot be null");
+
+            _votes.Add(new Vote(this, user, +1));
+            return Result.Success();
+        }
+
+        public Result DownVote(User user)
+        {
+            if (user == null)
+                return Result.Failure("User cannot be null");
+
+            _votes.Add(new Vote(this, user, -1));
+            return Result.Success();
+        }
+
         public Result Close(DateTime closeDate)
         {
             if (ClosedDate != null)
                 return Result.Failure("Post was already closed");
 
             ClosedDate = closeDate;
-
             Delete(closeDate);
 
             return Result.Success();

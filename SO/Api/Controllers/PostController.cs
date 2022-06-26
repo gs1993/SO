@@ -26,7 +26,7 @@ namespace Api.Controllers
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> GetPage([FromQuery] GetListArgs args)
         {
-            var validationResult = _validatorFactory.GetValidator<GetListArgs>().Validate(args); ;
+            var validationResult = _validatorFactory.GetValidator<GetListArgs>().Validate(args);
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
@@ -73,7 +73,6 @@ namespace Api.Controllers
             return FromResult(postsDto);
         }
 
-
         [HttpPost]
         [Route("Close/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
@@ -87,6 +86,28 @@ namespace Api.Controllers
             var result = await _mediator.Send(new ClosePostCommand
             {
                 Id = id
+            });
+            return FromResult(result);
+        }
+
+        [HttpPost]
+        [Route("AddComment/{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> AddComment([FromRoute] int id, [FromBody] AddCommentArgs args)
+        {
+            if (id < 1)
+                return ValidationIdError();
+            var validationResult = _validatorFactory.GetValidator<AddCommentArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new AddCommentCommand
+            {
+                PostId = id,
+                Comment = args.Comment,
+                UserId = args.UserId
             });
             return FromResult(result);
         }

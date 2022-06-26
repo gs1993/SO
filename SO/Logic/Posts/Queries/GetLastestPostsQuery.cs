@@ -28,7 +28,7 @@ namespace Logic.Posts.Queries
         {
             var posts = await _readOnlyContext
                 .GetQuery<Post>()
-                .OrderByDescending(x => x.CreateDate)
+                .OrderByDescending(x => x.Id)
                 .Take(request.Size)
                 .Select(x => new PostListDto
                 {
