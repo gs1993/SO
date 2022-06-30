@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Logic.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220115214237_Add_Dotnet_5_Context")]
-    partial class Add_Dotnet_5_Context
+    [Migration("20220630195603_Add_Missing_Fields")]
+    partial class Add_Missing_Fields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,12 +33,7 @@ namespace Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate1");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -47,8 +42,7 @@ namespace Logic.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
@@ -96,12 +90,7 @@ namespace Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate1");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -115,10 +104,6 @@ namespace Logic.Migrations
                     b.Property<DateTime>("LastActivityDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastEditDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate1");
-
                     b.Property<string>("LastEditorDisplayName")
                         .HasColumnType("nvarchar(max)");
 
@@ -126,8 +111,7 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OwnerUserId")
                         .HasColumnType("int");
@@ -166,9 +150,6 @@ namespace Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
@@ -221,7 +202,7 @@ namespace Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostType");
+                    b.ToTable("PostTypes", (string)null);
                 });
 
             modelBuilder.Entity("Logic.Posts.Entities.Vote", b =>
@@ -236,9 +217,6 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
@@ -264,6 +242,58 @@ namespace Logic.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Vote");
+                });
+
+            modelBuilder.Entity("Logic.Users.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AboutMe")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastAccessDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Reputation")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Logic.Posts.Entities.Comment", b =>
@@ -298,6 +328,30 @@ namespace Logic.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Logic.Users.Entities.User", b =>
+                {
+                    b.OwnsOne("Logic.Users.Entities.VoteSummary", "VoteSummary", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("DownVotes")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("UpVotes")
+                                .HasColumnType("int");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("VoteSummary");
                 });
 
             modelBuilder.Entity("Logic.Posts.Entities.Post", b =>

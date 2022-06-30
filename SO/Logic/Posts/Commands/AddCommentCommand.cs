@@ -33,7 +33,13 @@ namespace Logic.Posts.Commands
             if (post == null)
                 return Result.Failure("Post does not exists");
 
-            return post.AddComment(user, request.Comment);
+            _databaseContext.Entry(post).Collection(x => x.Comments).Load();
+
+            var result = post.AddComment(user, request.Comment);
+
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+            return result;
+
         }
     }
 }

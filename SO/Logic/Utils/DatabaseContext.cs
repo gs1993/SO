@@ -69,7 +69,11 @@ namespace Logic.Utils
                 x.ToTable("Users").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
 
-                x.OwnsOne(p => p.VoteSummary);
+                x.OwnsOne(p => p.VoteSummary, navigationExpression =>
+                {
+                    navigationExpression.Property(vs => vs.UpVotes).HasColumnName("UpVotes");
+                    navigationExpression.Property(vs => vs.DownVotes).HasColumnName("DownVotes");
+                });
             });
 
             base.OnModelCreating(modelBuilder);

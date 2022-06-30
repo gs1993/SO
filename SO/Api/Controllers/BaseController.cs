@@ -77,7 +77,7 @@ namespace Api.Controllers
         {
             return result.IsFailure
                 ? Error(result.Error)
-                : Ok(result);
+                : Ok();
         }
     }
 }

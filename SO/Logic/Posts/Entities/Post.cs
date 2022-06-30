@@ -19,7 +19,6 @@ namespace Logic.Posts.Entities
         public DateTime? CommunityOwnedDate { get; private set; }
         public int? FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
-        public DateTime? LastEditDate { get; private set; }
         public string LastEditorDisplayName { get; private set; }
         public int? LastEditorUserId { get; private set; }
         public int? OwnerUserId { get; private set; }
@@ -40,7 +39,7 @@ namespace Logic.Posts.Entities
         protected Post() { }
         public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount,
             DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate,
-            int? favoriteCount, DateTime lastActivityDate, DateTime? lastEditDate, string lastEditorDisplayName,
+            int? favoriteCount, DateTime lastActivityDate, string lastEditorDisplayName,
             int? lastEditorUserId, int? ownerUserId, int? parentId, int viewCount)
         {
             Title = title;
@@ -54,7 +53,6 @@ namespace Logic.Posts.Entities
             CommunityOwnedDate = communityOwnedDate;
             FavoriteCount = favoriteCount;
             LastActivityDate = lastActivityDate;
-            LastEditDate = lastEditDate;
             LastEditorDisplayName = lastEditorDisplayName;
             LastEditorUserId = lastEditorUserId;
             OwnerUserId = ownerUserId;

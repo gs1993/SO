@@ -42,7 +42,7 @@ namespace Logic.Posts.Queries
                 LastEditorDisplayName = post.LastEditorDisplayName,
                 Score = post.Score,
                 LastActivityDate = post.LastActivityDate,
-                LastEditDate = post.LastEditDate,
+                LastEditDate = post.LastUpdateDate,
                 ViewCount = post.ViewCount,
                 Tags = post.Tags,
                 ClosedDate = post.ClosedDate,

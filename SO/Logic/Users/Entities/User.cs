@@ -17,7 +17,6 @@ namespace Logic.Users.Entities
         {
             AboutMe = aboutMe;
             Age = age;
-            CreationDate = creationDate;
             DisplayName = displayName;
             LastAccessDate = lastAccessDate;
             Location = location;
@@ -26,13 +25,13 @@ namespace Logic.Users.Entities
             WebsiteUrl = websiteUrl;
             CreatedPostCount = createdPostCount;
             VoteSummary = voteSummary;
+            SetCreateDate(creationDate);
         }
         #endregion
 
         #region Properties
         public string AboutMe { get; set; }
         public int? Age { get; set; }
-        public DateTime CreationDate { get; set; }
         public string DisplayName { get; set; }
         public DateTime LastAccessDate { get; set; }
         public string Location { get; set; }

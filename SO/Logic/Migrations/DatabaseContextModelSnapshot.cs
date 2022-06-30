@@ -31,12 +31,7 @@ namespace Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate1");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -45,8 +40,7 @@ namespace Logic.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
@@ -94,12 +88,7 @@ namespace Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate1");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -113,10 +102,6 @@ namespace Logic.Migrations
                     b.Property<DateTime>("LastActivityDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastEditDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate1");
-
                     b.Property<string>("LastEditorDisplayName")
                         .HasColumnType("nvarchar(max)");
 
@@ -124,8 +109,7 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OwnerUserId")
                         .HasColumnType("int");
@@ -166,9 +150,6 @@ namespace Logic.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
@@ -203,8 +184,7 @@ namespace Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -213,8 +193,7 @@ namespace Logic.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastEditDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
@@ -236,9 +215,6 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
@@ -281,9 +257,6 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteDate")
@@ -360,10 +333,12 @@ namespace Logic.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<int>("DownVotes")
-                                .HasColumnType("int");
+                                .HasColumnType("int")
+                                .HasColumnName("DownVotes");
 
                             b1.Property<int>("UpVotes")
-                                .HasColumnType("int");
+                                .HasColumnType("int")
+                                .HasColumnName("UpVotes");
 
                             b1.HasKey("UserId");
 
