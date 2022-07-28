@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using Api.Args.Post;
+﻿using Api.Args.Post;
 using Api.Utils;
 using FluentValidation;
 using Logic.Posts.Commands;
@@ -10,6 +7,9 @@ using Logic.Posts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
@@ -34,7 +34,7 @@ namespace Api.Controllers
             {
                 PageNumber = args.PageNumber,
                 PageSize = args.PageSize
-            }); 
+            });
             return FromResult(postsDto);
         }
 
@@ -65,7 +65,7 @@ namespace Api.Controllers
         {
             if (id < 1)
                 return ValidationIdError();
-            
+
             var postsDto = await _mediator.Send(new GetPostQuery
             {
                 Id = id
@@ -107,6 +107,48 @@ namespace Api.Controllers
             {
                 PostId = id,
                 Comment = args.Comment,
+                UserId = args.UserId
+            });
+            return FromResult(result);
+        }
+
+        [HttpPost]
+        [Route("UpVote/{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> UpVote([FromRoute] int id, [FromBody] UpVoteArgs args)
+        {
+            if (id < 1)
+                return ValidationIdError();
+            var validationResult = _validatorFactory.GetValidator<UpVoteArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new UpVoteCommand
+            {
+                PostId = id,
+                UserId = args.UserId
+            });
+            return FromResult(result);
+        }
+
+        [HttpPost]
+        [Route("DownVote/{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> DownVote([FromRoute] int id, [FromBody] DownVoteArgs args)
+        {
+            if (id < 1)
+                return ValidationIdError();
+            var validationResult = _validatorFactory.GetValidator<DownVoteArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new DownVoteCommand
+            {
+                PostId = id,
                 UserId = args.UserId
             });
             return FromResult(result);
