@@ -1,9 +1,9 @@
 ﻿using Api.Args.Post;
 using Api.Utils;
 using FluentValidation;
-using Logic.Posts.Commands;
-using Logic.Posts.Dtos;
-using Logic.Posts.Queries;
+using Logic.BoundedContexts.Posts.Commands;
+using Logic.BoundedContexts.Posts.Dtos;
+using Logic.BoundedContexts.Posts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
-using Logic.Posts.Entities;
-using Logic.Users.Entities;
+using Logic.BoundedContexts.Posts.Entities;
+using Logic.BoundedContexts.Users.Entities;
 using System;
 using System.Collections.Generic;
 using Xunit;
