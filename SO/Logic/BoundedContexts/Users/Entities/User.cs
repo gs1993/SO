@@ -7,6 +7,22 @@ namespace Logic.BoundedContexts.Users.Entities
 {
     public partial class User : BaseEntity
     {
+        #region Properties
+        public string AboutMe { get; set; }
+        public int? Age { get; set; }
+        public string DisplayName { get; set; }
+        public DateTime LastAccessDate { get; set; }
+        public string Location { get; set; }
+        public int Reputation { get; set; }
+        public int Views { get; set; }
+        public string WebsiteUrl { get; set; }
+        [NotMapped]
+        public int CreatedPostCount { get; set; }
+
+        public VoteSummary VoteSummary { get; set; }
+        #endregion
+
+
         #region ctors
         protected User()
         {
@@ -27,23 +43,6 @@ namespace Logic.BoundedContexts.Users.Entities
             VoteSummary = voteSummary;
             SetCreateDate(creationDate);
         }
-        #endregion
-
-        #region Properties
-        public string AboutMe { get; set; }
-        public int? Age { get; set; }
-        public string DisplayName { get; set; }
-        public DateTime LastAccessDate { get; set; }
-        public string Location { get; set; }
-        public int Reputation { get; set; }
-        public int Views { get; set; }
-        public string WebsiteUrl { get; set; }
-        [NotMapped]
-        public int CreatedPostCount { get; set; }
-
-        public VoteSummary VoteSummary { get; set; }
-        #endregion
-
 
         public static Result<User> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
             string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
@@ -59,6 +58,9 @@ namespace Logic.BoundedContexts.Users.Entities
             return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
                 views, websiteUrl, createdPostCount, voteSummary));
         }
+        #endregion
+
+
 
 
         public Result SetCreatedPostCount(int createdPostCount)

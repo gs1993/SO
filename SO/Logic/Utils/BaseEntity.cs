@@ -5,8 +5,8 @@ namespace Logic.Utils
 {
     public abstract class BaseEntity : Entity<int>
     {
-        public DateTime CreateDate { get; private set; }
-        public DateTime? LastUpdateDate { get; private set; }
+        public DateTime CreateDate { get; protected set; }
+        public DateTime? LastUpdateDate { get; protected set; }
         public bool IsDeleted { get; private set; }
         public DateTime? DeleteDate { get; private set; }
 

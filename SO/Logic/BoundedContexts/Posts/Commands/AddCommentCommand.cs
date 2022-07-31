@@ -36,9 +36,11 @@ namespace Logic.BoundedContexts.Posts.Commands
             _databaseContext.Entry(post).Collection(x => x.Comments).Load();
 
             var result = post.AddComment(user, request.Comment);
+            if (result.IsFailure)
+                return Result.Failure(result.Error.ToString());
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
-            return result;
+            return Result.Success();
 
         }
     }

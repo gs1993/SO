@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils;
 using System;
@@ -8,6 +9,8 @@ namespace Logic.BoundedContexts.Posts.Entities
 {
     public class Post : BaseEntity
     {
+        #region properties
+
         public string Title { get; private set; }
         public string Body { get; private set; }
         public int Score { get; private set; }
@@ -36,46 +39,78 @@ namespace Logic.BoundedContexts.Posts.Entities
         private readonly List<PostLink> _postLinks;
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
 
+        #endregion
+
         protected Post() { }
-        public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount,
-            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate,
-            int? favoriteCount, DateTime lastActivityDate, string lastEditorDisplayName,
-            int? lastEditorUserId, int? ownerUserId, int? parentId, int viewCount)
+        private Post(string title, string body, string tags, DateTime createDate,
+            int ownerUserId, int parentId)
         {
             Title = title;
             Body = body;
-            Score = score;
+            Score = 0;
             Tags = tags;
-            AcceptedAnswerId = acceptedAnswerId;
-            AnswerCount = answerCount;
-            ClosedDate = closedDate;
-            CommentCount = commentCount;
-            CommunityOwnedDate = communityOwnedDate;
-            FavoriteCount = favoriteCount;
-            LastActivityDate = lastActivityDate;
-            LastEditorDisplayName = lastEditorDisplayName;
-            LastEditorUserId = lastEditorUserId;
+            AcceptedAnswerId = null;
+            AnswerCount = 0;
+            ClosedDate = null;
+            CommentCount = 0;
+            CommunityOwnedDate = null;
+            FavoriteCount = 0;
+            LastActivityDate = createDate;
+            LastEditorDisplayName = string.Empty;
+            LastEditorUserId = ownerUserId;
             OwnerUserId = ownerUserId;
             ParentId = parentId;
-            ViewCount = viewCount;
+            ViewCount = 0;
+            Score = 0;
+            CommentCount = 0;
+
             _comments = new List<Comment>();
             _votes = new List<Vote>();
             _postLinks = new List<PostLink>();
-            SetCreateDate(createDate);
         }
 
+        public static Result<Post, Error> Create(string title, string body, string tags,
+                DateTime createDate, int ownerUserId, int parentId)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                return Errors.General.ValueIsRequired(nameof(title));
+            var trimmedTitle = title.Trim();
+            if (trimmedTitle.Length < 5 || trimmedTitle.Length > 250)
+                return Errors.General.InvalidLength(nameof(title));
 
+            if (string.IsNullOrWhiteSpace(body))
+                return Errors.General.ValueIsRequired(nameof(body));
+            var trimmedBody = body.Trim();
+            if (trimmedBody.Length < 50 || trimmedBody.Length > 1000)
+                return Errors.General.InvalidLength(nameof(body));
 
-        public Result AddComment(User user, string comment)
+            var trimmedTags = tags?.Trim() ?? string.Empty;
+            if (trimmedTags?.Length > 100)
+                return Errors.General.InvalidLength(nameof(tags));
+
+            if (createDate == DateTime.MinValue)
+                return Errors.General.ValueIsRequired(nameof(createDate));
+
+            if (ownerUserId < 0)
+                return Errors.General.ValueIsRequired(nameof(ownerUserId));
+
+            if (parentId < 0)
+                return Errors.General.ValueIsRequired(nameof(parentId));
+
+            return new Post(trimmedTitle, trimmedBody, trimmedTags, createDate, ownerUserId, parentId);
+        }
+
+        public Result<bool, Error> AddComment(User user, string comment)
         {
             if (user == null)
-                return Result.Failure("User cannot be null");
+                return Errors.Post.CommentIsRequired();
 
             if (string.IsNullOrWhiteSpace(comment))
-                return Result.Failure("Comment cannot be empty");
+                return Errors.Post.CommentIsRequired();
 
             _comments.Add(new Comment(user.Id, comment));
-            return Result.Success();
+
+            return Result.Success<bool, Error>(true);
         }
 
         public Result UpVote(User user)
