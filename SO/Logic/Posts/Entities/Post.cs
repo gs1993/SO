@@ -8,14 +8,15 @@ namespace Logic.Posts.Entities
 {
     public class Post : BaseEntity
     {
+        #region Properties
         public string Title { get; private set; }
         public string Body { get; private set; }
         public int Score { get; private set; }
-        public string Tags { get; private set; }
+        public string? Tags { get; private set; }
         public int? AcceptedAnswerId { get; private set; }
-        public int? AnswerCount { get; private set; }
+        public int AnswerCount { get; private set; }
         public DateTime? ClosedDate { get; private set; }
-        public int? CommentCount { get; private set; }
+        public int CommentCount { get; private set; }
         public DateTime? CommunityOwnedDate { get; private set; }
         public int? FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
@@ -35,35 +36,46 @@ namespace Logic.Posts.Entities
 
         private readonly List<PostLink> _postLinks;
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
+        #endregion
 
+        #region ctors
         protected Post() { }
-        public Post(string title, string body, int score, string tags, int? acceptedAnswerId, int? answerCount,
-            DateTime? closedDate, int? commentCount, DateTime? communityOwnedDate, DateTime createDate,
-            int? favoriteCount, DateTime lastActivityDate, string lastEditorDisplayName,
-            int? lastEditorUserId, int? ownerUserId, int? parentId, int viewCount)
+        private Post(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags, Post? parent)
         {
             Title = title;
             Body = body;
-            Score = score;
             Tags = tags;
-            AcceptedAnswerId = acceptedAnswerId;
-            AnswerCount = answerCount;
-            ClosedDate = closedDate;
-            CommentCount = commentCount;
-            CommunityOwnedDate = communityOwnedDate;
-            FavoriteCount = favoriteCount;
-            LastActivityDate = lastActivityDate;
-            LastEditorDisplayName = lastEditorDisplayName;
-            LastEditorUserId = lastEditorUserId;
-            OwnerUserId = ownerUserId;
-            ParentId = parentId;
-            ViewCount = viewCount;
+            Score = 0;
+            AcceptedAnswerId = null; //TODO: to ref type Comment
+            AnswerCount = 0;
+            ClosedDate = null;
+            CommentCount = 0;
+            CommunityOwnedDate = null;
+            FavoriteCount = 0;
+            LastActivityDate = createDate;
+            LastEditorDisplayName = authorName;
+            LastEditorUserId = authorId;
+            OwnerUserId = authorId;
+            ParentId = parent?.Id; //TODO: to ref type Post
+            ViewCount = 0;
+            PostType = new PostType(); //TODO: to value from in memory list
             _comments = new List<Comment>();
             _votes = new List<Vote>();
             _postLinks = new List<PostLink>();
             SetCreateDate(createDate);
         }
 
+        public static Result<Post> Create(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags, Post? parent)
+        {
+            if()
+
+
+            return new Post(title, body, createDate, authorId, authorName, tags, parent);
+        }
+
+        #endregion
 
 
         public Result AddComment(User user, string comment)

@@ -7,28 +7,6 @@ namespace Logic.Users.Entities
 {
     public partial class User : BaseEntity
     {
-        #region ctors
-        protected User()
-        {
-
-        }
-        public User(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
-            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
-        {
-            AboutMe = aboutMe;
-            Age = age;
-            DisplayName = displayName;
-            LastAccessDate = lastAccessDate;
-            Location = location;
-            Reputation = reputation;
-            Views = views;
-            WebsiteUrl = websiteUrl;
-            CreatedPostCount = createdPostCount;
-            VoteSummary = voteSummary;
-            SetCreateDate(creationDate);
-        }
-        #endregion
-
         #region Properties
         public string AboutMe { get; set; }
         public int? Age { get; set; }
@@ -44,6 +22,23 @@ namespace Logic.Users.Entities
         public VoteSummary VoteSummary { get; set; }
         #endregion
 
+        #region ctors
+        protected User() { }
+        public User(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
+            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
+        {
+            AboutMe = aboutMe;
+            Age = age;
+            DisplayName = displayName;
+            LastAccessDate = lastAccessDate;
+            Location = location;
+            Reputation = reputation;
+            Views = views;
+            WebsiteUrl = websiteUrl;
+            CreatedPostCount = createdPostCount;
+            VoteSummary = voteSummary;
+            SetCreateDate(creationDate);
+        }
 
         public static Result<User> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
             string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
@@ -59,7 +54,7 @@ namespace Logic.Users.Entities
             return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
                 views, websiteUrl, createdPostCount, voteSummary));
         }
-
+        #endregion
 
         public Result SetCreatedPostCount(int createdPostCount)
         {
