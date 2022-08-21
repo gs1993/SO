@@ -1,6 +1,4 @@
 ﻿using Logic.Models;
-using Logic.Users.Entities;
-using System;
 
 namespace Logic.Posts.Entities
 {
