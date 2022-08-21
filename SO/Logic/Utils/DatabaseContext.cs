@@ -1,6 +1,5 @@
-﻿using Logic.Models;
-using Logic.Posts.Entities;
-using Logic.Users.Entities;
+﻿using Logic.BoundedContexts.Posts.Entities;
+using Logic.BoundedContexts.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;

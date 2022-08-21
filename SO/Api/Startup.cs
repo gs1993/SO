@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Api.Utils;
+using FluentValidation;
+using Logic.Utils;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using System.Text.Json.Serialization;
-using Api.Utils;
-using Logic.Utils;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Api
 {
@@ -59,7 +59,7 @@ namespace Api
             services.AddMediatR(typeof(DatabaseContext).Assembly);
         }
 
-        public void Configure(IApplicationBuilder app)
+        public static void Configure(IApplicationBuilder app)
         {
             app.UseSwagger();
             app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));

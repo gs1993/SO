@@ -1,9 +1,9 @@
 ﻿using Api.Args.User;
 using Api.Utils;
 using FluentValidation;
-using Logic.Users.Command;
-using Logic.Users.Dto;
-using Logic.Users.Queries;
+using Logic.BoundedContexts.Users.Command;
+using Logic.BoundedContexts.Users.Dto;
+using Logic.BoundedContexts.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
