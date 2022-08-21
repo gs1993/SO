@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{85A12D7A-19A9-482D-8034-635DA2A7D626}"
 EndProject
@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{E74A9D75-1C9E-45B0-86CC-294889FA43A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{04B8682C-61B5-4FB6-8691-4183EFB1EB47}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C2501861-59AA-4F70-A78A-9E5B7E6DF678}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04B8682C-61B5-4FB6-8691-4183EFB1EB47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04B8682C-61B5-4FB6-8691-4183EFB1EB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04B8682C-61B5-4FB6-8691-4183EFB1EB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04B8682C-61B5-4FB6-8691-4183EFB1EB47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Release|Any CPU.ActiveCfg = Release|Any CPU

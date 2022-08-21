@@ -19,11 +19,11 @@ namespace Logic.BoundedContexts.Posts.Entities
         public DateTime? ClosedDate { get; private set; }
         public int CommentCount { get; private set; }
         public DateTime? CommunityOwnedDate { get; private set; }
-        public int? FavoriteCount { get; private set; }
+        public int FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
         public string LastEditorDisplayName { get; private set; }
-        public int? LastEditorUserId { get; private set; }
-        public int? OwnerUserId { get; private set; }
+        public int LastEditorUserId { get; private set; }
+        public int OwnerUserId { get; private set; }
         public int? ParentId { get; private set; }
         public int ViewCount { get; private set; }
 
@@ -39,36 +39,39 @@ namespace Logic.BoundedContexts.Posts.Entities
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
         #endregion
 
+        #region ctors
         protected Post() { }
-        private Post(string title, string body, string tags, DateTime createDate,
-            int ownerUserId, int parentId)
+        private Post(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags, Post? parent)
         {
             Title = title;
             Body = body;
-            Score = 0;
+            LastActivityDate = createDate;
+            LastEditorDisplayName = authorName;
+            LastEditorUserId = authorId;
+            OwnerUserId = authorId;
             Tags = tags;
+            ParentId = parent?.Id; //TODO: change to ref
+            Score = 0;
             AcceptedAnswerId = null;
             AnswerCount = 0;
             ClosedDate = null;
             CommentCount = 0;
             CommunityOwnedDate = null;
             FavoriteCount = 0;
-            LastActivityDate = createDate;
-            LastEditorDisplayName = string.Empty;
-            LastEditorUserId = ownerUserId;
-            OwnerUserId = ownerUserId;
-            ParentId = parentId;
             ViewCount = 0;
             Score = 0;
             CommentCount = 0;
+
+            PostType = null; //TODO: change to value from in memory list of available values
 
             _comments = new List<Comment>();
             _votes = new List<Vote>();
             _postLinks = new List<PostLink>();
         }
 
-        public static Result<Post, Error> Create(string title, string body, string tags,
-                DateTime createDate, int ownerUserId, int parentId)
+        public static Result<Post, Error> Create(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags, Post? parent)
         {
             if (string.IsNullOrWhiteSpace(title))
                 return Errors.General.ValueIsRequired(nameof(title));
@@ -89,14 +92,15 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (createDate == DateTime.MinValue)
                 return Errors.General.ValueIsRequired(nameof(createDate));
 
-            if (ownerUserId < 0)
-                return Errors.General.ValueIsRequired(nameof(ownerUserId));
+            if (authorId < 0)
+                return Errors.General.ValueIsRequired(nameof(authorId));
 
-            if (parentId < 0)
-                return Errors.General.ValueIsRequired(nameof(parentId));
+            if (string.IsNullOrWhiteSpace(authorName))
+                return Errors.General.ValueIsRequired(nameof(authorName));
 
-            return new Post(trimmedTitle, trimmedBody, trimmedTags, createDate, ownerUserId, parentId);
-        }
+            return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags, parent);
+        } 
+        #endregion
 
         public Result<bool, Error> AddComment(User user, string comment)
         {
