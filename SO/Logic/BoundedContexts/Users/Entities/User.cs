@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,18 +9,19 @@ namespace Logic.BoundedContexts.Users.Entities
     public partial class User : BaseEntity
     {
         #region Properties
-        public string AboutMe { get; set; }
-        public int? Age { get; set; }
-        public string DisplayName { get; set; }
-        public DateTime LastAccessDate { get; set; }
-        public string Location { get; set; }
-        public int Reputation { get; set; }
-        public int Views { get; set; }
-        public string WebsiteUrl { get; set; }
-        [NotMapped]
-        public int CreatedPostCount { get; set; }
+        public string AboutMe { get; private set; }
+        public int? Age { get; private set; }
+        public string DisplayName { get; private set; }
+        public DateTime LastAccessDate { get; private set; }
+        public string? Location { get; private set; }
+        public int Reputation { get; private set; }
+        public int Views { get; private set; }
+        public string? WebsiteUrl { get; private set; }
 
-        public VoteSummary VoteSummary { get; set; }
+        [NotMapped]
+        public int CreatedPostCount { get; private set; }
+
+        public VoteSummary VoteSummary { get; private set; }
         #endregion
 
         #region ctors
@@ -56,25 +58,22 @@ namespace Logic.BoundedContexts.Users.Entities
         }
         #endregion
 
-
-
-
-        public Result SetCreatedPostCount(int createdPostCount)
+        public Result<bool, Error> SetCreatedPostCount(int createdPostCount)
         {
             if (createdPostCount < 0)
-                return Result.Failure("View count cannot be less than zero");
+                return Errors.General.InvalidValue(nameof(createdPostCount));
 
             CreatedPostCount = createdPostCount;
-
-            return Result.Success();
+            return true;
         }
 
-        public void Ban(DateTime banDate)
+        public Result<bool, Error> Ban(DateTime banDate)
         {
             if (IsDeleted)
-                throw new InvalidOperationException("User not exists");
+                return Errors.User.AlreadyDeleted();
 
             Delete(banDate);
+            return true;
         }
     }
 }

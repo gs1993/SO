@@ -37,7 +37,10 @@ namespace Logic.BoundedContexts.Posts.Commands
             var result = post.DownVote(user);
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
-            return result;
+
+            return result.IsSuccess
+                ? Result.Success()
+                : Result.Failure(result.Error.Message);
 
         }
     }

@@ -30,8 +30,11 @@ namespace Logic.BoundedContexts.Posts.Commands
                 return Result.Failure("Post does not exist");
 
             var result = post.Close(_dateTimeProvider.Now);
+            if (result.IsFailure)
+                return Result.Failure(result.Error.ToString());
+
             await _databaseContext.SaveChangesAsync(cancellationToken);
-            return result;
+            return Result.Success();
         }
     }
 }

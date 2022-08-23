@@ -99,7 +99,7 @@ namespace Logic.BoundedContexts.Posts.Entities
                 return Errors.General.ValueIsRequired(nameof(authorName));
 
             return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags, parent);
-        } 
+        }   
         #endregion
 
         public Result<bool, Error> AddComment(User user, string comment)
@@ -112,36 +112,35 @@ namespace Logic.BoundedContexts.Posts.Entities
 
             _comments.Add(new Comment(user.Id, comment));
 
-            return Result.Success<bool, Error>(true);
+            return true;
         }
 
-        public Result UpVote(User user)
+        public Result<bool, Error> UpVote(User user)
         {
             if (user == null)
-                return Result.Failure("User cannot be null");
+                return Errors.General.ValueIsRequired(nameof(user));
 
             _votes.Add(new Vote(this, user, +1));
-            return Result.Success();
+            return true;
         }
 
-        public Result DownVote(User user)
+        public Result<bool, Error> DownVote(User user)
         {
             if (user == null)
-                return Result.Failure("User cannot be null");
+                return Errors.General.ValueIsRequired(nameof(user));
 
             _votes.Add(new Vote(this, user, -1));
-            return Result.Success();
+            return true;
         }
 
-        public Result Close(DateTime closeDate)
+        public Result<bool, Error> Close(DateTime closeDate)
         {
             if (ClosedDate != null)
-                return Result.Failure("Post was already closed");
+                return Errors.Post.AlreadyClosed();
 
             ClosedDate = closeDate;
             Delete(closeDate);
-
-            return Result.Success();
+            return true;
         }
     }
 }
