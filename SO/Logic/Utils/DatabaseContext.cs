@@ -26,7 +26,7 @@ namespace Logic.Utils
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>(x =>
+            _ = modelBuilder.Entity<Post>(x =>
             {
                 x.ToTable("Posts").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
@@ -34,17 +34,17 @@ namespace Logic.Utils
                 x.HasMany(p => p.Comments)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Comments)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasMany(p => p.Votes)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Votes)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.Votes))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasMany(p => p.PostLinks)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.PostLinks)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.PostLinks))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasOne(p => p.PostType)
                     .WithMany()

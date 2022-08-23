@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Logic.BoundedContexts.Posts.Queries
 {
-    public record GetPostQuery : IRequest<PostDetailsDto>
+    public record GetPostQuery : IRequest<PostDetailsDto?>
     {
         public int Id { get; init; }
     }
 
-    public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto>
+    public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto?>
     {
         private readonly IReadOnlyDatabaseContext _readOnlyContext;
 
@@ -23,7 +23,7 @@ namespace Logic.BoundedContexts.Posts.Queries
         }
 
 
-        public async Task<PostDetailsDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
+        public async Task<PostDetailsDto?> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
             var post = await _readOnlyContext.Get<Post>(request.Id);
             if (post == null)
@@ -44,7 +44,7 @@ namespace Logic.BoundedContexts.Posts.Queries
                 LastActivityDate = post.LastActivityDate,
                 LastEditDate = post.LastUpdateDate,
                 ViewCount = post.ViewCount,
-                Tags = post.Tags,
+                Tags = post.Tags ?? string.Empty,
                 ClosedDate = post.ClosedDate,
                 IsClosed = post.ClosedDate != null,
                 Comments = post.Comments.Select(c => new CommentDto

@@ -21,7 +21,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         public DateTime? CommunityOwnedDate { get; private set; }
         public int FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
-        public string LastEditorDisplayName { get; private set; }
+        public string? LastEditorDisplayName { get; private set; }
         public int LastEditorUserId { get; private set; }
         public int OwnerUserId { get; private set; }
         public int? ParentId { get; private set; }
