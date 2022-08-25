@@ -25,11 +25,15 @@ namespace Logic.BoundedContexts.Users.Command
 
         public async Task<Result> Handle(BanUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
             if (user == null || user.IsDeleted)
                 return Result.Failure("User not found");
 
-            user.Ban(_dateTimeProvider.Now);
+            var result = user.Ban(_dateTimeProvider.Now);
+            if (result.IsFailure)
+                return result;
+
+            await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
         }

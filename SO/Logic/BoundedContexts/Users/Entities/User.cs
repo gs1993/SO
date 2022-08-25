@@ -58,22 +58,26 @@ namespace Logic.BoundedContexts.Users.Entities
         }
         #endregion
 
-        public Result<bool, Error> SetCreatedPostCount(int createdPostCount)
+        public Result SetCreatedPostCount(int createdPostCount)
         {
             if (createdPostCount < 0)
                 return Errors.General.InvalidValue(nameof(createdPostCount));
 
             CreatedPostCount = createdPostCount;
-            return true;
+
+            return Result.Success();
         }
 
-        public Result<bool, Error> Ban(DateTime banDate)
+        public Result Ban(DateTime banDate)
         {
+            if (banDate == DateTime.MinValue)
+                return Errors.General.InvalidValue(nameof(banDate));
             if (IsDeleted)
                 return Errors.User.AlreadyDeleted();
 
             Delete(banDate);
-            return true;
+
+            return Result.Success();
         }
     }
 }

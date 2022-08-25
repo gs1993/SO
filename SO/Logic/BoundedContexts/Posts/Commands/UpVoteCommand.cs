@@ -32,13 +32,14 @@ namespace Logic.BoundedContexts.Posts.Commands
             if (post == null)
                 return Result.Failure("Post does not exists");
 
-            _databaseContext.Entry(post).Collection(x => x.Votes).Load();
+            await _databaseContext.Entry(post).Collection(x => x.Votes).LoadAsync(cancellationToken);
 
             var result = post.UpVote(user);
             if (result.IsFailure)
-                return Result.Failure(result.Error.ToString());
+                return result;
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
+
             return Result.Success();
 
         }

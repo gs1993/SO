@@ -106,7 +106,6 @@ namespace Logic.BoundedContexts.Posts.Entities
         {
             if (user == null)
                 return Errors.Post.CommentIsRequired();
-
             if (string.IsNullOrWhiteSpace(comment))
                 return Errors.Post.CommentIsRequired();
 
