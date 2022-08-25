@@ -14,6 +14,7 @@ namespace Logic.BoundedContexts.Posts.Dtos
         public static class User
         {
             public static Error AlreadyDeleted() => new("User was already deleted");
+            public static Error NotExists(int id) => new($"User with id {id} not exists");
         }
 
         public static class General

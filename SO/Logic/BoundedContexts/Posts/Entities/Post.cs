@@ -102,7 +102,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         }   
         #endregion
 
-        public Result<bool, Error> AddComment(User user, string comment)
+        public Result AddComment(User user, string comment)
         {
             if (user == null)
                 return Errors.Post.CommentIsRequired();
@@ -112,35 +112,38 @@ namespace Logic.BoundedContexts.Posts.Entities
 
             _comments.Add(new Comment(user.Id, comment));
 
-            return true;
+            return Result.Success();
         }
 
-        public Result<bool, Error> UpVote(User user)
+        public Result UpVote(User user)
         {
             if (user == null)
                 return Errors.General.ValueIsRequired(nameof(user));
 
             _votes.Add(new Vote(this, user, +1));
-            return true;
+
+            return Result.Success();
         }
 
-        public Result<bool, Error> DownVote(User user)
+        public Result DownVote(User user)
         {
             if (user == null)
                 return Errors.General.ValueIsRequired(nameof(user));
 
             _votes.Add(new Vote(this, user, -1));
-            return true;
+
+            return Result.Success();
         }
 
-        public Result<bool, Error> Close(DateTime closeDate)
+        public Result Close(DateTime closeDate)
         {
             if (ClosedDate != null)
                 return Errors.Post.AlreadyClosed();
 
             ClosedDate = closeDate;
             Delete(closeDate);
-            return true;
+
+            return Result.Success();
         }
     }
 }

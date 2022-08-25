@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 
 namespace Logic.Utils
@@ -17,6 +18,12 @@ namespace Logic.Utils
             yield return Message;
         }
 
+        public static implicit operator Result(Error error)
+        {
+            if (error == null)
+                throw new ArgumentNullException(nameof(error));
 
+            return Result.Failure(error.Message);
+        }
     }
 }

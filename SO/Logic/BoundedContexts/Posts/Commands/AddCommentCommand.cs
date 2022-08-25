@@ -37,9 +37,10 @@ namespace Logic.BoundedContexts.Posts.Commands
 
             var result = post.AddComment(user, request.Comment);
             if (result.IsFailure)
-                return Result.Failure(result.Error.ToString());
+                return result;
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
+
             return Result.Success();
 
         }
