@@ -10,7 +10,7 @@ namespace Logic.BoundedContexts.Posts.Entities
     public class Post : BaseEntity
     {
         #region Properties
-        public string Title { get; private set; }
+        public string? Title { get; private set; }
         public string Body { get; private set; }
         public int Score { get; private set; }
         public string? Tags { get; private set; }
@@ -52,7 +52,6 @@ namespace Logic.BoundedContexts.Posts.Entities
             OwnerUserId = authorId;
             Tags = tags;
             ParentId = parent?.Id; //TODO: change to ref
-            Score = 0;
             AcceptedAnswerId = null;
             AnswerCount = 0;
             ClosedDate = null;
@@ -99,15 +98,16 @@ namespace Logic.BoundedContexts.Posts.Entities
                 return Errors.General.ValueIsRequired(nameof(authorName));
 
             return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags, parent);
-        }   
+        }
         #endregion
 
         public Result AddComment(User user, string comment)
         {
             if (user == null)
-                return Errors.Post.CommentIsRequired();
+                return Errors.General.ValueIsRequired(nameof(user));
             if (string.IsNullOrWhiteSpace(comment))
                 return Errors.Post.CommentIsRequired();
+
 
             _comments.Add(new Comment(user.Id, comment));
 
@@ -119,7 +119,7 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (user == null)
                 return Errors.General.ValueIsRequired(nameof(user));
 
-            _votes.Add(new Vote(this, user, +1));
+            AddVote(user, 1);
 
             return Result.Success();
         }
@@ -129,7 +129,7 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (user == null)
                 return Errors.General.ValueIsRequired(nameof(user));
 
-            _votes.Add(new Vote(this, user, -1));
+            AddVote(user, -1);
 
             return Result.Success();
         }
@@ -143,6 +143,15 @@ namespace Logic.BoundedContexts.Posts.Entities
             Delete(closeDate);
 
             return Result.Success();
+        }
+
+        private void AddVote(User user, int voteScore)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            _votes.Add(new Vote(this, user, voteScore));
+            Score += voteScore;
         }
     }
 }

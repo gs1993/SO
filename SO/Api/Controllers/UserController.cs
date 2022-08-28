@@ -49,7 +49,7 @@ namespace Api.Controllers
                 return ValidationIdError();
 
             var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = id });
-            return FromResult(userDetailsDto);
+            return FromCustomResult(userDetailsDto);
         }
 
         [HttpPost]

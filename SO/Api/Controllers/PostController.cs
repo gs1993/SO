@@ -19,12 +19,11 @@ namespace Api.Controllers
         {
         }
 
-        [HttpGet()]
-        [Route("GetPage")]
+        [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> GetPage([FromQuery] GetListArgs args)
+        public async Task<IActionResult> GetList([FromQuery] GetListArgs args)
         {
             var validationResult = _validatorFactory.GetValidator<GetListArgs>().Validate(args);
             if (!validationResult.IsValid)
@@ -32,10 +31,10 @@ namespace Api.Controllers
 
             var postsDto = await _mediator.Send(new GetPostsPageQuery
             {
-                PageNumber = args.PageNumber,
-                PageSize = args.PageSize
+                Offset = args.Offset,
+                Limit = args.Limit
             });
-            return FromResult(postsDto);
+            return FromCustomResult(postsDto);
         }
 
         [HttpGet]
@@ -53,10 +52,10 @@ namespace Api.Controllers
             {
                 Size = args.Size
             });
-            return FromResult(postsDto);
+            return FromCustomResult(postsDto);
         }
 
-        [HttpGet()]
+        [HttpGet]
         [Route("{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<PostDetailsDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -70,10 +69,31 @@ namespace Api.Controllers
             {
                 Id = id
             });
-            return FromResult(postsDto);
+            return FromCustomResult(postsDto);
         }
 
         [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.Created, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> Create([FromBody] CreateArgs args)
+        {
+            var validationResult = _validatorFactory.GetValidator<CreateArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new CreatePostCommand
+            (
+                title: args.Title,
+                body: args.Body,
+                authorId: args.AuthorId,
+                tags: args.Tags,
+                parentId: args.ParentId
+            ));
+            return FromResult(result, successStatusCode: 201);
+        }
+
+        [HttpPut]
         [Route("Close/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -90,7 +110,7 @@ namespace Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("AddComment/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -112,7 +132,7 @@ namespace Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpVote/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -133,7 +153,7 @@ namespace Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("DownVote/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]

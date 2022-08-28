@@ -13,8 +13,8 @@ namespace Logic.BoundedContexts.Posts.Queries
 {
     public record GetPostsPageQuery : IRequest<IReadOnlyList<PostListDto>>
     {
-        public int PageNumber { get; init; }
-        public int PageSize { get; init; }
+        public int Offset { get; init; }
+        public int Limit { get; init; }
     }
 
     public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, IReadOnlyList<PostListDto>>
@@ -29,11 +29,10 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<IReadOnlyList<PostListDto>> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
         {
-            var skip = (request.PageNumber - 1) * request.PageSize;
             var posts = await _readOnlyContext
                 .GetQuery<Post>()
-                .Skip(skip)
-                .Take(request.PageSize)
+                .Skip(request.Offset)
+                .Take(request.Limit)
                 .Select(x => new PostListDto
                 {
                     Id = x.Id,

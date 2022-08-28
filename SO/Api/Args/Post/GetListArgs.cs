@@ -5,8 +5,8 @@ namespace Api.Args.Post
     public sealed record GetListArgs
     {
         [Required]
-        public int PageNumber { get; init; }
+        public int Offset { get; init; }
         [Required]
-        public int PageSize { get; init; }
+        public int Limit { get; init; }
     }
 }

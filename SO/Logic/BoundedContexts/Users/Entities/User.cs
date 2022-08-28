@@ -47,12 +47,6 @@ namespace Logic.BoundedContexts.Users.Entities
         {
             //TODO: add length validation
 
-            if (creationDate > DateTime.UtcNow)
-                return Result.Failure<User>("Invalid user creation date");
-
-            if (lastAccessDate > DateTime.UtcNow)
-                return Result.Failure<User>("Invalid user last access date");
-
             return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
                 views, websiteUrl, createdPostCount, voteSummary));
         }

@@ -11,30 +11,30 @@ namespace UnitTests.Logic.Posts.Commands
     {
         private static readonly Fixture Fixture = new();
 
-        [Fact]
-        public void testc()
-        {
-            int userId = 123;
-            int postId = 456;
+        //[Fact]
+        //public void testc()
+        //{
+        //    int userId = 123;
+        //    int postId = 456;
 
-            var users = new List<User>
-            {
-                Fixture.Build<User>().WithAutoProperties().Create(),
-                Fixture.Build<User>().WithAutoProperties().Create(),
-                Fixture.Build<User>().With(u => u.Id, userId).Create()
-            };
+        //    var users = new List<User>
+        //    {
+        //        Fixture.Build<User>().WithAutoProperties().Create(),
+        //        Fixture.Build<User>().WithAutoProperties().Create(),
+        //        Fixture.Build<User>().With(u => u.Id, userId).Create()
+        //    };
 
-            var posts = new List<Post>
-            {
-                Fixture.Build<Post>().WithAutoProperties().Create(),
-                Fixture.Build<Post>().WithAutoProperties().Create(),
-                Fixture.Build<Post>()
-                    .With(p => p.Id, postId)
-                    .With(p => p.Comments, Array.Empty<Comment>())
-                    .Create()
-            };
+        //    var posts = new List<Post>
+        //    {
+        //        Fixture.Build<Post>().WithAutoProperties().Create(),
+        //        Fixture.Build<Post>().WithAutoProperties().Create(),
+        //        Fixture.Build<Post>()
+        //            .With(p => p.Id, postId)
+        //            .With(p => p.Comments, Array.Empty<Comment>())
+        //            .Create()
+        //    };
 
 
-        }
+        //}
     }
 }

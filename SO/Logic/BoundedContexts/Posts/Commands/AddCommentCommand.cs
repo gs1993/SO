@@ -2,6 +2,7 @@
 using Logic.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public AddCommentCommandHandler(DatabaseContext databaseContext)
         {
-            _databaseContext = databaseContext;
+            _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
         }
 
         public async Task<Result> Handle(AddCommentCommand request, CancellationToken cancellationToken)

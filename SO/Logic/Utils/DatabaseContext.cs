@@ -21,12 +21,13 @@ namespace Logic.Utils
         public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
         {
             _dateTimeProvider = dateTimeProvider;
+            Database.SetCommandTimeout(180);
         }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _ = modelBuilder.Entity<Post>(x =>
+            modelBuilder.Entity<Post>(x =>
             {
                 x.ToTable("Posts").HasKey(k => k.Id);
                 x.HasQueryFilter(x => !x.IsDeleted);
@@ -116,8 +117,12 @@ namespace Logic.Utils
 
         public override EntityEntry<TEntity> Remove<TEntity>(TEntity entity)
         {
-            (entity as BaseEntity).Delete(_dateTimeProvider.Now);
+            var tEntity = entity as BaseEntity ?? throw new ArgumentException();
+
+            tEntity.Delete(_dateTimeProvider.Now);
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public override int SaveChanges()

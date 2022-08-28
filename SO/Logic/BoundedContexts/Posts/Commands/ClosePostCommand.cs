@@ -2,6 +2,7 @@
 using Logic.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,8 +20,8 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public ClosePostCommandHandler(DatabaseContext databaseContext, IDateTimeProvider dateTimeProvider)
         {
-            _databaseContext = databaseContext;
-            _dateTimeProvider = dateTimeProvider;
+            _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
+            _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
         public async Task<Result> Handle(ClosePostCommand request, CancellationToken cancellationToken)

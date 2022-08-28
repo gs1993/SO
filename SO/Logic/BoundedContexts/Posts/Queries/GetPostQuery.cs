@@ -39,7 +39,7 @@ namespace Logic.BoundedContexts.Posts.Queries
                 CommunityOwnedDate = post.CommunityOwnedDate,
                 CreationDate = post.CreateDate,
                 FavoriteCount = post.FavoriteCount,
-                LastEditorDisplayName = post.LastEditorDisplayName,
+                LastEditorDisplayName = post.LastEditorDisplayName ?? string.Empty,
                 Score = post.Score,
                 LastActivityDate = post.LastActivityDate,
                 LastEditDate = post.LastUpdateDate,

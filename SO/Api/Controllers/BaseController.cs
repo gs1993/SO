@@ -21,8 +21,8 @@ namespace Api.Controllers
 
         public BaseController(IMediator mediator, IValidatorFactory validationFactory)
         {
-            _mediator = mediator;
-            _validatorFactory = validationFactory;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _validatorFactory = validationFactory ?? throw new ArgumentNullException(nameof(validationFactory));
         }
 
 
@@ -59,25 +59,18 @@ namespace Api.Controllers
             return BadRequest(Envelope.Error("Invalid id"));
         }
 
-        protected IActionResult FromResult<T>(T result, string errorMessage = "Not Found")
+        protected IActionResult FromCustomResult<T>(T result, int successStatusCode = 200, string errorMessage = "Not Found")
         {
             return result == null
                 ? Error(errorMessage)
-                : Ok(result);
+                : StatusCode(successStatusCode, result);
         }
 
-        protected IActionResult FromResult<T>(IEnumerable<T> result, string errorMessage = "Not Found")
-        {
-            return result == null || result.Any()
-                ? Error(errorMessage)
-                : Ok(result);
-        }
-
-        protected IActionResult FromResult(Result result)
+        protected IActionResult FromResult(Result result, int successStatusCode = 200)
         {
             return result.IsFailure
                 ? Error(result.Error)
-                : Ok();
+                : StatusCode(successStatusCode);
         }
     }
 }
