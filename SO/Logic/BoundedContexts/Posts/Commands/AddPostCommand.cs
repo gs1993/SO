@@ -45,7 +45,7 @@ namespace Logic.BoundedContexts.Posts.Commands
             if (author == null)
                 return Errors.User.NotExists(request.AuthorId);
 
-            var createPostResult = Post.Create(request.Title, request.Body, _dateTimeProvider.Now, request.AuthorId, author.DisplayName, request.Tags, null);
+            var createPostResult = Post.Create(request.Title, request.Body, _dateTimeProvider.Now, request.AuthorId, author.DisplayName, request.Tags);
             if (createPostResult.IsFailure)
                 return createPostResult.Error;
 

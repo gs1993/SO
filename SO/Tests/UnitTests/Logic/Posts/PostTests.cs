@@ -8,10 +8,9 @@ namespace UnitTests.Logic.Posts
     public class PostTests
     {
         private readonly Post _sut = Post.Create("Test title", "test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy", 
-            new DateTime(2022, 01, 19), 1, "Test User", null, null).Value;
+            new DateTime(2022, 01, 19), 1, "Test User", null).Value;
 
-        private readonly User _user = User.Create("", null, new DateTime(2022, 01, 19), "", new DateTime(2022, 01, 19),
-                "", 0, 0, "", 0, null).Value;
+        private readonly User _user = User.Create("test", new DateTime(2022, 01, 19), null, null, null, null).Value;
 
         [Fact]
         public void Should_ScoreBeFour_WhenUpVotedFourTimes()

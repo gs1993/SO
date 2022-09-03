@@ -24,7 +24,6 @@ namespace Logic.BoundedContexts.Posts.Entities
         public string? LastEditorDisplayName { get; private set; }
         public int LastEditorUserId { get; private set; }
         public int OwnerUserId { get; private set; }
-        public int? ParentId { get; private set; }
         public int ViewCount { get; private set; }
 
         public virtual PostType PostType { get; private set; }
@@ -42,7 +41,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         #region ctors
         protected Post() { }
         private Post(string title, string body, DateTime createDate,
-            int authorId, string authorName, string? tags, Post? parent)
+            int authorId, string authorName, string? tags)
         {
             Title = title;
             Body = body;
@@ -51,7 +50,6 @@ namespace Logic.BoundedContexts.Posts.Entities
             LastEditorUserId = authorId;
             OwnerUserId = authorId;
             Tags = tags;
-            ParentId = parent?.Id; //TODO: change to ref
             AcceptedAnswerId = null;
             AnswerCount = 0;
             ClosedDate = null;
@@ -70,7 +68,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         }
 
         public static Result<Post, Error> Create(string title, string body, DateTime createDate,
-            int authorId, string authorName, string? tags, Post? parent)
+            int authorId, string authorName, string? tags)
         {
             if (string.IsNullOrWhiteSpace(title))
                 return Errors.General.ValueIsRequired(nameof(title));
@@ -97,7 +95,7 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (string.IsNullOrWhiteSpace(authorName))
                 return Errors.General.ValueIsRequired(nameof(authorName));
 
-            return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags, parent);
+            return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags);
         }
         #endregion
 
