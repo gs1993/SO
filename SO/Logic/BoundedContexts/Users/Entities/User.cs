@@ -9,7 +9,7 @@ namespace Logic.BoundedContexts.Users.Entities
     public partial class User : BaseEntity
     {
         #region Properties
-        public string AboutMe { get; private set; }
+        public string? AboutMe { get; private set; }
         public int? Age { get; private set; }
         public string DisplayName { get; private set; }
         public DateTime LastAccessDate { get; private set; }
@@ -26,41 +26,59 @@ namespace Logic.BoundedContexts.Users.Entities
 
         #region ctors
         protected User() { }
-        public User(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
-            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
+        public User(string displayName, DateTime creationDate, string? aboutMe, int? age, string? location, string? websiteUrl)
         {
             AboutMe = aboutMe;
             Age = age;
             DisplayName = displayName;
-            LastAccessDate = lastAccessDate;
-            Location = location;
-            Reputation = reputation;
-            Views = views;
-            WebsiteUrl = websiteUrl;
-            CreatedPostCount = createdPostCount;
-            VoteSummary = voteSummary;
             SetCreateDate(creationDate);
+            LastAccessDate = creationDate;
+            Location = location;
+            WebsiteUrl = websiteUrl;
+            Reputation = 0;
+            Views = 0;
+            CreatedPostCount = 0;
+            VoteSummary = VoteSummary.Create(0, 0).Value;
         }
 
-        public static Result<User> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
-            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
+        public static Result<User, Error> Create(string displayName, DateTime creationDate, string? aboutMe, int? age, string? location, string? websiteUrl)
         {
-            //TODO: add length validation
+            if (string.IsNullOrWhiteSpace(displayName))
+                return Errors.General.ValueIsRequired(nameof(displayName));
+            var trimmedDisplayName = displayName.Trim();
+            if (displayName.Length < 3 || displayName.Length > 50)
+                return Errors.General.InvalidLength(nameof(displayName));
 
-            return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
-                views, websiteUrl, createdPostCount, voteSummary));
+            if (creationDate == DateTime.MinValue)
+                return Errors.General.InvalidValue(nameof(creationDate));
+
+            var trimmedAboutMe = aboutMe?.Trim();
+            if (!string.IsNullOrEmpty(trimmedAboutMe))
+            {
+                if (trimmedAboutMe.Length > 500)
+                    return Errors.General.InvalidLength(nameof(aboutMe));
+            }
+
+            if (age.HasValue && (age < 15 || age > 100))
+                return Errors.General.InvalidValue(nameof(age));
+
+            var trimmedLocation = location?.Trim();
+            if (!string.IsNullOrEmpty(trimmedLocation))
+            {
+                if (trimmedLocation.Length > 150)
+                    return Errors.General.InvalidLength(nameof(location));
+            }
+
+            var trimmedWebsiteUrl = websiteUrl?.Trim();
+            if (!string.IsNullOrEmpty(trimmedWebsiteUrl))
+            {
+                if (trimmedWebsiteUrl.Length > 100)
+                    return Errors.General.InvalidLength(nameof(websiteUrl));
+            }
+
+            return new User(trimmedDisplayName, creationDate, trimmedAboutMe, age, trimmedLocation, trimmedWebsiteUrl);
         }
         #endregion
-
-        public Result SetCreatedPostCount(int createdPostCount)
-        {
-            if (createdPostCount < 0)
-                return Errors.General.InvalidValue(nameof(createdPostCount));
-
-            CreatedPostCount = createdPostCount;
-
-            return Result.Success();
-        }
 
         public Result Ban(DateTime banDate)
         {

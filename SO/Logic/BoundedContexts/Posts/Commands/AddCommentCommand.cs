@@ -17,7 +17,7 @@ namespace Logic.BoundedContexts.Posts.Commands
 
     public class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, Result>
     {
-        public readonly DatabaseContext _databaseContext;
+        private readonly DatabaseContext _databaseContext;
 
         public AddCommentCommandHandler(DatabaseContext databaseContext)
         {

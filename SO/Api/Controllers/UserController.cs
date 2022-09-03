@@ -53,6 +53,27 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.Created, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> Create([FromBody] CreateUserArgs args)
+        {
+            var validationResult = _validatorFactory.GetValidator<CreateUserArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new CreateUserCommand
+            (
+                displayName: args.DisplayName,
+                aboutMe: args.AboutMe,
+                age: args.Age,
+                location: args.Location,
+                websiteUrl: args.WebsiteUrl
+            ));
+            return FromResult(result, successStatusCode: 201);
+        }
+
+        [HttpPut]
         [Route("PermaBan/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
