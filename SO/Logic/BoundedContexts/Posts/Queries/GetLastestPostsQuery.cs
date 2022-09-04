@@ -13,6 +13,11 @@ namespace Logic.BoundedContexts.Posts.Queries
     public record GetLastestPostsQuery : IRequest<IReadOnlyList<PostListDto>>
     {
         public int Size { get; init; }
+
+        public GetLastestPostsQuery(int size)
+        {
+            Size = size;
+        }
     }
 
     public class GetLastestPostsQueryHandler : IRequestHandler<GetLastestPostsQuery, IReadOnlyList<PostListDto>>

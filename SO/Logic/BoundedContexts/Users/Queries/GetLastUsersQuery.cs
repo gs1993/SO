@@ -11,6 +11,11 @@ namespace Logic.BoundedContexts.Users.Queries
     public record GetLastUsersQuery : IRequest<IReadOnlyList<LastUserDto>>
     {
         public int Size { get; init; }
+
+        public GetLastUsersQuery(int size)
+        {
+            Size = size;
+        }
     }
 
     public class GetLastUsersQueryHandler : IRequestHandler<GetLastUsersQuery, IReadOnlyList<LastUserDto>>

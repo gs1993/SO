@@ -15,6 +15,12 @@ namespace Logic.BoundedContexts.Posts.Queries
     {
         public int Offset { get; init; }
         public int Limit { get; init; }
+
+        public GetPostsPageQuery(int offset, int limit)
+        {
+            Offset = offset;
+            Limit = limit;
+        }
     }
 
     public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, IReadOnlyList<PostListDto>>

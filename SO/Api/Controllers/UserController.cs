@@ -32,7 +32,10 @@ namespace Api.Controllers
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
-            var lastUsersDto = await _mediator.Send(new GetLastUsersQuery { Size = args.Size });
+            var lastUsersDto = await _mediator.Send(new GetLastUsersQuery
+            ( 
+                size: args.Size 
+            ));
             return lastUsersDto.Any()
                 ? Ok(lastUsersDto)
                 : Error("Not Found");
@@ -48,7 +51,7 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = id });
+            var userDetailsDto = await _mediator.Send(new GetUserQuery(id));
             return FromCustomResult(userDetailsDto);
         }
 
@@ -83,7 +86,7 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var result = await _mediator.Send(new BanUserCommand { Id = id });
+            var result = await _mediator.Send(new BanUserCommand(id));
             return FromResult(result);
         }
     }

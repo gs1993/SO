@@ -10,6 +10,11 @@ namespace Logic.BoundedContexts.Users.Queries
     public record GetUserQuery : IRequest<UserDetailsDto>
     {
         public int Id { get; init; }
+
+        public GetUserQuery(int id)
+        {
+            Id = id;
+        }
     }
 
     public record GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDetailsDto>

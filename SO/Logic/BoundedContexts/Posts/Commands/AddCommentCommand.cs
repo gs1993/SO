@@ -13,6 +13,13 @@ namespace Logic.BoundedContexts.Posts.Commands
         public int PostId { get; init; }
         public int UserId { get; init; }
         public string Comment { get; init; }
+
+        public AddCommentCommand(int postId, int userId, string comment)
+        {
+            PostId = postId;
+            UserId = userId;
+            Comment = comment;
+        }
     }
 
     public class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, Result>

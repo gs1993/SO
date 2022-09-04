@@ -11,6 +11,11 @@ namespace Logic.BoundedContexts.Users.Command
     public record BanUserCommand : IRequest<Result>
     {
         public int Id { get; init; }
+
+        public BanUserCommand(int id)
+        {
+            Id = id;
+        }
     }
 
     public class PermaBanCommandHandler : IRequestHandler<BanUserCommand, Result>

@@ -30,10 +30,10 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var postsDto = await _mediator.Send(new GetPostsPageQuery
-            {
-                Offset = args.Offset,
-                Limit = args.Limit
-            });
+            (
+                offset: args.Offset,
+                limit: args.Limit
+            ));
             return FromCustomResult(postsDto);
         }
 
@@ -49,9 +49,9 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var postsDto = await _mediator.Send(new GetLastestPostsQuery
-            {
-                Size = args.Size
-            });
+            (
+                size: args.Size
+            ));
             return FromCustomResult(postsDto);
         }
 
@@ -65,10 +65,7 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var postsDto = await _mediator.Send(new GetPostQuery
-            {
-                Id = id
-            });
+            var postsDto = await _mediator.Send(new GetPostQuery(id));
             return FromCustomResult(postsDto);
         }
 
@@ -103,10 +100,7 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var result = await _mediator.Send(new ClosePostCommand
-            {
-                Id = id
-            });
+            var result = await _mediator.Send(new ClosePostCommand(id));
             return FromResult(result);
         }
 
@@ -124,11 +118,11 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new AddCommentCommand
-            {
-                PostId = id,
-                Comment = args.Comment,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                comment: args.Comment,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
 
@@ -146,10 +140,10 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new UpVoteCommand
-            {
-                PostId = id,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
 
@@ -167,10 +161,10 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new DownVoteCommand
-            {
-                PostId = id,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
     }

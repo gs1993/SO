@@ -11,6 +11,11 @@ namespace Logic.BoundedContexts.Posts.Commands
     public record ClosePostCommand : IRequest<Result>
     {
         public int Id { get; init; }
+
+        public ClosePostCommand(int id)
+        {
+            Id = id;
+        }
     }
 
     public class ClosePostCommandHandler : IRequestHandler<ClosePostCommand, Result>

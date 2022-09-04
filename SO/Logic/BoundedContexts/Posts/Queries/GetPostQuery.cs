@@ -11,6 +11,11 @@ namespace Logic.BoundedContexts.Posts.Queries
     public record GetPostQuery : IRequest<PostDetailsDto?>
     {
         public int Id { get; init; }
+
+        public GetPostQuery(int id)
+        {
+            Id = id;
+        }
     }
 
     public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto?>

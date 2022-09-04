@@ -12,6 +12,12 @@ namespace Logic.BoundedContexts.Posts.Commands
     {
         public int PostId { get; init; }
         public int UserId { get; init; }
+
+        public UpVoteCommand(int postId, int userId)
+        {
+            PostId = postId;
+            UserId = userId;
+        }
     }
 
     public class UpVoteCommandHandler : IRequestHandler<UpVoteCommand, Result>
