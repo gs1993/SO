@@ -42,7 +42,7 @@ namespace Logic.BoundedContexts.Posts.Queries
                 .Select(x => new PostListDto
                 {
                     Id = x.Id,
-                    Title = x.Title,
+                    Title = x.Title ?? string.Empty,
                     ShortBody = x.Body.Substring(0, 150),
                     AnswerCount = x.AnswerCount,
                     CommentCount = x.CommentCount,

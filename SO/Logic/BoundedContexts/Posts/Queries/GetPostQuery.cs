@@ -37,7 +37,7 @@ namespace Logic.BoundedContexts.Posts.Queries
             return new PostDetailsDto
             {
                 Id = post.Id,
-                Title = post.Title,
+                Title = post.Title ?? string.Empty,
                 Body = post.Body,
                 AnswerCount = post.AnswerCount,
                 CommentCount = post.CommentCount,
