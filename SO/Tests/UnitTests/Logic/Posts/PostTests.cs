@@ -4,7 +4,7 @@ using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 
-namespace UnitTests.Logic
+namespace UnitTests.Logic.Posts
 {
     public class PostTests
     {

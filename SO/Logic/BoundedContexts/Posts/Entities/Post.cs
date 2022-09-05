@@ -145,8 +145,7 @@ namespace Logic.BoundedContexts.Posts.Entities
 
         private void AddVote(User user, int voteScore)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            ArgumentNullException.ThrowIfNull(user);
 
             _votes.Add(new Vote(this, user, voteScore));
             Score += voteScore;

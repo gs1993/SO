@@ -20,8 +20,7 @@ namespace Logic.Utils
 
         public static implicit operator Result(Error error)
         {
-            if (error == null)
-                throw new ArgumentNullException(nameof(error));
+            ArgumentNullException.ThrowIfNull(error);
 
             return Result.Failure(error.Message);
         }

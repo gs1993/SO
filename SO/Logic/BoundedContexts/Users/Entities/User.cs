@@ -40,7 +40,7 @@ namespace Logic.BoundedContexts.Users.Entities
             if (string.IsNullOrWhiteSpace(displayName))
                 return Errors.General.ValueIsRequired(nameof(displayName));
             var trimmedDisplayName = displayName.Trim();
-            if (displayName.Length < 3 || displayName.Length > 50)
+            if (trimmedDisplayName.Length < 3 || trimmedDisplayName.Length > 50)
                 return Errors.General.InvalidLength(nameof(displayName));
 
             if (creationDate == DateTime.MinValue)

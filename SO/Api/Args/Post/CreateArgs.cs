@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Api.Args.Post
+﻿namespace Api.Args.Post
 {
     public record CreateArgs
     {

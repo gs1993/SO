@@ -3,7 +3,6 @@ using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Posts.Entities;
 using Logic.Utils;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
