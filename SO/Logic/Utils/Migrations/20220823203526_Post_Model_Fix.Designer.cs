@@ -4,6 +4,7 @@ using Logic.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Logic.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220823203526_Post_Model_Fix")]
+    partial class Post_Model_Fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace Logic.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Logic.Posts.Entities.Comment", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,6 +51,7 @@ namespace Logic.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
@@ -61,7 +64,7 @@ namespace Logic.Migrations
                     b.ToTable("Comments", (string)null);
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Post", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,16 +75,17 @@ namespace Logic.Migrations
                     b.Property<int?>("AcceptedAnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AnswerCount")
+                    b.Property<int>("AnswerCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Body")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ClosedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CommentCount")
+                    b.Property<int>("CommentCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CommunityOwnedDate")
@@ -93,7 +97,7 @@ namespace Logic.Migrations
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FavoriteCount")
+                    b.Property<int>("FavoriteCount")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -103,21 +107,22 @@ namespace Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastEditorDisplayName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LastEditorUserId")
+                    b.Property<int>("LastEditorUserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OwnerUserId")
+                    b.Property<int>("OwnerUserId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostTypeId")
+                    b.Property<int>("PostTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
@@ -127,6 +132,7 @@ namespace Logic.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ViewCount")
@@ -139,7 +145,7 @@ namespace Logic.Migrations
                     b.ToTable("Posts", (string)null);
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.PostLink", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.PostLink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,7 +181,7 @@ namespace Logic.Migrations
                     b.ToTable("PostLink");
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.PostType", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.PostType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,6 +202,7 @@ namespace Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -203,7 +210,7 @@ namespace Logic.Migrations
                     b.ToTable("PostTypes", (string)null);
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Vote", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Vote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,7 +249,7 @@ namespace Logic.Migrations
                     b.ToTable("Vote");
                 });
 
-            modelBuilder.Entity("Logic.Users.Entities.User", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Users.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,6 +258,7 @@ namespace Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AboutMe")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Age")
@@ -263,6 +271,7 @@ namespace Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -291,43 +300,45 @@ namespace Logic.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Comment", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Comment", b =>
                 {
-                    b.HasOne("Logic.Posts.Entities.Post", null)
+                    b.HasOne("Logic.BoundedContexts.Posts.Entities.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId");
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Post", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Post", b =>
                 {
-                    b.HasOne("Logic.Posts.Entities.PostType", "PostType")
+                    b.HasOne("Logic.BoundedContexts.Posts.Entities.PostType", "PostType")
                         .WithMany()
-                        .HasForeignKey("PostTypeId");
+                        .HasForeignKey("PostTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PostType");
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.PostLink", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.PostLink", b =>
                 {
-                    b.HasOne("Logic.Posts.Entities.Post", null)
+                    b.HasOne("Logic.BoundedContexts.Posts.Entities.Post", null)
                         .WithMany("PostLinks")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Vote", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Vote", b =>
                 {
-                    b.HasOne("Logic.Posts.Entities.Post", null)
+                    b.HasOne("Logic.BoundedContexts.Posts.Entities.Post", null)
                         .WithMany("Votes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Logic.Users.Entities.User", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Users.Entities.User", b =>
                 {
-                    b.OwnsOne("Logic.Users.Entities.VoteSummary", "VoteSummary", b1 =>
+                    b.OwnsOne("Logic.BoundedContexts.Users.Entities.VoteSummary", "VoteSummary", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -348,10 +359,11 @@ namespace Logic.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.Navigation("VoteSummary");
+                    b.Navigation("VoteSummary")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Logic.Posts.Entities.Post", b =>
+            modelBuilder.Entity("Logic.BoundedContexts.Posts.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
 

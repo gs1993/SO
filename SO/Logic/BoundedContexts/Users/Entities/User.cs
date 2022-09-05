@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,77 +9,60 @@ namespace Logic.BoundedContexts.Users.Entities
     public partial class User : BaseEntity
     {
         #region Properties
-        public string AboutMe { get; set; }
-        public int? Age { get; set; }
-        public string DisplayName { get; set; }
-        public DateTime LastAccessDate { get; set; }
-        public string Location { get; set; }
-        public int Reputation { get; set; }
-        public int Views { get; set; }
-        public string WebsiteUrl { get; set; }
+        public string DisplayName { get; private set; }
+        public DateTime LastAccessDate { get; private set; }
+        public int Reputation { get; private set; }
+        public int Views { get; private set; }
+
         [NotMapped]
-        public int CreatedPostCount { get; set; }
+        public int CreatedPostCount { get; private set; }
 
-        public VoteSummary VoteSummary { get; set; }
+        public VoteSummary VoteSummary { get; private set; }
+        public ProfileInfo ProfileInfo { get; private set; }
         #endregion
-
 
         #region ctors
-        protected User()
+        protected User() { }
+        public User(string displayName, DateTime creationDate, ProfileInfo profileInfo)
         {
-
-        }
-        public User(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
-            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
-        {
-            AboutMe = aboutMe;
-            Age = age;
             DisplayName = displayName;
-            LastAccessDate = lastAccessDate;
-            Location = location;
-            Reputation = reputation;
-            Views = views;
-            WebsiteUrl = websiteUrl;
-            CreatedPostCount = createdPostCount;
-            VoteSummary = voteSummary;
             SetCreateDate(creationDate);
+            LastAccessDate = creationDate;
+            Reputation = 0;
+            Views = 0;
+            CreatedPostCount = 0;
+            VoteSummary = VoteSummary.Create(0, 0).Value;
+            ProfileInfo = profileInfo;
         }
 
-        public static Result<User> Create(string aboutMe, int? age, DateTime creationDate, string displayName, DateTime lastAccessDate,
-            string location, int reputation, int views, string websiteUrl, int createdPostCount, VoteSummary voteSummary)
+        public static Result<User, Error> Create(string displayName, DateTime creationDate, ProfileInfo profileInfo)
         {
-            //TODO: add length validation
+            if (string.IsNullOrWhiteSpace(displayName))
+                return Errors.General.ValueIsRequired(nameof(displayName));
+            var trimmedDisplayName = displayName.Trim();
+            if (trimmedDisplayName.Length < 3 || trimmedDisplayName.Length > 50)
+                return Errors.General.InvalidLength(nameof(displayName));
 
-            if (creationDate > DateTime.UtcNow)
-                return Result.Failure<User>("Invalid user creation date");
+            if (creationDate == DateTime.MinValue)
+                return Errors.General.InvalidValue(nameof(creationDate));
 
-            if (lastAccessDate > DateTime.UtcNow)
-                return Result.Failure<User>("Invalid user last access date");
+            if (profileInfo == null)
+                return Errors.General.InvalidValue(nameof(profileInfo));
 
-            return Result.Success(new User(aboutMe, age, creationDate, displayName, lastAccessDate, location, reputation,
-                views, websiteUrl, createdPostCount, voteSummary));
+            return new User(trimmedDisplayName, creationDate, profileInfo);
         }
         #endregion
 
-
-
-
-        public Result SetCreatedPostCount(int createdPostCount)
+        public Result Ban(DateTime banDate)
         {
-            if (createdPostCount < 0)
-                return Result.Failure("View count cannot be less than zero");
-
-            CreatedPostCount = createdPostCount;
-
-            return Result.Success();
-        }
-
-        public void Ban(DateTime banDate)
-        {
+            if (banDate == DateTime.MinValue)
+                return Errors.General.InvalidValue(nameof(banDate));
             if (IsDeleted)
-                throw new InvalidOperationException("User not exists");
+                return Errors.User.AlreadyDeleted();
 
             Delete(banDate);
+
+            return Result.Success();
         }
     }
 }

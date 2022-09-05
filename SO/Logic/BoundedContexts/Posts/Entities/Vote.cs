@@ -14,10 +14,8 @@ namespace Logic.BoundedContexts.Posts.Entities
         protected Vote() { }
         public Vote(Post post, User user, int bountyAmount)
         {
-            if (post == null)
-                throw new ArgumentNullException(nameof(post));
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            ArgumentNullException.ThrowIfNull(post);
+            ArgumentNullException.ThrowIfNull(user);
 
             PostId = post.Id;
             UserId = user.Id;

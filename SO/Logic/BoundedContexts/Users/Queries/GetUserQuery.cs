@@ -1,4 +1,5 @@
 ﻿using Logic.BoundedContexts.Users.Dto;
+using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils;
 using MediatR;
 using System;
@@ -7,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace Logic.BoundedContexts.Users.Queries
 {
-    public record GetUserQuery : IRequest<UserDetailsDto>
+    public record GetUserQuery : IRequest<UserDetailsDto?>
     {
         public int Id { get; init; }
+
+        public GetUserQuery(int id)
+        {
+            Id = id;
+        }
     }
 
-    public record GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDetailsDto>
+    public record GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDetailsDto?>
     {
         private readonly IReadOnlyDatabaseContext _readOnlyContext;
 
@@ -21,9 +27,30 @@ namespace Logic.BoundedContexts.Users.Queries
             _readOnlyContext = readOnlyContext;
         }
 
-        public Task<UserDetailsDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<UserDetailsDto?> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request.Id <= 0)
+                throw new ArgumentException($"Invalid id: {request.Id}", nameof(request.Id));
+
+            var user = await _readOnlyContext.GetById<User>(request.Id);
+            return user != null
+                ? new UserDetailsDto
+                {
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    CreationDate = user.CreateDate,
+                    VoteCount = user.VoteSummary.VoteCount,
+                    DownVotes = user.VoteSummary.DownVotes,
+                    UpVotes = user.VoteSummary.UpVotes,
+                    AboutMe = user.ProfileInfo.AboutMe ?? string.Empty,
+                    Age = user.ProfileInfo.Age,
+                    CreatedPostCount = user.CreatedPostCount,
+                    LastAccessDate = user.LastAccessDate,
+                    Location = user.ProfileInfo.Location ?? string.Empty,
+                    Reputation = user.Reputation,
+                    Views = user.Views,
+                    WebsiteUrl = user.ProfileInfo.WebsiteUrl ?? string.Empty
+                } : null;
         }
     }
 }

@@ -9,23 +9,21 @@ namespace Logic.BoundedContexts.Posts.Entities
 {
     public class Post : BaseEntity
     {
-        #region properties
-
-        public string Title { get; private set; }
+        #region Properties
+        public string? Title { get; private set; }
         public string Body { get; private set; }
         public int Score { get; private set; }
-        public string Tags { get; private set; }
+        public string? Tags { get; private set; }
         public int? AcceptedAnswerId { get; private set; }
-        public int? AnswerCount { get; private set; }
+        public int AnswerCount { get; private set; }
         public DateTime? ClosedDate { get; private set; }
-        public int? CommentCount { get; private set; }
+        public int CommentCount { get; private set; }
         public DateTime? CommunityOwnedDate { get; private set; }
-        public int? FavoriteCount { get; private set; }
+        public int FavoriteCount { get; private set; }
         public DateTime LastActivityDate { get; private set; }
-        public string LastEditorDisplayName { get; private set; }
-        public int? LastEditorUserId { get; private set; }
-        public int? OwnerUserId { get; private set; }
-        public int? ParentId { get; private set; }
+        public string? LastEditorDisplayName { get; private set; }
+        public int LastEditorUserId { get; private set; }
+        public int OwnerUserId { get; private set; }
         public int ViewCount { get; private set; }
 
         public virtual PostType PostType { get; private set; }
@@ -38,16 +36,19 @@ namespace Logic.BoundedContexts.Posts.Entities
 
         private readonly List<PostLink> _postLinks;
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
-
         #endregion
 
+        #region ctors
         protected Post() { }
-        private Post(string title, string body, string tags, DateTime createDate,
-            int ownerUserId, int parentId)
+        private Post(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags)
         {
             Title = title;
             Body = body;
-            Score = 0;
+            LastActivityDate = createDate;
+            LastEditorDisplayName = authorName;
+            LastEditorUserId = authorId;
+            OwnerUserId = authorId;
             Tags = tags;
             AcceptedAnswerId = null;
             AnswerCount = 0;
@@ -55,22 +56,19 @@ namespace Logic.BoundedContexts.Posts.Entities
             CommentCount = 0;
             CommunityOwnedDate = null;
             FavoriteCount = 0;
-            LastActivityDate = createDate;
-            LastEditorDisplayName = string.Empty;
-            LastEditorUserId = ownerUserId;
-            OwnerUserId = ownerUserId;
-            ParentId = parentId;
             ViewCount = 0;
             Score = 0;
             CommentCount = 0;
+
+            PostType = null; //TODO: change to value from in memory list of available values
 
             _comments = new List<Comment>();
             _votes = new List<Vote>();
             _postLinks = new List<PostLink>();
         }
 
-        public static Result<Post, Error> Create(string title, string body, string tags,
-                DateTime createDate, int ownerUserId, int parentId)
+        public static Result<Post, Error> Create(string title, string body, DateTime createDate,
+            int authorId, string authorName, string? tags)
         {
             if (string.IsNullOrWhiteSpace(title))
                 return Errors.General.ValueIsRequired(nameof(title));
@@ -91,55 +89,66 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (createDate == DateTime.MinValue)
                 return Errors.General.ValueIsRequired(nameof(createDate));
 
-            if (ownerUserId < 0)
-                return Errors.General.ValueIsRequired(nameof(ownerUserId));
+            if (authorId < 0)
+                return Errors.General.ValueIsRequired(nameof(authorId));
 
-            if (parentId < 0)
-                return Errors.General.ValueIsRequired(nameof(parentId));
+            if (string.IsNullOrWhiteSpace(authorName))
+                return Errors.General.ValueIsRequired(nameof(authorName));
 
-            return new Post(trimmedTitle, trimmedBody, trimmedTags, createDate, ownerUserId, parentId);
+            return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags);
         }
+        #endregion
 
-        public Result<bool, Error> AddComment(User user, string comment)
+        public Result AddComment(User user, string comment)
         {
             if (user == null)
-                return Errors.Post.CommentIsRequired();
-
+                return Errors.General.ValueIsRequired(nameof(user));
             if (string.IsNullOrWhiteSpace(comment))
                 return Errors.Post.CommentIsRequired();
 
+
             _comments.Add(new Comment(user.Id, comment));
 
-            return Result.Success<bool, Error>(true);
+            return Result.Success();
         }
 
         public Result UpVote(User user)
         {
             if (user == null)
-                return Result.Failure("User cannot be null");
+                return Errors.General.ValueIsRequired(nameof(user));
 
-            _votes.Add(new Vote(this, user, +1));
+            AddVote(user, 1);
+
             return Result.Success();
         }
 
         public Result DownVote(User user)
         {
             if (user == null)
-                return Result.Failure("User cannot be null");
+                return Errors.General.ValueIsRequired(nameof(user));
 
-            _votes.Add(new Vote(this, user, -1));
+            AddVote(user, -1);
+
             return Result.Success();
         }
 
         public Result Close(DateTime closeDate)
         {
             if (ClosedDate != null)
-                return Result.Failure("Post was already closed");
+                return Errors.Post.AlreadyClosed();
 
             ClosedDate = closeDate;
             Delete(closeDate);
 
             return Result.Success();
+        }
+
+        private void AddVote(User user, int voteScore)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+
+            _votes.Add(new Vote(this, user, voteScore));
+            Score += voteScore;
         }
     }
 }

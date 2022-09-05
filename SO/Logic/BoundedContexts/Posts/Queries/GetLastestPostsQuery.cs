@@ -13,6 +13,11 @@ namespace Logic.BoundedContexts.Posts.Queries
     public record GetLastestPostsQuery : IRequest<IReadOnlyList<PostListDto>>
     {
         public int Size { get; init; }
+
+        public GetLastestPostsQuery(int size)
+        {
+            Size = size;
+        }
     }
 
     public class GetLastestPostsQueryHandler : IRequestHandler<GetLastestPostsQuery, IReadOnlyList<PostListDto>>
@@ -33,10 +38,10 @@ namespace Logic.BoundedContexts.Posts.Queries
                 .Select(x => new PostListDto
                 {
                     Id = x.Id,
-                    Title = x.Title,
+                    Title = x.Title ?? string.Empty,
                     ShortBody = x.Body.Substring(0, 150),
-                    AnswerCount = x.AnswerCount ?? 0,
-                    CommentCount = x.CommentCount ?? 0,
+                    AnswerCount = x.AnswerCount,
+                    CommentCount = x.CommentCount,
                     Score = x.Score,
                     ViewCount = x.ViewCount,
                     CreationDate = x.CreateDate,

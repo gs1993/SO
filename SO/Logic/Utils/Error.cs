@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 
 namespace Logic.Utils
@@ -15,6 +16,13 @@ namespace Logic.Utils
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Message;
+        }
+
+        public static implicit operator Result(Error error)
+        {
+            ArgumentNullException.ThrowIfNull(error);
+
+            return Result.Failure(error.Message);
         }
     }
 }

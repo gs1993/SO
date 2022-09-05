@@ -19,23 +19,22 @@ namespace Api.Controllers
         {
         }
 
-        [HttpGet()]
-        [Route("GetPage")]
+        [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> GetPage([FromQuery] GetListArgs args)
+        public async Task<IActionResult> GetList([FromQuery] GetListArgs args)
         {
             var validationResult = _validatorFactory.GetValidator<GetListArgs>().Validate(args);
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
             var postsDto = await _mediator.Send(new GetPostsPageQuery
-            {
-                PageNumber = args.PageNumber,
-                PageSize = args.PageSize
-            });
-            return FromResult(postsDto);
+            (
+                offset: args.Offset,
+                limit: args.Limit
+            ));
+            return FromCustomResult(postsDto);
         }
 
         [HttpGet]
@@ -50,13 +49,13 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var postsDto = await _mediator.Send(new GetLastestPostsQuery
-            {
-                Size = args.Size
-            });
-            return FromResult(postsDto);
+            (
+                size: args.Size
+            ));
+            return FromCustomResult(postsDto);
         }
 
-        [HttpGet()]
+        [HttpGet]
         [Route("{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<PostDetailsDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -66,14 +65,32 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var postsDto = await _mediator.Send(new GetPostQuery
-            {
-                Id = id
-            });
-            return FromResult(postsDto);
+            var postsDto = await _mediator.Send(new GetPostQuery(id));
+            return FromCustomResult(postsDto);
         }
 
         [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.Created, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> Create([FromBody] CreateArgs args)
+        {
+            var validationResult = _validatorFactory.GetValidator<CreateArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new CreatePostCommand
+            (
+                title: args.Title,
+                body: args.Body,
+                authorId: args.AuthorId,
+                tags: args.Tags,
+                parentId: args.ParentId
+            ));
+            return FromResult(result, successStatusCode: 201);
+        }
+
+        [HttpPut]
         [Route("Close/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -83,14 +100,11 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var result = await _mediator.Send(new ClosePostCommand
-            {
-                Id = id
-            });
+            var result = await _mediator.Send(new ClosePostCommand(id));
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("AddComment/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -104,15 +118,15 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new AddCommentCommand
-            {
-                PostId = id,
-                Comment = args.Comment,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                comment: args.Comment,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpVote/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -126,14 +140,14 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new UpVoteCommand
-            {
-                PostId = id,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("DownVote/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -147,10 +161,10 @@ namespace Api.Controllers
                 return ValidationError(validationResult);
 
             var result = await _mediator.Send(new DownVoteCommand
-            {
-                PostId = id,
-                UserId = args.UserId
-            });
+            (
+                postId: id,
+                userId: args.UserId
+            ));
             return FromResult(result);
         }
     }

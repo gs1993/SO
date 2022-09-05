@@ -8,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace Logic.BoundedContexts.Posts.Queries
 {
-    public record GetPostQuery : IRequest<PostDetailsDto>
+    public record GetPostQuery : IRequest<PostDetailsDto?>
     {
         public int Id { get; init; }
+
+        public GetPostQuery(int id)
+        {
+            Id = id;
+        }
     }
 
-    public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto>
+    public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto?>
     {
         private readonly IReadOnlyDatabaseContext _readOnlyContext;
 
@@ -23,28 +28,28 @@ namespace Logic.BoundedContexts.Posts.Queries
         }
 
 
-        public async Task<PostDetailsDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
+        public async Task<PostDetailsDto?> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
-            var post = await _readOnlyContext.Get<Post>(request.Id);
+            var post = await _readOnlyContext.GetById<Post>(request.Id, cancellationToken);
             if (post == null)
                 return null;
 
             return new PostDetailsDto
             {
                 Id = post.Id,
-                Title = post.Title,
+                Title = post.Title ?? string.Empty,
                 Body = post.Body,
-                AnswerCount = post.AnswerCount ?? 0,
-                CommentCount = post.CommentCount ?? 0,
+                AnswerCount = post.AnswerCount,
+                CommentCount = post.CommentCount,
                 CommunityOwnedDate = post.CommunityOwnedDate,
                 CreationDate = post.CreateDate,
-                FavoriteCount = post.FavoriteCount ?? 0,
-                LastEditorDisplayName = post.LastEditorDisplayName,
+                FavoriteCount = post.FavoriteCount,
+                LastEditorDisplayName = post.LastEditorDisplayName ?? string.Empty,
                 Score = post.Score,
                 LastActivityDate = post.LastActivityDate,
                 LastEditDate = post.LastUpdateDate,
                 ViewCount = post.ViewCount,
-                Tags = post.Tags,
+                Tags = post.Tags ?? string.Empty,
                 ClosedDate = post.ClosedDate,
                 IsClosed = post.ClosedDate != null,
                 Comments = post.Comments.Select(c => new CommentDto

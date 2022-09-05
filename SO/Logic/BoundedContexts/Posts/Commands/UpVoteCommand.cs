@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Logic.Utils;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +11,12 @@ namespace Logic.BoundedContexts.Posts.Commands
     {
         public int PostId { get; init; }
         public int UserId { get; init; }
+
+        public UpVoteCommand(int postId, int userId)
+        {
+            PostId = postId;
+            UserId = userId;
+        }
     }
 
     public class UpVoteCommandHandler : IRequestHandler<UpVoteCommand, Result>
@@ -19,25 +25,28 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public UpVoteCommandHandler(DatabaseContext databaseContext)
         {
-            _databaseContext = databaseContext;
+            _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
         }
 
         public async Task<Result> Handle(UpVoteCommand request, CancellationToken cancellationToken)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
+            var user = await _databaseContext.Users.FindAsync(request.UserId);
             if (user == null)
                 return Result.Failure("User does not exists");
 
-            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken: cancellationToken);
+            var post = await _databaseContext.Posts.FindAsync(request.PostId);
             if (post == null)
                 return Result.Failure("Post does not exists");
 
-            _databaseContext.Entry(post).Collection(x => x.Votes).Load();
-
+            await _databaseContext.Entry(post).Collection(x => x.Votes).LoadAsync(cancellationToken);
+            
             var result = post.UpVote(user);
+            if (result.IsFailure)
+                return result;
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
-            return result;
+
+            return Result.Success();
 
         }
     }

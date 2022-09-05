@@ -32,7 +32,10 @@ namespace Api.Controllers
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
-            var lastUsersDto = await _mediator.Send(new GetLastUsersQuery { Size = args.Size });
+            var lastUsersDto = await _mediator.Send(new GetLastUsersQuery
+            ( 
+                size: args.Size 
+            ));
             return lastUsersDto.Any()
                 ? Ok(lastUsersDto)
                 : Error("Not Found");
@@ -48,11 +51,32 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var userDetailsDto = await _mediator.Send(new GetUserQuery { Id = id });
-            return FromResult(userDetailsDto);
+            var userDetailsDto = await _mediator.Send(new GetUserQuery(id));
+            return FromCustomResult(userDetailsDto);
         }
 
         [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.Created, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> Create([FromBody] CreateUserArgs args)
+        {
+            var validationResult = _validatorFactory.GetValidator<CreateUserArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var result = await _mediator.Send(new CreateUserCommand
+            (
+                displayName: args.DisplayName,
+                aboutMe: args.AboutMe,
+                age: args.Age,
+                location: args.Location,
+                websiteUrl: args.WebsiteUrl
+            ));
+            return FromResult(result, successStatusCode: 201);
+        }
+
+        [HttpPut]
         [Route("PermaBan/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
@@ -62,7 +86,7 @@ namespace Api.Controllers
             if (id < 1)
                 return ValidationIdError();
 
-            var result = await _mediator.Send(new BanUserCommand { Id = id });
+            var result = await _mediator.Send(new BanUserCommand(id));
             return FromResult(result);
         }
     }

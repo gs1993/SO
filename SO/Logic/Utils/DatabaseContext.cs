@@ -21,6 +21,7 @@ namespace Logic.Utils
         public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
         {
             _dateTimeProvider = dateTimeProvider;
+            Database.SetCommandTimeout(180);
         }
 
 
@@ -34,17 +35,17 @@ namespace Logic.Utils
                 x.HasMany(p => p.Comments)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Comments)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasMany(p => p.Votes)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Votes)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.Votes))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasMany(p => p.PostLinks)
                     .WithOne()
                     .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.PostLinks)).SetPropertyAccessMode(PropertyAccessMode.Field);
+                x.Metadata.FindNavigation(nameof(Post.PostLinks))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
                 x.HasOne(p => p.PostType)
                     .WithMany()
@@ -72,6 +73,13 @@ namespace Logic.Utils
                 {
                     navigationExpression.Property(vs => vs.UpVotes).HasColumnName("UpVotes");
                     navigationExpression.Property(vs => vs.DownVotes).HasColumnName("DownVotes");
+                });
+                x.OwnsOne(p => p.ProfileInfo, navigationExpression =>
+                {
+                    navigationExpression.Property(p => p.AboutMe).HasColumnName("AboutMe");
+                    navigationExpression.Property(p => p.Age).HasColumnName("Age");
+                    navigationExpression.Property(p => p.Location).HasColumnName("Location");
+                    navigationExpression.Property(p => p.WebsiteUrl).HasColumnName("WebsiteUrl");
                 });
             });
 
@@ -116,8 +124,12 @@ namespace Logic.Utils
 
         public override EntityEntry<TEntity> Remove<TEntity>(TEntity entity)
         {
-            (entity as BaseEntity).Delete(_dateTimeProvider.Now);
+            var tEntity = entity as BaseEntity ?? throw new ArgumentException();
+
+            tEntity.Delete(_dateTimeProvider.Now);
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public override int SaveChanges()

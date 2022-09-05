@@ -1,9 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Logic.Utils;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +10,11 @@ namespace Logic.BoundedContexts.Posts.Commands
     public record ClosePostCommand : IRequest<Result>
     {
         public int Id { get; init; }
+
+        public ClosePostCommand(int id)
+        {
+            Id = id;
+        }
     }
 
     public class ClosePostCommandHandler : IRequestHandler<ClosePostCommand, Result>
@@ -21,19 +24,22 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public ClosePostCommandHandler(DatabaseContext databaseContext, IDateTimeProvider dateTimeProvider)
         {
-            _databaseContext = databaseContext;
-            _dateTimeProvider = dateTimeProvider;
+            _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
+            _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
         public async Task<Result> Handle(ClosePostCommand request, CancellationToken cancellationToken)
         {
-            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            var post = await _databaseContext.Posts.FindAsync(request.Id);
             if (post == null)
                 return Result.Failure("Post does not exist");
 
             var result = post.Close(_dateTimeProvider.Now);
+            if (result.IsFailure)
+                return result;
+
             await _databaseContext.SaveChangesAsync(cancellationToken);
-            return result;
+            return Result.Success();
         }
     }
 }

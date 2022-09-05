@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,8 +13,14 @@ namespace Logic.BoundedContexts.Posts.Queries
 {
     public record GetPostsPageQuery : IRequest<IReadOnlyList<PostListDto>>
     {
-        public int PageNumber { get; init; }
-        public int PageSize { get; init; }
+        public int Offset { get; init; }
+        public int Limit { get; init; }
+
+        public GetPostsPageQuery(int offset, int limit)
+        {
+            Offset = offset;
+            Limit = limit;
+        }
     }
 
     public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, IReadOnlyList<PostListDto>>
@@ -30,18 +35,17 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<IReadOnlyList<PostListDto>> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
         {
-            var skip = (request.PageNumber - 1) * request.PageSize;
             var posts = await _readOnlyContext
                 .GetQuery<Post>()
-                .Skip(skip)
-                .Take(request.PageSize)
+                .Skip(request.Offset)
+                .Take(request.Limit)
                 .Select(x => new PostListDto
                 {
                     Id = x.Id,
-                    Title = x.Title,
+                    Title = x.Title ?? string.Empty,
                     ShortBody = x.Body.Substring(0, 150),
-                    AnswerCount = x.AnswerCount ?? 0,
-                    CommentCount = x.CommentCount ?? 0,
+                    AnswerCount = x.AnswerCount,
+                    CommentCount = x.CommentCount,
                     Score = x.Score,
                     ViewCount = x.ViewCount,
                     CreationDate = x.CreateDate,

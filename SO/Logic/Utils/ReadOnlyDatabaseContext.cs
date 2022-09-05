@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Logic.Utils
@@ -8,8 +10,8 @@ namespace Logic.Utils
     {
         IQueryable<TEntity> GetQuery<TEntity>() where TEntity : BaseEntity;
         IQueryable<TEntity> GetQueryWithDeleted<TEntity>() where TEntity : BaseEntity;
-        Task<TEntity> Get<TEntity>(int id) where TEntity : BaseEntity;
-        Task<TEntity> GetWithDeleted<TEntity>(int id) where TEntity : BaseEntity;
+        Task<TEntity?> GetById<TEntity>(int id, CancellationToken ct = default) where TEntity : BaseEntity;
+        Task<TEntity?> GetByIdWithDeleted<TEntity>(int id, CancellationToken ct = default) where TEntity : BaseEntity;
     }
 
     public class ReadOnlyDatabaseContext : IReadOnlyDatabaseContext
@@ -18,7 +20,7 @@ namespace Logic.Utils
 
         public ReadOnlyDatabaseContext(DatabaseContext context, QueryConnectionString queryConnectionString)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             _context.Database.SetConnectionString(queryConnectionString.ConnectionString);
         }
 
@@ -39,18 +41,22 @@ namespace Logic.Utils
                 .AsNoTracking();
         }
 
-        public Task<TEntity> Get<TEntity>(int id) where TEntity : BaseEntity
+        public async Task<TEntity?> GetById<TEntity>(int id, CancellationToken ct) where TEntity : BaseEntity
         {
-            return _context
+            var entity = await _context
                 .Set<TEntity>()
-                .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+                .FindAsync(new object?[] { id }, cancellationToken: ct);
+
+            return entity != null && !entity.IsDeleted
+                ? entity
+                : null;
         }
 
-        public Task<TEntity> GetWithDeleted<TEntity>(int id) where TEntity : BaseEntity
+        public async Task<TEntity?> GetByIdWithDeleted<TEntity>(int id, CancellationToken ct) where TEntity : BaseEntity
         {
-            return _context
+            return await _context
                 .Set<TEntity>()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FindAsync(new object?[] { id }, cancellationToken: ct);
         }
     }
 }
