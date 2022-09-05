@@ -74,6 +74,13 @@ namespace Logic.Utils
                     navigationExpression.Property(vs => vs.UpVotes).HasColumnName("UpVotes");
                     navigationExpression.Property(vs => vs.DownVotes).HasColumnName("DownVotes");
                 });
+                x.OwnsOne(p => p.ProfileInfo, navigationExpression =>
+                {
+                    navigationExpression.Property(p => p.AboutMe).HasColumnName("AboutMe");
+                    navigationExpression.Property(p => p.Age).HasColumnName("Age");
+                    navigationExpression.Property(p => p.Location).HasColumnName("Location");
+                    navigationExpression.Property(p => p.WebsiteUrl).HasColumnName("WebsiteUrl");
+                });
             });
 
             base.OnModelCreating(modelBuilder);

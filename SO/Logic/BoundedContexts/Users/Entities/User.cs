@@ -9,39 +9,33 @@ namespace Logic.BoundedContexts.Users.Entities
     public partial class User : BaseEntity
     {
         #region Properties
-        public string? AboutMe { get; private set; }
-        public int? Age { get; private set; }
         public string DisplayName { get; private set; }
         public DateTime LastAccessDate { get; private set; }
-        public string? Location { get; private set; }
         public int Reputation { get; private set; }
         public int Views { get; private set; }
-        public string? WebsiteUrl { get; private set; }
 
         [NotMapped]
         public int CreatedPostCount { get; private set; }
 
         public VoteSummary VoteSummary { get; private set; }
+        public ProfileInfo ProfileInfo { get; private set; }
         #endregion
 
         #region ctors
         protected User() { }
-        public User(string displayName, DateTime creationDate, string? aboutMe, int? age, string? location, string? websiteUrl)
+        public User(string displayName, DateTime creationDate, ProfileInfo profileInfo)
         {
-            AboutMe = aboutMe;
-            Age = age;
             DisplayName = displayName;
             SetCreateDate(creationDate);
             LastAccessDate = creationDate;
-            Location = location;
-            WebsiteUrl = websiteUrl;
             Reputation = 0;
             Views = 0;
             CreatedPostCount = 0;
             VoteSummary = VoteSummary.Create(0, 0).Value;
+            ProfileInfo = profileInfo;
         }
 
-        public static Result<User, Error> Create(string displayName, DateTime creationDate, string? aboutMe, int? age, string? location, string? websiteUrl)
+        public static Result<User, Error> Create(string displayName, DateTime creationDate, ProfileInfo profileInfo)
         {
             if (string.IsNullOrWhiteSpace(displayName))
                 return Errors.General.ValueIsRequired(nameof(displayName));
@@ -52,31 +46,10 @@ namespace Logic.BoundedContexts.Users.Entities
             if (creationDate == DateTime.MinValue)
                 return Errors.General.InvalidValue(nameof(creationDate));
 
-            var trimmedAboutMe = aboutMe?.Trim();
-            if (!string.IsNullOrEmpty(trimmedAboutMe))
-            {
-                if (trimmedAboutMe.Length > 500)
-                    return Errors.General.InvalidLength(nameof(aboutMe));
-            }
+            if (profileInfo == null)
+                return Errors.General.InvalidValue(nameof(profileInfo));
 
-            if (age.HasValue && (age < 15 || age > 100))
-                return Errors.General.InvalidValue(nameof(age));
-
-            var trimmedLocation = location?.Trim();
-            if (!string.IsNullOrEmpty(trimmedLocation))
-            {
-                if (trimmedLocation.Length > 150)
-                    return Errors.General.InvalidLength(nameof(location));
-            }
-
-            var trimmedWebsiteUrl = websiteUrl?.Trim();
-            if (!string.IsNullOrEmpty(trimmedWebsiteUrl))
-            {
-                if (trimmedWebsiteUrl.Length > 100)
-                    return Errors.General.InvalidLength(nameof(websiteUrl));
-            }
-
-            return new User(trimmedDisplayName, creationDate, trimmedAboutMe, age, trimmedLocation, trimmedWebsiteUrl);
+            return new User(trimmedDisplayName, creationDate, profileInfo);
         }
         #endregion
 

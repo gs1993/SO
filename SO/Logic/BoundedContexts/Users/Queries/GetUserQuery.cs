@@ -42,14 +42,14 @@ namespace Logic.BoundedContexts.Users.Queries
                     VoteCount = user.VoteSummary.VoteCount,
                     DownVotes = user.VoteSummary.DownVotes,
                     UpVotes = user.VoteSummary.UpVotes,
-                    AboutMe = user.AboutMe ?? string.Empty,
-                    Age = user.Age,
+                    AboutMe = user.ProfileInfo.AboutMe ?? string.Empty,
+                    Age = user.ProfileInfo.Age,
                     CreatedPostCount = user.CreatedPostCount,
                     LastAccessDate = user.LastAccessDate,
-                    Location = user.Location ?? string.Empty,
+                    Location = user.ProfileInfo.Location ?? string.Empty,
                     Reputation = user.Reputation,
                     Views = user.Views,
-                    WebsiteUrl = user.WebsiteUrl ?? string.Empty
+                    WebsiteUrl = user.ProfileInfo.WebsiteUrl ?? string.Empty
                 } : null;
         }
     }

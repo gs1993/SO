@@ -39,14 +39,22 @@ namespace Logic.BoundedContexts.Users.Command
 
         public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = User.Create(
-                displayName: request.DisplayName,
-                creationDate: _dateTimeProvider.Now,
+            var profileInfoResult = ProfileInfo.Create
+            (
                 aboutMe: request.AboutMe,
                 age: request.Age,
                 location: request.Location,
-                websiteUrl: request.WebsiteUrl);
+                websiteUrl: request.WebsiteUrl
+            );
+            if (profileInfoResult.IsFailure)
+                return profileInfoResult.Error;
 
+            var result = User.Create
+            (
+                displayName: request.DisplayName,
+                creationDate: _dateTimeProvider.Now,
+                profileInfo: profileInfoResult.Value
+            );
             if (result.IsFailure)
                 return result.Error;
 

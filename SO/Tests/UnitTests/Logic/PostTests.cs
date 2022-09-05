@@ -4,7 +4,7 @@ using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 
-namespace UnitTests.Logic.Posts
+namespace UnitTests.Logic
 {
     public class PostTests
     {
@@ -13,7 +13,7 @@ namespace UnitTests.Logic.Posts
 
         public PostTests()
         {
-            _user = User.Create("test", new DateTime(2022, 01, 19), null, null, null, null).Value;
+            _user = User.Create("test", new DateTime(2022, 01, 19), ProfileInfo.Create(null, null, null, null).Value).Value;
             _sut = Post.Create("Test title", "test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy",
                 new DateTime(2022, 01, 19), 1, "Test User", null).Value;
         }
