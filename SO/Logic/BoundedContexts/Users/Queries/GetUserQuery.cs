@@ -32,7 +32,7 @@ namespace Logic.BoundedContexts.Users.Queries
             if (request.Id <= 0)
                 throw new ArgumentException($"Invalid id: {request.Id}", nameof(request.Id));
 
-            var user = await _readOnlyContext.Get<User>(request.Id);
+            var user = await _readOnlyContext.GetById<User>(request.Id);
             return user != null
                 ? new UserDetailsDto
                 {

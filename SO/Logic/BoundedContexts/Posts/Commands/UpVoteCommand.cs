@@ -31,16 +31,16 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(UpVoteCommand request, CancellationToken cancellationToken)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
+            var user = await _databaseContext.Users.FindAsync(request.UserId);
             if (user == null)
                 return Result.Failure("User does not exists");
 
-            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken: cancellationToken);
+            var post = await _databaseContext.Posts.FindAsync(request.PostId);
             if (post == null)
                 return Result.Failure("Post does not exists");
 
             await _databaseContext.Entry(post).Collection(x => x.Votes).LoadAsync(cancellationToken);
-
+            
             var result = post.UpVote(user);
             if (result.IsFailure)
                 return result;

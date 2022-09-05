@@ -31,13 +31,13 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(ClosePostCommand request, CancellationToken cancellationToken)
         {
-            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            var post = await _databaseContext.Posts.FindAsync(request.Id);
             if (post == null)
                 return Result.Failure("Post does not exist");
 
             var result = post.Close(_dateTimeProvider.Now);
             if (result.IsFailure)
-                return Result.Failure(result.Error.ToString());
+                return result;
 
             await _databaseContext.SaveChangesAsync(cancellationToken);
             return Result.Success();

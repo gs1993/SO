@@ -30,7 +30,7 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<PostDetailsDto?> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
-            var post = await _readOnlyContext.Get<Post>(request.Id);
+            var post = await _readOnlyContext.GetById<Post>(request.Id, cancellationToken);
             if (post == null)
                 return null;
 

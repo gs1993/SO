@@ -41,11 +41,19 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
-            var author = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.AuthorId, cancellationToken: cancellationToken);
+            var author = await _databaseContext.Users.FindAsync(request.AuthorId);
             if (author == null)
                 return Errors.User.NotExists(request.AuthorId);
 
-            var createPostResult = Post.Create(request.Title, request.Body, _dateTimeProvider.Now, request.AuthorId, author.DisplayName, request.Tags);
+            var createPostResult = Post.Create
+            (
+                title: request.Title, 
+                body: request.Body, 
+                createDate: _dateTimeProvider.Now, 
+                authorId: request.AuthorId,
+                authorName: author.DisplayName, 
+                tags: request.Tags
+            );
             if (createPostResult.IsFailure)
                 return createPostResult.Error;
 
