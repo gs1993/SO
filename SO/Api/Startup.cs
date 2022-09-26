@@ -24,8 +24,6 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            AddDbContext(services);
-
             services.AddCors();
             services.AddControllers()
                 .AddJsonOptions(x =>
@@ -57,6 +55,8 @@ namespace Api
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddMediatR(typeof(DatabaseContext).Assembly);
+
+            AddDbContext(services);
         }
 
         public static void Configure(IApplicationBuilder app)
@@ -80,15 +80,12 @@ namespace Api
 
         private void AddDbContext(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("SO_Database");
             services.AddDbContext<DatabaseContext>(options => options
-                .UseSqlServer(connectionString)
+                .UseSqlServer(Configuration.GetConnectionString("SO_Database"))
                 .UseLazyLoadingProxies()
             );
-            services.AddSingleton(new QueryConnectionString
-            {
-                ConnectionString = Configuration.GetConnectionString("SO_ReadonlyDatabase")
-            });
+
+            services.AddSingleton(new QueryConnectionString(Configuration.GetConnectionString("SO_ReadonlyDatabase")));
             services.AddTransient<IReadOnlyDatabaseContext, ReadOnlyDatabaseContext>();
         }
     }

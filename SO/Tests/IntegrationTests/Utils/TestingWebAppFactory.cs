@@ -3,8 +3,9 @@ using Logic.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace IntegrationTests.Utils
 {
@@ -12,22 +13,28 @@ namespace IntegrationTests.Utils
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            string dockerSqlPort = DockerSqlDatabaseUtilities.EnsureDockerStartedAndGetPortAsync().Result;
+            var dockerConnectionString = DockerSqlDatabaseUtilities.GetSqlConnectionString(dockerSqlPort);
+
+            builder.ConfigureAppConfiguration((context, configBuilder) =>
+            {
+                configBuilder.AddInMemoryCollection(
+                   new Dictionary<string, string> 
+                   { 
+                       ["ConnectionStrings:SO_Database"] = dockerConnectionString,
+                       ["ConnectionStrings:SO_ReadonlyDatabase"] = dockerConnectionString,
+                   });
+            });
+
             builder.ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DatabaseContext>));
-                if (descriptor != null)
-                    services.Remove(descriptor);
-
-                services.AddDbContext<DatabaseContext>(options =>
-                {
-                    options.UseInMemoryDatabase("InMemoryEmployeeTest");
-                });
-
                 var sp = services.BuildServiceProvider();
                 using var scope = sp.CreateScope();
+
                 using var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
+
                 TestDataInitializer.Seed(dbContext);
             });
         }

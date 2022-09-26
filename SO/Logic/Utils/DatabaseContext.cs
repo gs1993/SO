@@ -17,7 +17,6 @@ namespace Logic.Utils
         public DbSet<Post> Posts { get; protected set; }
         public DbSet<User> Users { get; protected set; }
        
-
         public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
         {
             _dateTimeProvider = dateTimeProvider;
