@@ -3,11 +3,12 @@ using FluentValidation;
 
 namespace Api.Validation.Post
 {
-    public sealed class GetListArgsValidator : AbstractValidator<GetListArgs>
+    public sealed class GetArgsValidator : AbstractValidator<GetArgs>
     {
-        public GetListArgsValidator()
+        public GetArgsValidator()
         {
-            RuleFor(x => x.Offset).GreaterThan(0);
+            RuleFor(x => x.Offset)
+                .GreaterThanOrEqualTo(0);
 
             RuleFor(x => x.Limit)
                 .GreaterThan(0)

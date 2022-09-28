@@ -2,7 +2,7 @@
 
 namespace Api.Args.Post
 {
-    public sealed record GetListArgs
+    public sealed record GetArgs
     {
         [Required]
         public int Offset { get; init; }

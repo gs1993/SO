@@ -58,10 +58,10 @@ namespace Api.Controllers
             return BadRequest(Envelope.Error("Invalid id"));
         }
 
-        protected IActionResult FromCustomResult<T>(T result, int successStatusCode = 200, string errorMessage = "Not Found")
+        protected IActionResult FromCustomResult<T>(T result, int successStatusCode = 200)
         {
             return result == null
-                ? Error(errorMessage)
+                ? NotFound()
                 : StatusCode(successStatusCode, result);
         }
 

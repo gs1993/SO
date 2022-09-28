@@ -37,7 +37,9 @@ SET IDENTITY_INSERT [dbo].[PostTypes] OFF
 SET IDENTITY_INSERT [dbo].[Posts] ON 
 INSERT [dbo].[Posts] ([Id],[AcceptedAnswerId],[AnswerCount],[Body],[ClosedDate],[CommentCount],[CommunityOwnedDate],[CreateDate],[FavoriteCount],[LastActivityDate],[LastUpdateDate],[LastEditorDisplayName],[LastEditorUserId],[OwnerUserId],[PostTypeId],[Score],[Tags],[Title],[ViewCount],[IsDeleted],[DeleteDate]) VALUES 
 (1, 0, 0, 'test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy', null, 0, '2022-01-09', '2022-01-09', 0, '2022-01-09', '2022-01-09', 'Test user', 1, 1, 1, 0, null, 'Test title 1', 10, 0, null),
-(2, 0, 0, 'test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy', null, 0, '2022-01-09', '2022-01-09', 0, '2022-01-09', '2022-01-09', 'Test user', 1, 1, 1, 0, null, 'Test title 2', 10, 0, null)
+(2, 0, 0, 'test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy', null, 0, '2022-01-09', '2022-01-09', 0, '2022-01-09', '2022-01-09', 'Test user', 1, 1, 1, 0, null, 'Test title 2', 10, 0, null),
+(3, 0, 0, 'test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy', null, 0, '2022-01-09', '2022-01-09', 0, '2022-01-09', '2022-01-09', 'Test user', 1, 1, 1, 0, null, 'Test title 3', 10, 0, null),
+(4, 0, 0, 'test loooooooooooooong booooodyyyyyyyyyyyyyyyyyyyyyy', null, 0, '2022-01-09', '2022-01-09', 0, '2022-01-09', '2022-01-09', 'Test user', 1, 1, 1, 0, null, 'Test title 4', 10, 0, null)
 SET IDENTITY_INSERT [dbo].[Posts] OFF
 
 SET IDENTITY_INSERT [dbo].[Users] ON 

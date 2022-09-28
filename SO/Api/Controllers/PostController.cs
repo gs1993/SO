@@ -20,12 +20,12 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(IReadOnlyList<PostListDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> GetList([FromQuery] GetListArgs args)
+        public async Task<IActionResult> Get([FromQuery] GetArgs args)
         {
-            var validationResult = _validatorFactory.GetValidator<GetListArgs>().Validate(args);
+            var validationResult = _validatorFactory.GetValidator<GetArgs>().Validate(args);
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
@@ -57,7 +57,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<PostDetailsDto>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(PostDetailsDto))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> Get([FromRoute] int id)
@@ -70,7 +70,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [SwaggerResponse((int)HttpStatusCode.Created, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.Created)]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> Create([FromBody] CreateArgs args)

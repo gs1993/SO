@@ -10,12 +10,4 @@ namespace Api.Validation.Post
             RuleFor(x => x.UserId).GreaterThan(0);
         }
     }
-
-    public sealed class CreateArgsValidator : AbstractValidator<CreateArgs>
-    {
-        public CreateArgsValidator()
-        {
-            //TODO: Add Post.Create() validation
-        }
-    }
 }
