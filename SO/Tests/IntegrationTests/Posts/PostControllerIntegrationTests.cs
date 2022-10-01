@@ -16,6 +16,9 @@ namespace IntegrationTests.Posts
 {
     public class PostControllerIntegrationTests : ControllerIntegrationTestsBase
     {
+        private const int Post2Id = 2;
+        private const int User1Id = 1;
+
         public PostControllerIntegrationTests(TestingWebAppFactory<Program> factory)
             : base(factory) { }
 
@@ -76,10 +79,10 @@ namespace IntegrationTests.Posts
         public async Task Should_GetReturnPost_WhenItemExists()
         {
             // Act
-            var postDetails = await GetAndDeserializeResponse<PostDetailsDto>("/api/Post/2");
+            var postDetails = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
 
             // Assert
-            Assert.Equal(2, postDetails.Id);
+            Assert.Equal(Post2Id, postDetails.Id);
             Assert.Equal("Test title 2", postDetails.Title);
             Assert.Empty(postDetails.Comments);
         }
@@ -119,8 +122,7 @@ namespace IntegrationTests.Posts
         [InlineData(4, 4)]
         [InlineData(5, 4)]
         [InlineData(1000, 4)]
-        public async Task Should_GetLastestReturnExpectedAmountOfItems_WhenTableHasFourItems
-            (int size, int expectedItemsCount)
+        public async Task Should_GetLastestReturnExpectedAmountOfItems_WhenTableHasFourItems(int size, int expectedItemsCount)
         {
             // Arrange
             var query = new Dictionary<string, string>()
@@ -145,7 +147,7 @@ namespace IntegrationTests.Posts
             {
                 Title = "Test title",
                 Body = postBody,
-                AuthorId = 1,
+                AuthorId = User1Id,
                 Tags = ""
             };
             var json = JsonConvert.SerializeObject(request);
@@ -165,27 +167,229 @@ namespace IntegrationTests.Posts
         }
 
         [Fact]
+        public async Task Should_CloseSucceed_WhenPostIsNotClosed()
+        {
+            // Act
+            var response = await HttpClient.PutAsync($"/api/Post/Close/{Post2Id}", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var notFoundResponse = await HttpClient.GetAsync($"/api/Post/{Post2Id}");
+            Assert.Equal(HttpStatusCode.NotFound, notFoundResponse.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_CloseFail_WhenPostDoesNotExists()
+        {
+            // Act
+            var response = await HttpClient.PutAsync("/api/Post/Close/20000", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_CloseFail_WhenIdIsIncorrect()
+        {
+            // Act
+            var response = await HttpClient.PutAsync("/api/Post/Close/0", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
         public async Task Should_AddCommentSucceed_WhenArgsAreCorrect()
         {
             // Arrange
             var request = new AddCommentArgs
-            { 
-                UserId = 1,
+            {
+                UserId = User1Id,
                 Comment = "Test comment"
             };
             var json = JsonConvert.SerializeObject(request);
             var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await HttpClient.PutAsync("/api/Post/AddComment/2", requestContent);
-            
+            var response = await HttpClient.PutAsync($"/api/Post/AddComment/{Post2Id}", requestContent);
+
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>("/api/Post/2");
+            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
             Assert.NotNull(updatedPost);
             Assert.Single(updatedPost.Comments);
             Assert.Equal("Test comment", updatedPost.Comments.First().Text);
+        }
+
+        [Theory]
+        [InlineData(-1, 1, "test")]
+        [InlineData(1, -1, "test")]
+        [InlineData(1, 1, "")]
+        [InlineData(0, 1, "")]
+        [InlineData(1, 0, "")]
+        public async Task Should_AddCommentFail_WhenArgsAreIncorrect(int postId, int userId, string comment)
+        {
+            // Arrange
+            var request = new AddCommentArgs
+            {
+                UserId = userId,
+                Comment = comment
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await HttpClient.PutAsync($"/api/Post/AddComment/{postId}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+
+        [Fact]
+        public async Task Should_ScoreBeOne_WhenUpVoted()
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = User1Id
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
+            Assert.NotNull(updatedPost);
+            Assert.Equal(1, updatedPost.Score);
+        }
+
+        [Fact]
+        public async Task Should_ScoreBeThree_WhenUpVotedThreeTimes()
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = User1Id
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response1 = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+            var response2 = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+            var response3 = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response3.StatusCode);
+
+            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
+            Assert.NotNull(updatedPost);
+            Assert.Equal(3, updatedPost.Score);
+        }
+
+        [Theory]
+        [InlineData(-1, 1)]
+        [InlineData(1, -1)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        public async Task Should_UpVoteFail_WhenArgsAreIncorrect(int postId, int userId)
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = userId
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await HttpClient.PutAsync($"/api/Post/UpVote/{postId}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Theory]
+        [InlineData(-1, 1)]
+        [InlineData(1, -1)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        public async Task Should_DownVoteFail_WhenArgsAreIncorrect(int postId, int userId)
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = userId
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await HttpClient.PutAsync($"/api/Post/DownVote/{postId}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_ScoreBeMinusTwo_WhenDownVotedTwoTimes()
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = User1Id
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response1 = await HttpClient.PutAsync($"/api/Post/DownVote/{Post2Id}", requestContent);
+            var response2 = await HttpClient.PutAsync($"/api/Post/DownVote/{Post2Id}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+
+            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
+            Assert.NotNull(updatedPost);
+            Assert.Equal(-2, updatedPost.Score);
+        }
+
+        [Fact]
+        public async Task Should_ScoreBeZero_WhenDownVotedTwoTimesAndUpVotedTwoTimes()
+        {
+            // Arrange
+            var request = new UpVoteArgs
+            {
+                UserId = User1Id
+            };
+            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            var response1 = await HttpClient.PutAsync($"/api/Post/DownVote/{Post2Id}", requestContent);
+            var response2 = await HttpClient.PutAsync($"/api/Post/DownVote/{Post2Id}", requestContent);
+            var response3 = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+            var response4 = await HttpClient.PutAsync($"/api/Post/UpVote/{Post2Id}", requestContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response3.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response4.StatusCode);
+
+            var updatedPost = await GetAndDeserializeResponse<PostDetailsDto>($"/api/Post/{Post2Id}");
+            Assert.NotNull(updatedPost);
+            Assert.Equal(0, updatedPost.Score);
         }
     }
 }

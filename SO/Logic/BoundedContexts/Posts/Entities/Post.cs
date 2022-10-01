@@ -28,13 +28,13 @@ namespace Logic.BoundedContexts.Posts.Entities
 
         public virtual PostType PostType { get; private set; }
 
-        private readonly List<Comment> _comments;
+        private readonly List<Comment> _comments = new();
         public virtual IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
-        private readonly List<Vote> _votes;
+        private readonly List<Vote> _votes = new();
         public virtual IReadOnlyList<Vote> Votes => _votes.AsReadOnly();
 
-        private readonly List<PostLink> _postLinks;
+        private readonly List<PostLink> _postLinks = new();
         public virtual IReadOnlyList<PostLink> PostLinks => _postLinks.AsReadOnly();
         #endregion
 
@@ -60,11 +60,7 @@ namespace Logic.BoundedContexts.Posts.Entities
             Score = 0;
             CommentCount = 0;
 
-            PostType = null; //TODO: change to value from in memory list of available values
-
-            _comments = new List<Comment>();
-            _votes = new List<Vote>();
-            _postLinks = new List<PostLink>();
+            PostType = PostType.Question;
         }
 
         public static Result<Post, Error> Create(string title, string body, DateTime createDate,

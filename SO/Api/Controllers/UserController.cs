@@ -23,7 +23,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("GetLast")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<LastUserDto>>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(IReadOnlyList<LastUserDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> GetLast([FromQuery] GetLastArgs args)
@@ -36,14 +36,12 @@ namespace Api.Controllers
             ( 
                 size: args.Size 
             ));
-            return lastUsersDto.Any()
-                ? Ok(lastUsersDto)
-                : Error("Not Found");
+            return FromCustomResult(lastUsersDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<UserDetailsDto>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(UserDetailsDto))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> Get([FromRoute] int id)

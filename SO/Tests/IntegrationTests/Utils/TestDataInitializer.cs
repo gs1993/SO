@@ -25,13 +25,7 @@ DBCC CHECKIDENT ([Posts], RESEED, 0)
 SET IDENTITY_INSERT [dbo].[PostTypes] ON 
 INSERT [dbo].[PostTypes] ([Id], [Type], [IsDeleted], [CreateDate], [LastUpdateDate], [DeleteDate]) VALUES
 (1, N'Question', 0, '2022-01-09', NULL, NULL),
-(2, N'Answer', 0, '2022-01-09', NULL, NULL),
-(3, N'Wiki', 0, '2022-01-09', NULL, NULL),
-(4, N'TagWikiExerpt', 0, '2022-01-09', NULL, NULL),
-(5, N'TagWiki', 0, '2022-01-09', NULL, NULL),
-(6, N'ModeratorNomination', 0, '2022-01-09', NULL, NULL),
-(7, N'WikiPlaceholder', 0, '2022-01-09', NULL, NULL),
-(8, N'PrivilegeWiki', 0, '2022-01-09', NULL, NULL)
+(2, N'Answer', 0, '2022-01-09', NULL, NULL)
 SET IDENTITY_INSERT [dbo].[PostTypes] OFF
 
 SET IDENTITY_INSERT [dbo].[Posts] ON 
@@ -44,7 +38,10 @@ SET IDENTITY_INSERT [dbo].[Posts] OFF
 
 SET IDENTITY_INSERT [dbo].[Users] ON 
 INSERT INTO [dbo].[Users] ([Id],[CreateDate],[DisplayName],[DownVotes],[LastAccessDate],[Reputation],[UpVotes],[Views],[IsDeleted]) VALUES 
-(1,'2022-01-09','Test User',0,'2022-01-09',0,0,0,0)
+(1,'2022-01-09','Test User 1',0,'2022-01-09',0,0,0,0),
+(2,'2022-01-09','Test User 2',0,'2022-01-09',0,0,0,0),
+(3,'2022-01-09','Test User 3',0,'2022-01-09',0,0,0,0),
+(4,'2022-01-09','Test User 4',0,'2022-01-09',0,0,0,0)
 SET IDENTITY_INSERT [dbo].[Users] OFF
 ";
 

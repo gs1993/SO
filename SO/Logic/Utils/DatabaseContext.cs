@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Logic.Utils
 {
     public class DatabaseContext : DbContext
     {
+        private static readonly Type[] _enumerationTypes = { typeof(PostType) };
         private readonly IDateTimeProvider _dateTimeProvider;
 
         public DbSet<Post> Posts { get; protected set; }
@@ -60,6 +62,7 @@ namespace Logic.Utils
             modelBuilder.Entity<PostType>(x =>
             {
                 x.ToTable("PostTypes").HasKey(k => k.Id);
+                x.Property(p => p.Type);
                 x.HasQueryFilter(x => !x.IsDeleted);
             });
 
@@ -133,6 +136,8 @@ namespace Logic.Utils
 
         public override int SaveChanges()
         {
+            SetEmumerableTypesEntityStateToUnchanged();
+
             var entries = ChangeTracker
                 .Entries()
                 .Where(e => e.Entity is BaseEntity
@@ -166,6 +171,15 @@ namespace Logic.Utils
             }
 
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void SetEmumerableTypesEntityStateToUnchanged()
+        {
+            var enumerationEntries = ChangeTracker.Entries()
+                .Where(x => _enumerationTypes.Contains(x.Entity.GetType()));
+
+            foreach (EntityEntry enumerationEntry in enumerationEntries)
+                enumerationEntry.State = EntityState.Unchanged;
         }
 
         #endregion
