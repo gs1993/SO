@@ -156,6 +156,8 @@ namespace Logic.Utils
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            SetEmumerableTypesEntityStateToUnchanged();
+
             var entries = ChangeTracker
                 .Entries()
                 .Where(e => e.Entity is BaseEntity

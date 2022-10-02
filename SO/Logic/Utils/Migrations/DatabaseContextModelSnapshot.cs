@@ -116,9 +116,6 @@ namespace Logic.Migrations
                     b.Property<int>("OwnerUserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PostTypeId")
                         .HasColumnType("int");
 
@@ -253,13 +250,6 @@ namespace Logic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AboutMe")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Age")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -279,17 +269,11 @@ namespace Logic.Migrations
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Reputation")
                         .HasColumnType("int");
 
                     b.Property<int>("Views")
                         .HasColumnType("int");
-
-                    b.Property<string>("WebsiteUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -334,6 +318,35 @@ namespace Logic.Migrations
 
             modelBuilder.Entity("Logic.BoundedContexts.Users.Entities.User", b =>
                 {
+                    b.OwnsOne("Logic.BoundedContexts.Users.Entities.ProfileInfo", "ProfileInfo", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("AboutMe")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("AboutMe");
+
+                            b1.Property<int?>("Age")
+                                .HasColumnType("int")
+                                .HasColumnName("Age");
+
+                            b1.Property<string>("Location")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Location");
+
+                            b1.Property<string>("WebsiteUrl")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("WebsiteUrl");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("Logic.BoundedContexts.Users.Entities.VoteSummary", "VoteSummary", b1 =>
                         {
                             b1.Property<int>("UserId")
@@ -354,6 +367,9 @@ namespace Logic.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("ProfileInfo")
+                        .IsRequired();
 
                     b.Navigation("VoteSummary")
                         .IsRequired();
