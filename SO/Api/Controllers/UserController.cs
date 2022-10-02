@@ -76,7 +76,7 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("PermaBan/{id}")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
+        [SwaggerResponse((int)HttpStatusCode.OK)]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> PermaBan([FromRoute] int id)

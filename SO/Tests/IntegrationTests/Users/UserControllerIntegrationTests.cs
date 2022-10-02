@@ -4,6 +4,7 @@ using Logic.BoundedContexts.Users.Dto;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -77,6 +78,48 @@ namespace IntegrationTests.Users
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_PermaBanRemoveUser_WhenUserIsActive()
+        {
+            // Act
+            var response = await HttpClient.PutAsync($"/api/User/PermaBan/{User2Id}", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var notFoundResponse = await HttpClient.GetAsync($"/api/User/{User2Id}");
+            Assert.Equal(HttpStatusCode.NotFound, notFoundResponse.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_PermaBanFail_WhenUserIsNotActive()
+        {
+            // Act
+            var response1 = await HttpClient.PutAsync($"/api/User/PermaBan/{User2Id}", new StringContent(""));
+            var response2 = await HttpClient.PutAsync($"/api/User/PermaBan/{User2Id}", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response2.StatusCode);
+
+            var notFoundResponse = await HttpClient.GetAsync($"/api/User/{User2Id}");
+            Assert.Equal(HttpStatusCode.NotFound, notFoundResponse.StatusCode);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(5)]
+        [InlineData(50000)]
+        public async Task Should_PermaBanFail_WhenUserDoesNotExists(int invalidId)
+        {
+            // Act
+            var response = await HttpClient.PutAsync($"/api/User/PermaBan/{invalidId}", new StringContent(""));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

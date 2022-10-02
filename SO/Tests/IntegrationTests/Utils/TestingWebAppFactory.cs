@@ -34,8 +34,6 @@ namespace IntegrationTests.Utils
                 using var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 dbContext.Database.EnsureCreated();
                 dbContext.Database.Migrate();
-
-                TestDataInitializer.Seed(dbContext);
             });
         }
     }

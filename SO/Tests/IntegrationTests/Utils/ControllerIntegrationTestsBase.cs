@@ -8,6 +8,7 @@ using Xunit;
 
 namespace IntegrationTests.Utils
 {
+    [Collection("Sequential")]
     public class ControllerIntegrationTestsBase : IClassFixture<TestingWebAppFactory<Program>>
     {
         protected readonly HttpClient HttpClient;
