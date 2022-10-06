@@ -1,12 +1,15 @@
-﻿using Api.Utils;
+﻿using Api.GraphQL;
+using Api.Utils;
 using FluentValidation;
 using Logic.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -57,14 +60,31 @@ namespace Api
             services.AddMediatR(typeof(DatabaseContext).Assembly);
 
             AddDbContext(services);
+
+            services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
+                .AddSubscriptionType<Subscription>()
+                .AddInMemorySubscriptions();
         }
 
-        public static void Configure(IApplicationBuilder app)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
 
-            app.UseRouting();
+                app.UseSwagger();
+                app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
+
+            }
+            app.UseWebSockets();
+            
+            app.UseRouting()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapGraphQL();
+                }); ;
 
             app.UseCors(x => x
                 .SetIsOriginAllowed(origin => true)
@@ -75,6 +95,8 @@ namespace Api
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(x => x.MapControllers());
+
+            app.UseGraphQLVoyager("/graphql-voyager");
         }
 
 

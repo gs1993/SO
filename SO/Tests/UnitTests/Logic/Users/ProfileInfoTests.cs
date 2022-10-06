@@ -1,9 +1,4 @@
 ﻿using Logic.BoundedContexts.Users.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument.
