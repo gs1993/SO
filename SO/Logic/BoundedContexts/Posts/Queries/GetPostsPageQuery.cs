@@ -1,4 +1,5 @@
-﻿using Logic.BoundedContexts.Posts.Dtos;
+﻿using Dawn;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Posts.Entities;
 using Logic.Utils;
 using MediatR;
@@ -35,6 +36,10 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<IReadOnlyList<PostListDto>> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
         {
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Offset).NotNegative();
+            Guard.Argument(request.Limit).Positive();
+
             var posts = await _readOnlyContext
                 .GetQuery<Post>()
                 .Skip(request.Offset)
