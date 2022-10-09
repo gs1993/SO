@@ -21,7 +21,7 @@ namespace Logic.BoundedContexts.Users.Queries
         }
     }
 
-    public class GetLastUsersQueryHandler : IRequestHandler<GetLastUsersQuery?, IReadOnlyList<LastUserDto>>
+    public class GetLastUsersQueryHandler : IRequestHandler<GetLastUsersQuery, IReadOnlyList<LastUserDto>>
     {
         private readonly IReadOnlyDatabaseContext _readOnlyContext;
 

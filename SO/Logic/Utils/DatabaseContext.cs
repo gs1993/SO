@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 namespace Logic.Utils
 {
     public class DatabaseContext : DbContext
@@ -17,7 +19,8 @@ namespace Logic.Utils
 
         public DbSet<Post> Posts { get; protected set; }
         public DbSet<User> Users { get; protected set; }
-       
+
+
         public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
         {
             _dateTimeProvider = dateTimeProvider;

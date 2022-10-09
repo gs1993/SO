@@ -1,0 +1,71 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "GrpcPostServer";
+
+service Post {
+	rpc GetList (GetListRequest) returns (GetListResponse);
+	rpc GetLastest (GetLastestRequest) returns (GetLastestResponse);
+	rpc Get (GetRequest) returns (PostDetailsDto);
+}
+
+message GetListRequest {
+	int32 offset = 1;
+	int32 limit = 2;
+}
+
+message GetListResponse {
+	repeated PostDto post = 1;
+}
+
+message PostDto {
+	int32 id = 1;
+	int32 answerCount = 2;
+	bool isClosed = 3;
+	int32 commentCount = 4;
+	google.protobuf.Timestamp CreationDate = 5;
+	int32 score = 6;
+	string title = 7;
+	string shortBody = 8;
+	int32 viewCount = 9;
+}
+
+message GetLastestRequest {
+	int32 size = 1;
+}
+
+message GetLastestResponse {
+	repeated PostDto post = 1;
+}
+
+message GetRequest {
+	int32 id = 1;
+}
+
+message PostDetailsDto {
+	int32 id = 1;
+	int32 answerCount = 2;
+	string body = 3;
+	google.protobuf.Timestamp closedDate = 4;
+	int32 commentCount = 5;
+	bool isClosed = 6;
+	google.protobuf.Timestamp communityOwnedDate = 7;
+	google.protobuf.Timestamp creationDate = 8;
+	int32 favoriteCount = 9;
+	google.protobuf.Timestamp lastActivityDate = 10;
+	google.protobuf.Timestamp lastEditDate = 11;
+	string lastEditorDisplayName = 12;
+	int32 score = 13;
+	string tags = 14;
+	string title = 15;
+	int32 viewCount = 16;
+	repeated CommentDto comments = 17;
+}
+
+message CommentDto {
+	google.protobuf.Timestamp creationDate = 1;
+	int32 score = 2;
+	string text = 3;
+	string userName = 4;
+}
