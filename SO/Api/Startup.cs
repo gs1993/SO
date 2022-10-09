@@ -43,7 +43,7 @@ namespace Api
             AddControllers(services);
             AddGraphQL(services);
 
-            //services.AddGrpc();
+            services.AddGrpc();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,7 +56,7 @@ namespace Api
                 app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
 
             }
-            //app.UseWebSockets();
+            app.UseWebSockets();
 
             app.UseRouting();
             app.UseCors(x => x
@@ -71,7 +71,7 @@ namespace Api
             {
                 endpoints.MapControllers();
                 endpoints.MapGraphQL();
-                //endpoints.MapGrpcService<PostGrpcService>();
+                endpoints.MapGrpcService<PostGrpcService>();
             });
 
             app.UseGraphQLVoyager("/graphql-voyager");
