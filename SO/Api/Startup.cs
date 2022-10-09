@@ -1,6 +1,7 @@
 ﻿using Api.GraphQL;
 using Api.Utils;
 using FluentValidation;
+using GrpcPostServer;
 using Logic.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -28,7 +29,81 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers()
+
+            AddFluentValidation(services);
+
+            services.AddSwaggerGen();
+
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+            services.AddMediatR(typeof(DatabaseContext).Assembly);
+
+            AddDbContext(services);
+
+            AddControllers(services);
+            AddGraphQL(services);
+
+            services.AddGrpc();
+        }
+
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
+
+            }
+            app.UseWebSockets();
+
+            app.UseRouting();
+            app.UseCors(x => x
+                .SetIsOriginAllowed(origin => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapGraphQL();
+                endpoints.MapGrpcService<PostGrpcService>();
+            });
+
+            app.UseGraphQLVoyager("/graphql-voyager");
+        }
+
+
+        private void AddDbContext(IServiceCollection services)
+        {
+            services.AddDbContext<DatabaseContext>(options => options
+                .UseSqlServer(Configuration.GetConnectionString("SO_Database"))
+                .UseLazyLoadingProxies()
+            );
+
+            services.AddSingleton(new QueryConnectionString(Configuration.GetConnectionString("SO_ReadonlyDatabase")));
+            services.AddTransient<IReadOnlyDatabaseContext, ReadOnlyDatabaseContext>();
+        }
+
+        private static void AddGraphQL(IServiceCollection services)
+        {
+            services
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
+                .AddSubscriptionType<Subscription>()
+                .AddInMemorySubscriptions();
+        }
+
+        private static void AddControllers(IServiceCollection services)
+        {
+            services
+                .AddRouting()
+                .AddControllers()
                 .AddJsonOptions(x =>
                 {
                     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -49,66 +124,12 @@ namespace Api
                         return new BadRequestObjectResult(error);
                     };
                 });
+        }
 
+        private static void AddFluentValidation(IServiceCollection services)
+        {
             services.AddValidatorsFromAssemblyContaining<Startup>();
             services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
-
-            services.AddSwaggerGen();
-
-            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-
-            services.AddMediatR(typeof(DatabaseContext).Assembly);
-
-            AddDbContext(services);
-
-            services.AddGraphQLServer()
-                .AddQueryType<Query>()
-                .AddMutationType<Mutation>()
-                .AddSubscriptionType<Subscription>()
-                .AddInMemorySubscriptions();
-        }
-
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-                app.UseSwagger();
-                app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
-
-            }
-            app.UseWebSockets();
-            
-            app.UseRouting()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapGraphQL();
-                }); ;
-
-            app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
-
-            app.UseMiddleware<ErrorHandlerMiddleware>();
-
-            app.UseEndpoints(x => x.MapControllers());
-
-            app.UseGraphQLVoyager("/graphql-voyager");
-        }
-
-
-        private void AddDbContext(IServiceCollection services)
-        {
-            services.AddDbContext<DatabaseContext>(options => options
-                .UseSqlServer(Configuration.GetConnectionString("SO_Database"))
-                .UseLazyLoadingProxies()
-            );
-
-            services.AddSingleton(new QueryConnectionString(Configuration.GetConnectionString("SO_ReadonlyDatabase")));
-            services.AddTransient<IReadOnlyDatabaseContext, ReadOnlyDatabaseContext>();
         }
     }
 }

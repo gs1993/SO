@@ -39,7 +39,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("GetLastest")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess<IReadOnlyList<PostListDto>>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(IReadOnlyList<PostListDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> GetLastest([FromQuery] GetLastestArgs args)

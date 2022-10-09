@@ -3,6 +3,7 @@ using Logic.BoundedContexts.Users.Entities;
 using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 
 namespace UnitTests.Logic.Posts
 {
