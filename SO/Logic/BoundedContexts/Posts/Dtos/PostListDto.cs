@@ -4,14 +4,14 @@ namespace Logic.BoundedContexts.Posts.Dtos
 {
     public class PostListDto
     {
-        public int Id { get; set; }
-        public int AnswerCount { get; set; }
-        public bool IsClosed { get; set; }
-        public int CommentCount { get; set; }
-        public DateTime? CreationDate { get; set; }
-        public int Score { get; set; }
-        public string Title { get; set; }
-        public string ShortBody { get; set; }
-        public int ViewCount { get; set; }
+        public int Id { get; init; }
+        public int AnswerCount { get; init; }
+        public bool IsClosed { get; init; }
+        public int CommentCount { get; init; }
+        public DateTime CreationDate { get; init; }
+        public int Score { get; init; }
+        public string Title { get; init; }
+        public string ShortBody { get; init; }
+        public int ViewCount { get; init; }
     }
 }

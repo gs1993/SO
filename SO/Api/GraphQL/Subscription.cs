@@ -10,8 +10,7 @@ namespace Api.GraphQL
     public class Subscription
     {
         [SubscribeAndResolve]
-        public ValueTask<ISourceStream<int>> OnPostClosed(
-            [Service] ITopicEventReceiver eventReceiver, CancellationToken cancellationToken)
+        public ValueTask<ISourceStream<int>> OnPostClosed([Service]ITopicEventReceiver eventReceiver, CancellationToken cancellationToken)
         {
             return eventReceiver.SubscribeAsync<string, int>("PostClosed", cancellationToken);
         }

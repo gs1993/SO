@@ -8,8 +8,14 @@ namespace Api.GraphQL.Types
         protected override void Configure(IObjectTypeDescriptor<PostListDto> descriptor)
         {
             descriptor.Field(x => x.Id).Type<IdType>();
-            descriptor.Field(x => x.Title).Type<StringType>();
-            descriptor.Field(x => x.ShortBody).Type<StringType>();
+            descriptor.Field(x => x.AnswerCount).Type<NonNullType<IntType>>();
+            descriptor.Field(x => x.IsClosed).Type< NonNullType<BooleanType>>();
+            descriptor.Field(x => x.CommentCount).Type< NonNullType<IntType>>();
+            descriptor.Field(x => x.CreationDate).Type< NonNullType<DateTimeType>>();
+            descriptor.Field(x => x.Score).Type< NonNullType<IntType>>();
+            descriptor.Field(x => x.Title).Type< NonNullType<StringType>>();
+            descriptor.Field(x => x.ShortBody).Type< NonNullType<StringType>>();
+            descriptor.Field(x => x.ViewCount).Type< NonNullType<IntType>>();
         }
     }
 }

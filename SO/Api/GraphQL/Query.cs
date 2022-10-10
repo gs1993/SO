@@ -1,9 +1,12 @@
-﻿using Dawn;
+﻿using Api.Args.Post;
+using Dawn;
+using FluentValidation;
 using HotChocolate;
 using HotChocolate.Subscriptions;
 using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Posts.Queries;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,13 +14,16 @@ namespace Api.GraphQL
 {
     public class Query
     {
-        public async Task<IReadOnlyList<PostListDto>> GetPostsPage(
-            [Service] IMediator mediator,
-            [Service] ITopicEventSender eventSender,
-            int offset, int limit)
+        public async Task<IReadOnlyList<PostListDto>> GetPostsPage(int offset, int limit,
+            [Service] IMediator mediator, [Service] ITopicEventSender eventSender, [Service] IValidatorFactory validatorFactory)
         {
-            Guard.Argument(offset).NotNegative();
-            Guard.Argument(limit).Positive();
+            var validationResult = validatorFactory.GetValidator<GetArgs>().Validate(new GetArgs
+            {
+                Limit = limit,
+                Offset = offset
+            });
+            if (!validationResult.IsValid)
+                throw new ArgumentException(validationResult.ToString());
 
             var posts = await mediator.Send(new GetPostsPageQuery
                 (
@@ -30,12 +36,15 @@ namespace Api.GraphQL
             return posts;
         }
 
-        public async Task<IReadOnlyList<PostListDto>> GetLastest(
-            [Service] IMediator mediator,
-            [Service] ITopicEventSender eventSender,
-            int size)
+        public async Task<IReadOnlyList<PostListDto>> GetLastest(int size,
+            [Service] IMediator mediator, [Service] ITopicEventSender eventSender, [Service] IValidatorFactory validatorFactory)
         {
-            Guard.Argument(size).Positive();
+            var validationResult = validatorFactory.GetValidator<GetLastestArgs>().Validate(new GetLastestArgs
+            {
+                Size = size
+            });
+            if (!validationResult.IsValid)
+                throw new ArgumentException(validationResult.ToString());
 
             var posts = await mediator.Send(new GetLastestPostsQuery
                 (
@@ -47,10 +56,8 @@ namespace Api.GraphQL
             return posts;
         }
 
-        public async Task<PostDetailsDto> Get(
-            [Service] IMediator mediator,
-            [Service] ITopicEventSender eventSender,
-            int id)
+        public async Task<PostDetailsDto> Get(int id,
+            [Service] IMediator mediator, [Service] ITopicEventSender eventSender)
         {
             Guard.Argument(id).Positive();
 

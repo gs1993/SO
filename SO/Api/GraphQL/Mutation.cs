@@ -8,8 +8,8 @@ namespace Api.GraphQL
 {
     public class Mutation
     {
-        public async Task<int> ClosePost([Service] IMediator mediator, 
-            [Service] ITopicEventSender eventSender, int id)
+        public async Task<int> ClosePost(int id,
+            [Service]IMediator mediator, [Service]ITopicEventSender eventSender)
         {
             var result = await mediator.Send(new ClosePostCommand(id));
             if (result.IsSuccess)
