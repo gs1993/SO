@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using System;
 using System.Threading;

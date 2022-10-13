@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Logic.Utils;
+using Logic.Utils.Db;
 using System;
 
 namespace Api.Validation

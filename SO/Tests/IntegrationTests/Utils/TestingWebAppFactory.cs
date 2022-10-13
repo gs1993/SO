@@ -1,5 +1,5 @@
 ﻿using Api;
-using Logic.Utils;
+using Logic.Utils.Db;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

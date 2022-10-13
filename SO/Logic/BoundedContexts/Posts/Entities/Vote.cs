@@ -1,5 +1,5 @@
 ﻿using Logic.BoundedContexts.Users.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using System;
 
 namespace Logic.BoundedContexts.Posts.Entities

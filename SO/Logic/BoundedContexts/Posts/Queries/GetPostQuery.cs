@@ -1,7 +1,7 @@
 ﻿using Logic.BoundedContexts.Posts.Dtos;
-using Logic.BoundedContexts.Posts.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,9 +20,9 @@ namespace Logic.BoundedContexts.Posts.Queries
 
     public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDetailsDto?>
     {
-        private readonly IReadOnlyDatabaseContext _readOnlyContext;
+        private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
-        public GetPostQueryHandler(IReadOnlyDatabaseContext readOnlyContext)
+        public GetPostQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
         {
             _readOnlyContext = readOnlyContext;
         }
@@ -30,7 +30,10 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<PostDetailsDto?> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
-            var post = await _readOnlyContext.GetById<Post>(request.Id, cancellationToken);
+            var post = await _readOnlyContext.Posts
+                .Include(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
             if (post == null)
                 return null;
 

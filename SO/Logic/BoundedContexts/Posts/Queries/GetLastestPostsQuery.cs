@@ -1,6 +1,5 @@
 ﻿using Logic.BoundedContexts.Posts.Dtos;
-using Logic.BoundedContexts.Posts.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -21,18 +20,17 @@ namespace Logic.BoundedContexts.Posts.Queries
     }
 
     public class GetLastestPostsQueryHandler : IRequestHandler<GetLastestPostsQuery, IReadOnlyList<PostListDto>>
-    {
-        private readonly IReadOnlyDatabaseContext _readOnlyContext;
+    {  
+        private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
-        public GetLastestPostsQueryHandler(IReadOnlyDatabaseContext readOnlyContext)
+        public GetLastestPostsQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
         {
             _readOnlyContext = readOnlyContext;
         }
 
         public async Task<IReadOnlyList<PostListDto>> Handle(GetLastestPostsQuery request, CancellationToken cancellationToken)
         {
-            var posts = await _readOnlyContext
-                .GetQuery<Post>()
+            var posts = await _readOnlyContext.Posts
                 .OrderByDescending(x => x.Id)
                 .Take(request.Size)
                 .Select(x => new PostListDto
@@ -46,7 +44,8 @@ namespace Logic.BoundedContexts.Posts.Queries
                     ViewCount = x.ViewCount,
                     CreationDate = x.CreateDate,
                     IsClosed = x.ClosedDate != null
-                }).ToListAsync(cancellationToken: cancellationToken);
+                }).ToListAsync(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             return posts ?? new List<PostListDto>();
         }

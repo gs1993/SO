@@ -1,4 +1,4 @@
-﻿using Logic.Utils;
+﻿using Logic.Utils.Db;
 
 namespace Logic.BoundedContexts.Posts.Entities
 {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-namespace Logic.Utils
+namespace Logic.Utils.Db
 {
     public class DatabaseContext : DbContext
     {
@@ -21,74 +21,20 @@ namespace Logic.Utils
         public DbSet<User> Users { get; protected set; }
 
 
-        public DatabaseContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IDateTimeProvider dateTimeProvider) : base(options)
         {
             _dateTimeProvider = dateTimeProvider;
-            Database.SetCommandTimeout(180);
         }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>(x =>
-            {
-                x.ToTable("Posts").HasKey(k => k.Id);
-                x.HasQueryFilter(x => !x.IsDeleted);
-
-                x.HasMany(p => p.Comments)
-                    .WithOne()
-                    .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-                x.HasMany(p => p.Votes)
-                    .WithOne()
-                    .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.Votes))?.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-                x.HasMany(p => p.PostLinks)
-                    .WithOne()
-                    .HasForeignKey("PostId");
-                x.Metadata.FindNavigation(nameof(Post.PostLinks))?.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-                x.HasOne(p => p.PostType)
-                    .WithMany()
-                    .HasForeignKey("PostTypeId");
-            });
-
-            modelBuilder.Entity<Comment>(x =>
-            {
-                x.ToTable("Comments").HasKey(k => k.Id);
-                x.HasQueryFilter(x => !x.IsDeleted);
-            });
-
-            modelBuilder.Entity<PostType>(x =>
-            {
-                x.ToTable("PostTypes").HasKey(k => k.Id);
-                x.Property(p => p.Type);
-                x.HasQueryFilter(x => !x.IsDeleted);
-            });
-
-            modelBuilder.Entity<User>(x =>
-            {
-                x.ToTable("Users").HasKey(k => k.Id);
-                x.HasQueryFilter(x => !x.IsDeleted);
-
-                x.OwnsOne(p => p.VoteSummary, navigationExpression =>
-                {
-                    navigationExpression.Property(vs => vs.UpVotes).HasColumnName("UpVotes");
-                    navigationExpression.Property(vs => vs.DownVotes).HasColumnName("DownVotes");
-                });
-                x.OwnsOne(p => p.ProfileInfo, navigationExpression =>
-                {
-                    navigationExpression.Property(p => p.AboutMe).HasColumnName("AboutMe");
-                    navigationExpression.Property(p => p.Age).HasColumnName("Age");
-                    navigationExpression.Property(p => p.Location).HasColumnName("Location");
-                    navigationExpression.Property(p => p.WebsiteUrl).HasColumnName("WebsiteUrl");
-                });
-            });
+            DbExtensions.SetupEntites(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
+
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

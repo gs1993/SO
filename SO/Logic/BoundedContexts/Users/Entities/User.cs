@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils;
+using Logic.Utils.Db;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 

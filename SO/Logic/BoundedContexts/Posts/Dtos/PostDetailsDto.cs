@@ -5,23 +5,23 @@ namespace Logic.BoundedContexts.Posts.Dtos
 {
     public class PostDetailsDto
     {
-        public int Id { get; set; }
-        public int AnswerCount { get; set; }
-        public string Body { get; set; }
-        public DateTime? ClosedDate { get; set; }
-        public int CommentCount { get; set; }
-        public bool IsClosed { get; set; }
-        public DateTime? CommunityOwnedDate { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int FavoriteCount { get; set; }
-        public DateTime LastActivityDate { get; set; }
-        public DateTime? LastEditDate { get; set; }
-        public string LastEditorDisplayName { get; set; }
-        public int Score { get; set; }
-        public string Tags { get; set; }
-        public string Title { get; set; }
-        public int ViewCount { get; set; }
+        public int Id { get; init; }
+        public int AnswerCount { get; init; }
+        public string Body { get; init; }
+        public DateTime? ClosedDate { get; init; }
+        public int CommentCount { get; init; }
+        public bool IsClosed { get; init; }
+        public DateTime? CommunityOwnedDate { get; init; }
+        public DateTime CreationDate { get; init; }
+        public int FavoriteCount { get; init; }
+        public DateTime LastActivityDate { get; init; }
+        public DateTime? LastEditDate { get; init; }
+        public string LastEditorDisplayName { get; init; }
+        public int Score { get; init; }
+        public string Tags { get; init; }
+        public string Title { get; init; }
+        public int ViewCount { get; init; }
 
-        public IEnumerable<CommentDto> Comments { get; set; }
+        public IEnumerable<CommentDto> Comments { get; init; }
     }
 }

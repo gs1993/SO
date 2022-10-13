@@ -1,4 +1,4 @@
-﻿using Logic.Utils;
+﻿using Logic.Utils.Db;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntegrationTests.Utils

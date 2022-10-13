@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using System;
 using System.Threading;

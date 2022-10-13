@@ -1,7 +1,6 @@
 ﻿using Dawn;
 using Logic.BoundedContexts.Posts.Dtos;
-using Logic.BoundedContexts.Posts.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,9 +25,9 @@ namespace Logic.BoundedContexts.Posts.Queries
 
     public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, IReadOnlyList<PostListDto>>
     {
-        private readonly IReadOnlyDatabaseContext _readOnlyContext;
+        private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
-        public GetPostsPageQueryHandler(IReadOnlyDatabaseContext readOnlyContext)
+        public GetPostsPageQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
         {
             _readOnlyContext = readOnlyContext ?? throw new ArgumentNullException(nameof(readOnlyContext));
         }
@@ -40,8 +39,7 @@ namespace Logic.BoundedContexts.Posts.Queries
             Guard.Argument(request.Offset).NotNegative();
             Guard.Argument(request.Limit).Positive();
 
-            var posts = await _readOnlyContext
-                .GetQuery<Post>()
+            var posts = await _readOnlyContext.Posts
                 .Skip(request.Offset)
                 .Take(request.Limit)
                 .Select(x => new PostListDto

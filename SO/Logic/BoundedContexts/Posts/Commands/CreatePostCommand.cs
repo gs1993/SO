@@ -2,6 +2,7 @@
 using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Posts.Entities;
 using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using System;
 using System.Threading;

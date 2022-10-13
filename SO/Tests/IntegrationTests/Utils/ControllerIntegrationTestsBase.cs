@@ -1,5 +1,5 @@
 ﻿using Api;
-using Logic.Utils;
+using Logic.Utils.Db;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net.Http;

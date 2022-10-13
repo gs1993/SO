@@ -1,7 +1,7 @@
 ﻿using Logic.BoundedContexts.Users.Dto;
-using Logic.BoundedContexts.Users.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,9 +20,9 @@ namespace Logic.BoundedContexts.Users.Queries
 
     public record GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDetailsDto?>
     {
-        private readonly IReadOnlyDatabaseContext _readOnlyContext;
+        private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
-        public GetUserQueryHandler(IReadOnlyDatabaseContext readOnlyContext)
+        public GetUserQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
         {
             _readOnlyContext = readOnlyContext;
         }
@@ -32,7 +32,10 @@ namespace Logic.BoundedContexts.Users.Queries
             if (request.Id <= 0)
                 throw new ArgumentException($"Invalid id: {request.Id}", nameof(request.Id));
 
-            var user = await _readOnlyContext.GetById<User>(request.Id);
+            var user = await _readOnlyContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
             return user != null
                 ? new UserDetailsDto
                 {

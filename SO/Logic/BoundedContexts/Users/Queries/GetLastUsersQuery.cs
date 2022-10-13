@@ -1,6 +1,5 @@
 ﻿using Logic.BoundedContexts.Users.Dto;
-using Logic.BoundedContexts.Users.Entities;
-using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,9 +22,9 @@ namespace Logic.BoundedContexts.Users.Queries
 
     public class GetLastUsersQueryHandler : IRequestHandler<GetLastUsersQuery, IReadOnlyList<LastUserDto>>
     {
-        private readonly IReadOnlyDatabaseContext _readOnlyContext;
+        private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
-        public GetLastUsersQueryHandler(IReadOnlyDatabaseContext readOnlyContext)
+        public GetLastUsersQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
         {
             _readOnlyContext = readOnlyContext;
         }
@@ -35,8 +34,7 @@ namespace Logic.BoundedContexts.Users.Queries
             if (request.Size <= 0 || request.Size > 1000)
                 throw new ArgumentException($"Invalid size: {request.Size}", nameof(request.Size));
 
-            return await _readOnlyContext
-                .GetQuery<User>()
+            return await _readOnlyContext.Users
                 .OrderByDescending(x => x.CreateDate)
                 .Take(request.Size)
                 .Select(x => new LastUserDto 
@@ -44,7 +42,8 @@ namespace Logic.BoundedContexts.Users.Queries
                     Id = x.Id,
                     DisplayName = x.DisplayName
                 })
-                .ToListAsync(cancellationToken);
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

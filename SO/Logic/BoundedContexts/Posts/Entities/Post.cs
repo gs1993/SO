@@ -2,6 +2,7 @@
 using Logic.BoundedContexts.Posts.Dtos;
 using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils;
+using Logic.Utils.Db;
 using System;
 using System.Collections.Generic;
 

@@ -3,6 +3,7 @@ using Api.Utils;
 using FluentValidation;
 using GrpcPostServer;
 using Logic.Utils;
+using Logic.Utils.Db;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,13 +81,10 @@ namespace Api
 
         private void AddDbContext(IServiceCollection services)
         {
-            services.AddDbContext<DatabaseContext>(options => options
-                .UseSqlServer(Configuration.GetConnectionString("SO_Database"))
-                .UseLazyLoadingProxies()
-            );
-
-            services.AddSingleton(new QueryConnectionString(Configuration.GetConnectionString("SO_ReadonlyDatabase")));
-            services.AddTransient<IReadOnlyDatabaseContext, ReadOnlyDatabaseContext>();
+            string commandConnectionString = Configuration.GetConnectionString("SO_Database");
+            string queryConectionString = Configuration.GetConnectionString("SO_ReadonlyDatabase");
+            
+            services.AddDbContexts(commandConnectionString, queryConectionString);
         }
 
         private static void AddGraphQL(IServiceCollection services)

@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
 
-namespace Logic.Utils
+namespace Logic.Utils.Db
 {
     public abstract class BaseEntity : Entity<int>
     {
