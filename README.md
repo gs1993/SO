@@ -7,20 +7,20 @@ The demo app uses Entity Framework Core to manage 400 GB of data from the [Stack
 
 ## Features
 
-#### Domain Driven Design
+### Domain Driven Design
 
-Bounded Contexts:<br />
+##### Bounded Contexts:
 ![Architecture](https://github.com/gs1993/SO/blob/feature/readme/images/ProjectLogic.PNG)
 
-Rich domain model:<br />
+##### Rich domain model:<br />
 ![Entity](https://github.com/gs1993/SO/blob/feature/readme/images/PostEntity.PNG)
 
-Value Objects:<br />
+##### Value Objects:<br />
 ![ValueObject](https://github.com/gs1993/SO/blob/feature/readme/images/ProfileInfoValueObject.PNG)
 
-#### CQRS
+### CQRS
 
-Command-query separation:<br />
+##### Command-query separation:<br />
 ![CQRS](https://github.com/gs1993/SO/blob/feature/readme/images/Cqrs.PNG)
 
 Read-write separation on application level:
@@ -38,11 +38,11 @@ Read-write separation on application level:
 
 #### APIs
 
-[REST](https://github.com/gs1993/SO/tree/master/SO/Api/Controllers)
+[REST](https://github.com/gs1993/SO/tree/master/SO/Api/Controllers) - with [Swagger](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) documentation
 
-[GraphQL](https://github.com/gs1993/SO/tree/master/SO/Api/GraphQL)
+[GraphQL](https://github.com/gs1993/SO/tree/master/SO/Api/GraphQL) - using [Grpc.AspNetCore](https://github.com/grpc/grpc-dotnet)
 
-[gRPC](https://github.com/gs1993/SO/tree/master/SO/Api/Grpc)
+[gRPC](https://github.com/gs1993/SO/tree/master/SO/Api/Grpc) - using [Google.Protobuf](https://github.com/protocolbuffers/protobuf)
 
 --------------
 
