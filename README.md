@@ -3,25 +3,25 @@
 The demo app uses Entity Framework Core to manage 400 GB of data from the [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) in a clean and consistent manner
 
 ## Architecture
-![Architecture](https://github.com/gs1993/SO/blob/feature/readme/SO/images/ProjectLogic.PNG)
+![Architecture](https://github.com/gs1993/SO/blob/feature/readme/images/Architecture.PNG)
 
 ## Features
 
 #### Domain Driven Design
 
 Bounded Contexts:
-![Architecture](https://github.com/gs1993/SO/blob/feature/readme/SO/images/ProjectLogic.PNG)
+![Architecture](https://github.com/gs1993/SO/blob/feature/readme/images/ProjectLogic.PNG)
 
 Rich domain model:
-![Entity](https://github.com/gs1993/SO/blob/feature/readme/SO/images/PostEntity.PNG)
+![Entity](https://github.com/gs1993/SO/blob/feature/readme/images/PostEntity.PNG)
 
 Value Objects:
-![ValueObject](https://github.com/gs1993/SO/blob/feature/readme/SO/images/ProfileInfoValueObject.PNG)
+![ValueObject](https://github.com/gs1993/SO/blob/feature/readme/images/ProfileInfoValueObject.PNG)
 
 #### CQRS
 
 Command-query separation:
-![CQRS](https://github.com/gs1993/SO/blob/feature/readme/SO/images/Cqrs.PNG)
+![CQRS](https://github.com/gs1993/SO/blob/feature/readme/images/Cqrs.PNG)
 
 Read-write separation on application level:
 1. Separate connection strings for read and write databases
@@ -29,7 +29,7 @@ Read-write separation on application level:
 3. More efficient scaling on [micro](https://github.com/gs1993/SO/blob/feature/readme/SO/Logic/Utils/Db/DbExtensions.cs) and [macro](https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication?view=sql-server-ver16) levels
 
 #### Tests
-![Tests](https://github.com/gs1993/SO/blob/feature/readme/SO/images/Tests.PNG)
+![Tests](https://github.com/gs1993/SO/blob/feature/readme/images/Tests.PNG)
 
 1. [Unit tests](https://github.com/gs1993/SO/blob/feature/readme/SO/Tests/UnitTests/Logic/Posts/PostTests.cs) - in-depth tests for complex domain logic
 2. [Integration tests](https://github.com/gs1993/SO/blob/feature/readme/SO/Tests/IntegrationTests/Posts/PostControllerIntegrationTests.cs) - api-level test with a separate database created dynamically using Docker
