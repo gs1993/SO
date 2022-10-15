@@ -1,21 +1,57 @@
-# Features
-### Optimized data schemas
-* [Entity Framework](https://github.com/dotnet/efcore) - Fully fledged object-database mapper for data manipulation.
-* [Dapper](https://github.com/StackExchange/Dapper) - Light and simple object mapper for database reads. Using SQL gives access to complex query optimizaton mechanizms.
+# DDD and CQRS on a large-scale dataset
 
-### Separation of concerns
-* Segregating the read and write sides mean maintainable and flexible models. Most of the complex business logic goes into the write model. The read model can be relatively simple.
+The demo app uses Entity Framework Core to manage 400 GB of data from the [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) in a clean and consistent manner
 
-### Security
-* It's easier to ensure that only the right domain entities are performing writes on the data.
+## Architecture
+![Architecture](https://github.com/gs1993/SO/blob/master/SO/images/ProjectLogic.PNG)
 
-### Independent scaling 
-* Split to WRITE and READ databases comming soon
+## Features
+
+#### Domain Driven Design
+
+Bounded Contexts:
+![Architecture](https://github.com/gs1993/SO/blob/master/SO/images/ProjectLogic.PNG)
+
+Rich domain model:
+![Entity](https://github.com/gs1993/SO/blob/master/SO/images/PostEntity.PNG)
+
+Value Objects:
+![ValueObject](https://github.com/gs1993/SO/blob/master/SO/images/ProfileInfoValueObject.PNG)
+
+#### CQRS
+
+Command-query separation:
+![CQRS](https://github.com/gs1993/SO/blob/master/SO/images/Cqrs.PNG)
+
+Read-write separation on application level:
+1. Separate connection strings for read and write databases
+2. Independent [Read](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/ReadOnlyDatabaseContext.cs) and [write](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/DatabaseContext.cs) db contexts
+3. More efficient scaling on [micro](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/DbExtensions.cs) and [macro](https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication?view=sql-server-ver16) levels
+
+#### Tests
+![Tests](https://github.com/gs1993/SO/blob/master/SO/images/Tests.PNG)
+
+1. [Unit tests](https://github.com/gs1993/SO/blob/master/SO/Tests/UnitTests/Logic/Posts/PostTests.cs) - in-depth tests for complex domain logic
+2. [Integration tests](https://github.com/gs1993/SO/blob/master/SO/Tests/IntegrationTests/Posts/PostControllerIntegrationTests.cs) - api-level test with a separate database created dynamically using Docker
+3. [Benchmark test](https://github.com/gs1993/SO/blob/master/SO/Tests/BenchmarkTests/APIs/RestBenchmarks.cs) - comparison of REST and GraphQL performance
+
+
+#### APIs
+
+[REST](https://github.com/gs1993/SO/tree/master/SO/Api/Controllers)
+
+[GraphQL](https://github.com/gs1993/SO/tree/master/SO/Api/GraphQL)
+
+[gRPC](https://github.com/gs1993/SO/tree/master/SO/Api/Grpc)
 
 --------------
 
 ## Setup
 
 1. Download and install [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) - version `2018-06` or newer
-2. Go to [appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Api/appsettings.json) and set the connection string to database
-3. Run project and go to app url: [http://localhost:5002](http://localhost:5002)
+2. Go to [appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Api/appsettings.json) and set the connection strings to database
+3. Run database migrations
+```cmd
+dotnet ef database update
+```
+4. Run project and go to app url: [http://localhost:5000/swagger/index.html](http://localhost:5000/swagger/index.html)
