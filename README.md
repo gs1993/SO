@@ -9,18 +9,18 @@ The demo app uses Entity Framework Core to manage 400 GB of data from the [Stack
 
 #### Domain Driven Design
 
-Bounded Contexts:
+Bounded Contexts:<br />
 ![Architecture](https://github.com/gs1993/SO/blob/feature/readme/images/ProjectLogic.PNG)
 
-Rich domain model:
+Rich domain model:<br />
 ![Entity](https://github.com/gs1993/SO/blob/feature/readme/images/PostEntity.PNG)
 
-Value Objects:
+Value Objects:<br />
 ![ValueObject](https://github.com/gs1993/SO/blob/feature/readme/images/ProfileInfoValueObject.PNG)
 
 #### CQRS
 
-Command-query separation:
+Command-query separation:<br />
 ![CQRS](https://github.com/gs1993/SO/blob/feature/readme/images/Cqrs.PNG)
 
 Read-write separation on application level:
