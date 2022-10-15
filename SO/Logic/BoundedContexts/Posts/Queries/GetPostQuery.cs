@@ -32,6 +32,7 @@ namespace Logic.BoundedContexts.Posts.Queries
         {
             var post = await _readOnlyContext.Posts
                 .Include(x => x.Comments)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
             if (post == null)

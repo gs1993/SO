@@ -12,7 +12,7 @@ namespace Api.Validation.Post
 
             RuleFor(x => x.Limit)
                 .GreaterThan(0)
-                .LessThanOrEqualTo(1000).WithMessage("Page size must be less than 1000");
+                .LessThanOrEqualTo(10000).WithMessage("Page size must be less than 10000");
 
         }
     }

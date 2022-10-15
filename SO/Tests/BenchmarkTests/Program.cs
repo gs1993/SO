@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using BenchmarkTests.APIs;
 
 namespace BenchmarkTests
 {
@@ -6,7 +7,12 @@ namespace BenchmarkTests
     {
         static void Main()
         {
-            BenchmarkRunner.Run<RestBenchmarks>();
+            //BenchmarkRunner.Run<RestBenchmarks>();
+            //BenchmarkRunner.Run<GrapqlBenchmarks>();
+
+
+            //BenchmarkRunner.Run<TmpBenchmarks>();
+
             Console.ReadKey();
         }
     }
