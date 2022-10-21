@@ -7,17 +7,6 @@ The demo app uses Entity Framework Core to manage <b>400GB</b> of data from the 
 
 ## Features
 
-### Domain Driven Design
-
-##### Bounded Contexts:
-![Architecture](https://github.com/gs1993/SO/blob/master/images/ProjectLogic.PNG)
-
-##### Rich domain model:<br />
-![Entity](https://github.com/gs1993/SO/blob/master/images/PostEntity.PNG)
-
-##### Value Objects:<br />
-![ValueObject](https://github.com/gs1993/SO/blob/master/images/ProfileInfoValueObject.PNG)
-
 ### CQRS
 
 ##### Command-query separation:<br />
@@ -34,6 +23,17 @@ Read-write separation on application level:
 1. [Unit tests](https://github.com/gs1993/SO/blob/master/SO/Tests/UnitTests/Logic/Posts/PostTests.cs) - in-depth tests for complex domain logic
 2. [Integration tests](https://github.com/gs1993/SO/blob/master/SO/Tests/IntegrationTests/Posts/PostControllerIntegrationTests.cs) - api-level test with a separate database created dynamically using Docker
 3. [Benchmark test](https://github.com/gs1993/SO/blob/master/SO/Tests/BenchmarkTests/APIs/RestBenchmarks.cs) - comparison of REST and GraphQL performance
+
+### Domain Driven Design
+
+##### Bounded Contexts:
+![Architecture](https://github.com/gs1993/SO/blob/master/images/ProjectLogic.PNG)
+
+##### Rich domain model:<br />
+![Entity](https://github.com/gs1993/SO/blob/master/images/PostEntity.PNG)
+
+##### Value Objects:<br />
+![ValueObject](https://github.com/gs1993/SO/blob/master/images/ProfileInfoValueObject.PNG)
 
 
 ### APIs
