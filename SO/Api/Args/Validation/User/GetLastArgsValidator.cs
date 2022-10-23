@@ -1,7 +1,7 @@
 ﻿using Api.Args.User;
 using FluentValidation;
 
-namespace Api.Validation.User
+namespace Api.Args.Validation.User
 {
     public sealed class GetLastArgsValidator : AbstractValidator<GetLastArgs>
     {

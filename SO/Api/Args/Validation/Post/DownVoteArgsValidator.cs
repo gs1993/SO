@@ -1,7 +1,7 @@
 ﻿using Api.Args.Post;
 using FluentValidation;
 
-namespace Api.Validation.Post
+namespace Api.Args.Validation.Post
 {
     public sealed class DownVoteArgsValidator : AbstractValidator<DownVoteArgs>
     {

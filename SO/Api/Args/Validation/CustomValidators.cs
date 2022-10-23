@@ -4,7 +4,7 @@ using Logic.Utils;
 using Logic.Utils.Db;
 using System;
 
-namespace Api.Validation
+namespace Api.Args.Validation
 {
     internal static class CustomValidators
     {
