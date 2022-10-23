@@ -2,7 +2,7 @@
 
 namespace Logic.BoundedContexts.Users.Dto
 {
-    public class UserDetailsDto
+    public sealed class UserDetailsDto
     {
         public int Id { get; set; }
         public string AboutMe { get; set; }

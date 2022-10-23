@@ -1,6 +1,6 @@
 ﻿namespace Logic.BoundedContexts.Users.Dto
 {
-    public class CreateUserDto
+    public sealed class CreateUserDto
     {
         public string? AboutMe { get; init; }
         public int? Age { get; init; }

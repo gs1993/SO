@@ -20,7 +20,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(IReadOnlyList<PostListDto>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(PaginatedPostList))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
         public async Task<IActionResult> Get([FromQuery] GetArgs args)
@@ -29,12 +29,12 @@ namespace Api.Controllers
             if (!validationResult.IsValid)
                 return ValidationError(validationResult);
 
-            var postsDto = await _mediator.Send(new GetPostsPageQuery
+            var postListResult = await _mediator.Send(new GetPostsPageQuery
             (
                 offset: args.Offset,
                 limit: args.Limit
             ));
-            return FromCustomResult(postsDto);
+            return FromCustomResult(postListResult);
         }
 
         [HttpGet]

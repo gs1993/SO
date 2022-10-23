@@ -1,6 +1,6 @@
 ﻿namespace Logic.BoundedContexts.Users.Dto
 {
-    public class LastUserDto
+    public sealed class LastUserDto
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }

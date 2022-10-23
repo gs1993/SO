@@ -32,13 +32,13 @@ namespace GrpcPostServer
             if (!validationResult.IsValid)
                 throw new ArgumentException(validationResult.ToString(), nameof(request));
 
-            var postsDto = await _mediator.Send(new GetPostsPageQuery
+            var postListResult = await _mediator.Send(new GetPostsPageQuery
             (
                 offset: request.Offset,
                 limit: request.Limit
             ));
             var result = new GetListResponse();
-            result.Post.AddRange(postsDto.Select(x => new PostDto
+            result.Post.AddRange(postListResult.Posts.Select(x => new PostDto
             {
                 Id = x.Id,
                 AnswerCount = x.AnswerCount,

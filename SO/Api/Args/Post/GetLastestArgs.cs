@@ -2,7 +2,7 @@
 
 namespace Api.Args.Post
 {
-    public record GetLastestArgs
+    public sealed record GetLastestArgs
     {
         [Required]
         public int Size { get; init; }

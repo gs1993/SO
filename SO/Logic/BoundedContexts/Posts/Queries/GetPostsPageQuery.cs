@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Logic.BoundedContexts.Posts.Queries
 {
-    public record GetPostsPageQuery : IRequest<IReadOnlyList<PostListDto>>
+    public record GetPostsPageQuery : IRequest<PaginatedPostList>
     {
         public int Offset { get; init; }
         public int Limit { get; init; }
@@ -23,7 +23,7 @@ namespace Logic.BoundedContexts.Posts.Queries
         }
     }
 
-    public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, IReadOnlyList<PostListDto>>
+    public class GetPostsPageQueryHandler : IRequestHandler<GetPostsPageQuery, PaginatedPostList>
     {
         private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
@@ -33,15 +33,13 @@ namespace Logic.BoundedContexts.Posts.Queries
         }
 
 
-        public async Task<IReadOnlyList<PostListDto>> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedPostList> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
         {
             Guard.Argument(request).NotNull();
             Guard.Argument(request.Offset).NotNegative();
             Guard.Argument(request.Limit).Positive();
 
-            var posts = await _readOnlyContext.Posts
-                .Skip(request.Offset)
-                .Take(request.Limit)
+            var query = _readOnlyContext.Posts
                 .Select(x => new PostListDto
                 {
                     Id = x.Id,
@@ -53,9 +51,20 @@ namespace Logic.BoundedContexts.Posts.Queries
                     ViewCount = x.ViewCount,
                     CreationDate = x.CreateDate,
                     IsClosed = x.ClosedDate != null
-                }).ToListAsync(cancellationToken: cancellationToken);
+                });
+            
+            var posts = await query
+                .Skip(request.Offset)
+                .Take(request.Limit)
+                .ToListAsync(cancellationToken);
 
-            return posts ?? new List<PostListDto>();
+            int count = await query.CountAsync(cancellationToken);
+
+            return new PaginatedPostList
+            {
+                Posts = posts ?? new List<PostListDto>(),
+                Count = count
+            };
         }
     }
 }

@@ -25,15 +25,15 @@ namespace Api.GraphQL
             if (!validationResult.IsValid)
                 throw new ArgumentException(validationResult.ToString());
 
-            var posts = await mediator.Send(new GetPostsPageQuery
+            var postListResult = await mediator.Send(new GetPostsPageQuery
                 (
                     offset: offset,
                     limit: limit
                 ));
 
-            await eventSender.SendAsync("GetPostsPage", posts);
+            await eventSender.SendAsync("GetPostsPage", postListResult.Posts);
 
-            return posts;
+            return postListResult.Posts;
         }
 
         public async Task<IReadOnlyList<PostListDto>> GetLastest(int size,

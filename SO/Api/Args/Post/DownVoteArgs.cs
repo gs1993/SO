@@ -1,6 +1,6 @@
 ﻿namespace Api.Args.Post
 {
-    public record DownVoteArgs
+    public sealed record DownVoteArgs
     {
         public int UserId { get; init; }
     }
