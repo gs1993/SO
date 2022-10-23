@@ -69,10 +69,12 @@ namespace IntegrationTests.Posts
             var uri = QueryHelpers.AddQueryString("/api/Post", query);
 
             // Act
-            var response = await GetAndDeserializeResponse<IReadOnlyList<PostListDto>>(uri);
+            var response = await GetAndDeserializeResponse<PaginatedPostList>(uri);
 
             // Assert
-            Assert.Equal(expectedItemsCount, response.Count);
+            Assert.NotNull(response.Posts);
+            Assert.Equal(expectedItemsCount, response.Posts.Count);
+            Assert.Equal(4, response.Count);
         }
 
         [Fact]

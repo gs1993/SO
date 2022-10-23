@@ -2,7 +2,7 @@
 
 namespace Logic.BoundedContexts.Posts.Dtos
 {
-    public class CommentDto
+    public sealed class CommentDto
     {
         public DateTime CreationDate { get; set; }
         public int? Score { get; set; }

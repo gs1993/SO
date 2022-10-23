@@ -17,7 +17,6 @@ namespace Api
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
-                    Console.WriteLine("builderContext.HostingEnvironment.EnvironmentName: " + builderContext.HostingEnvironment.EnvironmentName);
                     config.AddJsonFile("appsettings.json", optional: false);
                     config.AddJsonFile($"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json", optional: true);
                 })

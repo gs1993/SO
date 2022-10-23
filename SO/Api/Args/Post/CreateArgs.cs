@@ -1,6 +1,6 @@
 ﻿namespace Api.Args.Post
 {
-    public record CreateArgs
+    public sealed record CreateArgs
     {
         public string Title { get; init; }
         public string Body { get; init; }

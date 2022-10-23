@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Logic.BoundedContexts.Posts.Dtos
 {
-    public class PostDetailsDto
+    public sealed class PostDetailsDto
     {
         public int Id { get; init; }
         public int AnswerCount { get; init; }
