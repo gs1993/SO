@@ -27,7 +27,7 @@ namespace IntegrationTests.Posts
         [InlineData(10, 0)]
         [InlineData(0, 0)]
         [InlineData(1, -1)]
-        [InlineData(0, 1001)]
+        [InlineData(0, 10001)]
         public async Task Should_GetListReturnBadRequest_WhenOffsetOrLimitAreIncorrect
             (int incorrectOffset, int incorrectLimit)
         {

@@ -1,8 +1,9 @@
 ﻿using Api.Args.Post;
+using Api.Args.Validation;
 using FluentValidation;
 using System;
 
-namespace Api.Validation.Post
+namespace Api.Args.Validation.Post
 {
     public class CreateArgsValidator : AbstractValidator<CreateArgs>
     {
