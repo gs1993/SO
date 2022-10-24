@@ -1,6 +1,4 @@
-﻿using Logic.Utils;
-
-namespace Logic.BoundedContexts.Posts.Dtos
+﻿namespace Logic.Utils
 {
 
     public static class Errors
@@ -9,12 +7,13 @@ namespace Logic.BoundedContexts.Posts.Dtos
         {
             public static Error CommentIsRequired() => new("Comment cannot be empty");
             public static Error AlreadyClosed() => new("Post already closed");
+            public static Error DoesNotExists(int id) => new($"Post with id {id} does not exist");
         }
 
         public static class User
         {
             public static Error AlreadyDeleted() => new("User was already deleted");
-            public static Error NotExists(int id) => new($"User with id {id} not exists");
+            public static Error DoesNotExists(int id) => new($"User with id {id} does not exist");
         }
 
         public static class General

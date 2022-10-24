@@ -1,4 +1,5 @@
-﻿using Logic.BoundedContexts.Posts.Dtos;
+﻿using Dawn;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,9 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<IReadOnlyList<PostListDto>> Handle(GetLastestPostsQuery request, CancellationToken cancellationToken)
         {
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Size).Positive();
+
             var posts = await _readOnlyContext.Posts
                 .OrderByDescending(x => x.Id)
                 .Take(request.Size)

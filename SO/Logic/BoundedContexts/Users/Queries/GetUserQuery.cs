@@ -1,4 +1,5 @@
-﻿using Logic.BoundedContexts.Users.Dto;
+﻿using Dawn;
+using Logic.BoundedContexts.Users.Dto;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,11 +30,11 @@ namespace Logic.BoundedContexts.Users.Queries
 
         public async Task<UserDetailsDto?> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            if (request.Id <= 0)
-                throw new ArgumentException($"Invalid id: {request.Id}", nameof(request.Id));
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Id).Positive();
 
             var user = await _readOnlyContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
+                .FindAsync(request.Id)
                 .ConfigureAwait(false);
 
             return user != null

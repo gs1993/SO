@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using Dawn;
+using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
 using System;
@@ -30,13 +32,23 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(UpVoteCommand request, CancellationToken cancellationToken)
         {
-            var user = await _databaseContext.Users.FindAsync(request.UserId);
-            if (user == null)
-                return Result.Failure("User does not exists");
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.UserId).Positive();
+            Guard.Argument(request.PostId).Positive();
 
-            var post = await _databaseContext.Posts.FindAsync(request.PostId);
+            var user = await _databaseContext.Users
+                .FindAsync(request.UserId)
+                .ConfigureAwait(false);
+
+            if (user == null)
+                return Errors.User.DoesNotExists(request.UserId);
+
+            var post = await _databaseContext.Posts
+                .FindAsync(request.PostId)
+                .ConfigureAwait(false);
+
             if (post == null)
-                return Result.Failure("Post does not exists");
+                return Errors.Post.DoesNotExists(request.PostId);
 
             await _databaseContext.Entry(post).Collection(x => x.Votes).LoadAsync(cancellationToken);
             
@@ -44,7 +56,9 @@ namespace Logic.BoundedContexts.Posts.Commands
             if (result.IsFailure)
                 return result;
 
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+            await _databaseContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return Result.Success();
 

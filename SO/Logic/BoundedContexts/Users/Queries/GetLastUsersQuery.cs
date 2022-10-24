@@ -1,4 +1,5 @@
-﻿using Logic.BoundedContexts.Users.Dto;
+﻿using Dawn;
+using Logic.BoundedContexts.Users.Dto;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,8 @@ namespace Logic.BoundedContexts.Users.Queries
 
         public async Task<IReadOnlyList<LastUserDto>> Handle(GetLastUsersQuery request, CancellationToken cancellationToken)
         {
-            if (request.Size <= 0 || request.Size > 1000)
-                throw new ArgumentException($"Invalid size: {request.Size}", nameof(request.Size));
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Size).Positive();
 
             return await _readOnlyContext.Users
                 .OrderByDescending(x => x.CreateDate)
