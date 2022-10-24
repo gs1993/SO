@@ -1,4 +1,5 @@
-﻿using Logic.BoundedContexts.Posts.Dtos;
+﻿using Dawn;
+using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,11 +31,15 @@ namespace Logic.BoundedContexts.Posts.Queries
 
         public async Task<PostDetailsDto?> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Id).Positive();
+
             var post = await _readOnlyContext.Posts
                 .Include(x => x.Comments)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
+
             if (post == null)
                 return null;
 

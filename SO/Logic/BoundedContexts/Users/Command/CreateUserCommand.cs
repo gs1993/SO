@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Dawn;
 using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils;
 using Logic.Utils.Db;
@@ -40,6 +41,8 @@ namespace Logic.BoundedContexts.Users.Command
 
         public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            Guard.Argument(request).NotNull();
+
             var profileInfoResult = ProfileInfo.Create
             (
                 aboutMe: request.AboutMe,
@@ -60,7 +63,10 @@ namespace Logic.BoundedContexts.Users.Command
                 return result.Error;
 
             _databaseContext.Users.Attach(result.Value);
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            await _databaseContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return Result.Success();
         }

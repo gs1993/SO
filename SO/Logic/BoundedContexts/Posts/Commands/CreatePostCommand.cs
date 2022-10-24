@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Logic.BoundedContexts.Posts.Dtos;
+using Dawn;
 using Logic.BoundedContexts.Posts.Entities;
 using Logic.Utils;
 using Logic.Utils.Db;
@@ -41,9 +41,15 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
-            var author = await _databaseContext.Users.FindAsync(request.AuthorId);
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.AuthorId).Positive();
+
+            var author = await _databaseContext.Users
+                .FindAsync(request.AuthorId)
+                .ConfigureAwait(false);
+
             if (author == null)
-                return Errors.User.NotExists(request.AuthorId);
+                return Errors.User.DoesNotExists(request.AuthorId);
 
             var createPostResult = Post.Create
             (
@@ -54,11 +60,15 @@ namespace Logic.BoundedContexts.Posts.Commands
                 authorName: author.DisplayName, 
                 tags: request.Tags
             );
+
             if (createPostResult.IsFailure)
                 return createPostResult.Error;
 
             _databaseContext.Attach(createPostResult.Value);
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            await _databaseContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return Result.Success();
         }

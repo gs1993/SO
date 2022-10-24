@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Dawn;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -31,15 +32,24 @@ namespace Logic.BoundedContexts.Posts.Commands
 
         public async Task<Result> Handle(ClosePostCommand request, CancellationToken cancellationToken)
         {
-            var post = await _databaseContext.Posts.FindAsync(request.Id);
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Id).Positive();
+
+            var post = await _databaseContext.Posts
+                .FindAsync(request.Id)
+                .ConfigureAwait(false);
+
             if (post == null)
-                return Result.Failure("Post does not exist");
+                return Errors.Post.DoesNotExists(request.Id);
 
             var result = post.Close(_dateTimeProvider.Now);
             if (result.IsFailure)
                 return result;
 
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+            await _databaseContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
+
             return Result.Success();
         }
     }

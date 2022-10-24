@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Dawn;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -32,7 +33,13 @@ namespace Logic.BoundedContexts.Users.Command
 
         public async Task<Result> Handle(BanUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            Guard.Argument(request).NotNull();
+            Guard.Argument(request.Id).Positive();
+
+            var user = await _databaseContext.Users
+                .FindAsync(request.Id)
+                .ConfigureAwait(false);
+
             if (user == null || user.IsDeleted)
                 return Result.Failure("User not found");
 
@@ -40,7 +47,9 @@ namespace Logic.BoundedContexts.Users.Command
             if (result.IsFailure)
                 return result;
 
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+            await _databaseContext
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return Result.Success();
         }
