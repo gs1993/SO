@@ -6,13 +6,28 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Avatar, Badge, CardHeader, Collapse, IconButton, IconButtonProps, Stack } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { red } from '@mui/material/colors';
-import ShareIcon from '@mui/icons-material/Share';
+import { Avatar, Badge, Button, CardHeader, Collapse, IconButton, IconButtonProps, Stack } from '@mui/material';
+import { blue } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import Chip from '@mui/material/Chip';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
+import { useEffect } from 'react';
+import { Api } from '../apiClient/Api';
+import { PostListDto } from '../apiClient/data-contracts';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import toast from 'react-hot-toast';
+import { format } from 'date-fns';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  
+
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -35,6 +50,26 @@ const theme = createTheme();
 
 export default function NewPosts() {
     const [expanded, setExpanded] = React.useState(false);
+    const [posts, setPosts] = React.useState<PostListDto[]>([]);
+
+    useEffect(() => {
+        const api = new Api({
+            baseUrl: "http://localhost:5000"
+        });
+    
+        const fetchData = async () => {
+            const posts = await api.postGetLastestList({ Size: 3 });
+            if (posts.ok) {
+                setPosts(posts.data);
+            } else {
+                toast("Cannot get posts");
+            }
+        }
+        fetchData()
+            .catch(() => toast("Cannot get posts"));
+    }, []);
+    
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -42,41 +77,44 @@ export default function NewPosts() {
     return (
         <Container sx={{ py: 2 }} >
             <Grid container spacing={4}>
-                {cards.map((card) => (
-                    <Grid item key={card} sx={{ width: '100%' }}>
+                {posts.map((post) => (
+                    <Grid item key={post.id} sx={{ width: '100%' }}>
                         <Card>
                             <CardHeader
                                 avatar={
-                                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                    <Avatar sx={{ bgcolor: blue[200] }} aria-label="recipe">
                                         R
                                     </Avatar>
                                 }
                                 action={
-                                    <IconButton aria-label="settings">
-                                        <MoreVertIcon />
-                                    </IconButton>
+                                    <FiberNewIcon sx={{ fontSize: 50 }} color="error" />
                                 }
-                                title="Monitoring the Full Disclosure mailinglist"
-                                subheader="September 14, 2016"
+                                title={post.title}
+                                subheader={format(new Date(post.creationDate ?? ""), 'MMMM dd, yyyy')}
                             />
                             <CardContent>
-                            <Stack direction="row" spacing={1}>
-                                <Chip label="security" />
-                                <Chip label="email" />
-                                <Chip label="monitoring" />
-                                <Chip label="filter" />
-                                <Chip label="rss" />
-                            </Stack>
+                            {/* TODO: add tags */}
+                                <Stack direction="row" spacing={1}>
+                                    <Chip label="security" />
+                                    <Chip label="email" />
+                                    <Chip label="monitoring" />
+                                    <Chip label="filter" />
+                                    <Chip label="rss" />
+                                </Stack>
 
                             </CardContent>
                             <CardActions disableSpacing>
-                            <Stack direction="row" spacing={2}>
-                            <Badge badgeContent={1} color="primary" max={99}>
-                                <CommentIcon color="action" />
-                            </Badge>
-                            <Badge badgeContent={1} color="primary" max={99}>
-                                <CommentIcon color="action" />
-                            </Badge>
+                                <Stack direction="row" spacing={2}>
+                                    <Badge badgeContent={post.viewCount ?? 0} color="primary" max={99}>
+                                        <VisibilityIcon color="action" />
+                                    </Badge>
+                                    <Badge badgeContent={post.commentCount ?? 0} color="primary" max={99}>
+                                        <CommentIcon color="action" />
+                                    </Badge>
+                                    <Badge badgeContent={post.score ?? 0} color="primary" max={99}>
+                                        <StarBorderIcon color="action" />
+                                    </Badge>
+
                                 </Stack>
                                 <ExpandMore
                                     expand={expanded}
@@ -90,9 +128,13 @@ export default function NewPosts() {
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <CardContent>
                                     <div>
-                                    <p>I develop web applications, which use a number of third party applications/code/services.</p><p>As part of the job, we regularly check with the Full Disclosure mailing list  for any of the products we use.</p><p>This is a slow process to do manually and subscribing to the list would cost even more time, as most reports do not concern us.</p><p>Since I can't be the only one trying to keep up with any possible problems in the code I use, others have surely encountered (and hopefully solved) this problem before.</p><p>What is the best way to monitor the Full Disclosure mailing list for specific products only?</p>
+                                        {post.shortBody}
                                     </div>
                                 </CardContent>
+                                <CardActions>
+                                    <Button size="small">Share</Button>
+                                    <Button size="small">More info</Button>
+                                </CardActions>
                             </Collapse>
                         </Card>
                     </Grid>
@@ -100,4 +142,8 @@ export default function NewPosts() {
             </Grid>
         </Container>
     );
+}
+
+function useState(arg0: never[]): [any, any] {
+    throw new Error('Function not implemented.');
 }

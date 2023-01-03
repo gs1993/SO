@@ -29,8 +29,6 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
             AddFluentValidation(services);
 
             services.AddSwaggerGen();
@@ -40,6 +38,15 @@ namespace Api
             services.AddMediatR(typeof(DatabaseContext).Assembly);
 
             AddDbContext(services);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "cors",
+                    policy =>
+                    {
+                        policy.WithOrigins(Configuration.GetValue<string>("Cors:AllowedSite")).AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
 
             AddControllers(services);
             AddGraphQL(services);
@@ -55,22 +62,18 @@ namespace Api
 
                 app.UseSwagger();
                 app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "SO API"));
-
             }
+
             app.UseWebSockets();
 
             app.UseRouting();
-            app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+            app.UseCors();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireCors("cors");
                 endpoints.MapGraphQL();
                 endpoints.MapGrpcService<PostGrpcService>();
             });
@@ -100,7 +103,6 @@ namespace Api
         private static void AddControllers(IServiceCollection services)
         {
             services
-                .AddRouting()
                 .AddControllers()
                 .AddJsonOptions(x =>
                 {
