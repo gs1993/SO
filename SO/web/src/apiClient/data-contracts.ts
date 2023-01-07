@@ -119,6 +119,7 @@ export interface PostListDto {
   /** @format int32 */
   viewCount?: number;
   tags?: string[] | null;
+  lastEditorDisplayName?: string | null;
 }
 
 export interface UpVoteArgs {

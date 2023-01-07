@@ -58,7 +58,7 @@ namespace Logic.BoundedContexts.Users.Entities
             if (banDate == DateTime.MinValue)
                 return Errors.General.InvalidValue(nameof(banDate));
             if (IsDeleted)
-                return Errors.User.AlreadyDeleted();
+                return Errors.Users.AlreadyDeleted();
 
             Delete(banDate);
 

@@ -49,7 +49,7 @@ namespace Logic.BoundedContexts.Posts.Commands
                 .ConfigureAwait(false);
 
             if (author == null)
-                return Errors.User.DoesNotExists(request.AuthorId);
+                return Errors.Users.DoesNotExists(request.AuthorId);
 
             var createPostResult = Post.Create
             (

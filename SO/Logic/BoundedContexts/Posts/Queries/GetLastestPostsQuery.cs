@@ -37,19 +37,8 @@ namespace Logic.BoundedContexts.Posts.Queries
             var posts = await _readOnlyContext.Posts
                 .OrderByDescending(x => x.Id)
                 .Take(request.Size)
-                .Select(x => new PostListDto
-                {
-                    Id = x.Id,
-                    Title = x.Title ?? string.Empty,
-                    Body = x.Body,
-                    AnswerCount = x.AnswerCount,
-                    CommentCount = x.CommentCount,
-                    Score = x.Score,
-                    ViewCount = x.ViewCount,
-                    CreationDate = x.CreateDate,
-                    IsClosed = x.ClosedDate != null,
-                    Tags = x.GetTagsArray()
-                }).ToListAsync(cancellationToken: cancellationToken)
+                .Select(x => new PostListDto(x))
+                .ToListAsync(cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
             return posts ?? new List<PostListDto>();
