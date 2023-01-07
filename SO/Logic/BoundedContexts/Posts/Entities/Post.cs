@@ -4,6 +4,7 @@ using Logic.Utils;
 using Logic.Utils.Db;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Logic.BoundedContexts.Posts.Entities
 {
@@ -137,6 +138,18 @@ namespace Logic.BoundedContexts.Posts.Entities
             Delete(closeDate);
 
             return Result.Success();
+        }
+
+        public string[] GetTagsArray()
+        {
+            if (string.IsNullOrWhiteSpace(Tags))
+                return Array.Empty<string>();
+
+            return Tags
+                .Substring(1, Tags.Length - 2)
+                .Split("><")
+                .OrderBy(x => x)
+                .ToArray();
         }
 
         private void AddVote(User user, int voteScore)

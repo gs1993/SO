@@ -11,7 +11,8 @@ namespace Logic.BoundedContexts.Posts.Dtos
         public DateTime CreationDate { get; init; }
         public int Score { get; init; }
         public string Title { get; init; }
-        public string ShortBody { get; init; }
+        public string Body { get; init; }
         public int ViewCount { get; init; }
+        public string[] Tags { get; init; }
     }
 }

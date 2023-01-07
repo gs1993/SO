@@ -115,9 +115,10 @@ export interface PostListDto {
   /** @format int32 */
   score?: number;
   title?: string | null;
-  shortBody?: string | null;
+  body?: string | null;
   /** @format int32 */
   viewCount?: number;
+  tags?: string[] | null;
 }
 
 export interface UpVoteArgs {
