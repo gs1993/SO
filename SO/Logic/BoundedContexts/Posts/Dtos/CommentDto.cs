@@ -4,9 +4,10 @@ namespace Logic.BoundedContexts.Posts.Dtos
 {
     public sealed class CommentDto
     {
-        public DateTime CreationDate { get; set; }
-        public int? Score { get; set; }
-        public string Text { get; set; }
-        public string UserName { get; set; }
+        public int Id { get; init; }
+        public DateTime CreationDate { get; init; }
+        public int? Score { get; init; }
+        public string Text { get; init; }
+        public string UserName { get; init; }
     }
 }

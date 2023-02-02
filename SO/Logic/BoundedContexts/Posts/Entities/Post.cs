@@ -140,18 +140,6 @@ namespace Logic.BoundedContexts.Posts.Entities
             return Result.Success();
         }
 
-        public string[] GetTagsArray()
-        {
-            if (string.IsNullOrWhiteSpace(Tags))
-                return Array.Empty<string>();
-
-            return Tags
-                .Substring(1, Tags.Length - 2)
-                .Split("><")
-                .OrderBy(x => x)
-                .ToArray();
-        }
-
         private void AddVote(User user, int voteScore)
         {
             ArgumentNullException.ThrowIfNull(user);

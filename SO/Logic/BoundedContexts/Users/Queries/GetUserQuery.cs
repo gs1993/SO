@@ -43,17 +43,16 @@ namespace Logic.BoundedContexts.Users.Queries
                     Id = user.Id,
                     DisplayName = user.DisplayName,
                     CreationDate = user.CreateDate,
-                    VoteCount = user.VoteSummary.VoteCount,
-                    DownVotes = user.VoteSummary.DownVotes,
-                    UpVotes = user.VoteSummary.UpVotes,
-                    AboutMe = user.ProfileInfo.AboutMe ?? string.Empty,
-                    Age = user.ProfileInfo.Age,
-                    CreatedPostCount = user.CreatedPostCount,
+                    DownVotes = user.DownVotes,
+                    UpVotes = user.UpVotes,
+                    AboutMe = user.AboutMe ?? string.Empty,
+                    Age = user.Age,
+                    //CreatedPostCount = user.CreatedPostCount,
                     LastAccessDate = user.LastAccessDate,
-                    Location = user.ProfileInfo.Location ?? string.Empty,
+                    Location = user.Location ?? string.Empty,
                     Reputation = user.Reputation,
                     Views = user.Views,
-                    WebsiteUrl = user.ProfileInfo.WebsiteUrl ?? string.Empty
+                    WebsiteUrl = user.WebsiteUrl ?? string.Empty
                 } : null;
         }
     }

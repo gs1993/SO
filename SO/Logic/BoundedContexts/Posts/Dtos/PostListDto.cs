@@ -5,7 +5,7 @@ namespace Logic.BoundedContexts.Posts.Dtos
 {
     public sealed class PostListDto
     {
-        public PostListDto(Post post)
+        public PostListDto(PostDto post)
         {
             Id = post.Id;
             Title = post.Title ?? string.Empty;
@@ -17,7 +17,7 @@ namespace Logic.BoundedContexts.Posts.Dtos
             CreationDate = post.CreateDate;
             IsClosed = post.ClosedDate != null;
             Tags = post.GetTagsArray();
-            LastEditorDisplayName = post.LastEditorDisplayName ?? string.Empty;
+            UserName = post.User?.DisplayName ?? string.Empty;
         }
 
         public int Id { get; init; }
@@ -30,6 +30,6 @@ namespace Logic.BoundedContexts.Posts.Dtos
         public string Body { get; init; }
         public int ViewCount { get; init; }
         public string[] Tags { get; init; }
-        public string LastEditorDisplayName { get; init; }
+        public string UserName { get; init; }
     }
 }

@@ -35,6 +35,7 @@ namespace Logic.BoundedContexts.Posts.Queries
             Guard.Argument(request.Size).Positive();
 
             var posts = await _readOnlyContext.Posts
+                .Include(x => x.User)
                 .OrderByDescending(x => x.Id)
                 .Take(request.Size)
                 .Select(x => new PostListDto(x))

@@ -65,7 +65,7 @@ namespace Logic.BoundedContexts.Posts.Queries
                 {
                     Text = c.Text,
                     Score = c.Score,
-                    CreationDate = c.CreateDate
+                    CreationDate = c.CreationDate
                 })
             };
         }

@@ -40,6 +40,7 @@ namespace Logic.BoundedContexts.Posts.Queries
             Guard.Argument(request.Limit).Positive();
 
             var query = _readOnlyContext.Posts
+                .Include(x => x.User)
                 .Select(x => new PostListDto(x));
             
             var posts = await query
