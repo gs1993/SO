@@ -46,9 +46,7 @@ export default function PostCard(props: PostCardProps) {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: blue[200] }} aria-label="recipe">
-                            {post.userName 
-                                ? post.userName?.substring(0, 1)?.toLocaleUpperCase() 
-                                : 'U'}
+                            {post.userName?.substring(0, 1)?.toLocaleUpperCase() ?? 'U'}
                         </Avatar>
                     }
                     action={
