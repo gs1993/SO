@@ -100,7 +100,7 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (user == null)
                 return Errors.General.ValueIsRequired(nameof(user));
             if (string.IsNullOrWhiteSpace(comment))
-                return Errors.Post.CommentIsRequired();
+                return Errors.Posts.CommentIsRequired();
 
 
             _comments.Add(new Comment(user.Id, comment));
@@ -131,7 +131,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         public Result Close(DateTime closeDate)
         {
             if (ClosedDate != null)
-                return Errors.Post.AlreadyClosed();
+                return Errors.Posts.AlreadyClosed();
 
             ClosedDate = closeDate;
             Delete(closeDate);

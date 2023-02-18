@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using Dawn;
-using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -44,14 +43,14 @@ namespace Logic.BoundedContexts.Posts.Commands
                 .ConfigureAwait(false);
 
             if (user == null)
-                return Errors.User.DoesNotExists(request.UserId);
+                return Errors.Users.DoesNotExists(request.UserId);
 
             var post = await _databaseContext.Posts
                 .FindAsync(request.PostId)
                 .ConfigureAwait(false);
 
             if (post == null)
-                return Errors.Post.DoesNotExists(request.PostId);
+                return Errors.Posts.DoesNotExists(request.PostId);
 
             _databaseContext.Entry(post).Collection(x => x.Comments).Load();
 

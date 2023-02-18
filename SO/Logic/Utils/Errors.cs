@@ -3,14 +3,14 @@
 
     public static class Errors
     {
-        public static class Post
+        public static class Posts
         {
             public static Error CommentIsRequired() => new("Comment cannot be empty");
             public static Error AlreadyClosed() => new("Post already closed");
             public static Error DoesNotExists(int id) => new($"Post with id {id} does not exist");
         }
 
-        public static class User
+        public static class Users
         {
             public static Error AlreadyDeleted() => new("User was already deleted");
             public static Error DoesNotExists(int id) => new($"User with id {id} does not exist");

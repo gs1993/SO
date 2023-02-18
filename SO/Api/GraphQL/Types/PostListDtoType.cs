@@ -1,5 +1,5 @@
 ﻿using HotChocolate.Types;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 
 namespace Api.GraphQL.Types
 {
@@ -14,7 +14,7 @@ namespace Api.GraphQL.Types
             descriptor.Field(x => x.CreationDate).Type< NonNullType<DateTimeType>>();
             descriptor.Field(x => x.Score).Type< NonNullType<IntType>>();
             descriptor.Field(x => x.Title).Type< NonNullType<StringType>>();
-            descriptor.Field(x => x.ShortBody).Type< NonNullType<StringType>>();
+            descriptor.Field(x => x.Body).Type< NonNullType<StringType>>();
             descriptor.Field(x => x.ViewCount).Type< NonNullType<IntType>>();
         }
     }

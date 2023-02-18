@@ -3,14 +3,14 @@
 The demo app uses Entity Framework Core to manage <b>400GB</b> of data from the [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) in a clean and consistent manner
 
 ## Architecture
-![Architecture](https://github.com/gs1993/SO/blob/master/images/Architecture.PNG)
+![Architecture](https://github.com/gs1993/SO/blob/master/images/Architecture2.PNG)
 
 ## Features
 
 ### CQRS
 
 ##### Command-query separation:<br />
-![CQRS](https://github.com/gs1993/SO/blob/master/images/Cqrs.PNG)
+![CQRS](https://github.com/gs1993/SO/blob/master/images/Cqrs2.PNG)
 
 Read-write separation on application level:
 1. Separate connection strings for read and write databases
@@ -27,7 +27,7 @@ Read-write separation on application level:
 ### Domain Driven Design
 
 ##### Bounded Contexts:
-![Architecture](https://github.com/gs1993/SO/blob/master/images/ProjectLogic.PNG)
+![Architecture](https://github.com/gs1993/SO/blob/master/images/ProjectLogic2.PNG)
 
 ##### Rich domain model:<br />
 ![Entity](https://github.com/gs1993/SO/blob/master/images/PostEntity.PNG)

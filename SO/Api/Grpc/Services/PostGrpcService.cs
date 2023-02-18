@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Logic.BoundedContexts.Posts.Queries;
+using Logic.Read.Posts.Queries;
 using MediatR;
 using System;
 using System.Linq;

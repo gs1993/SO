@@ -40,7 +40,7 @@ namespace Logic.BoundedContexts.Posts.Commands
                 .ConfigureAwait(false);
 
             if (post == null)
-                return Errors.Post.DoesNotExists(request.Id);
+                return Errors.Posts.DoesNotExists(request.Id);
 
             var result = post.Close(_dateTimeProvider.Now);
             if (result.IsFailure)
