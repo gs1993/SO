@@ -1,7 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Logic.BoundedContexts.Posts.Queries;
-using Logic.Utils.Db;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BenchmarkTests
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Logic.BoundedContexts.Posts.Dtos
+namespace Logic.Queries.Posts.Dtos
 {
     public sealed class PaginatedPostList
     {

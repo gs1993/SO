@@ -1,5 +1,5 @@
 ﻿using HotChocolate.Types;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 
 namespace Api.GraphQL.Types
 {

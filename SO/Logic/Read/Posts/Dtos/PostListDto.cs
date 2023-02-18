@@ -1,11 +1,13 @@
-﻿using Logic.BoundedContexts.Posts.Entities;
+﻿using Logic.Read.Posts.Models;
 using System;
 
-namespace Logic.BoundedContexts.Posts.Dtos
+namespace Logic.Queries.Posts.Dtos
 {
     public sealed class PostListDto
     {
-        public PostListDto(PostDto post)
+
+        public PostListDto() { }
+        public PostListDto(PostModel post)
         {
             Id = post.Id;
             Title = post.Title ?? string.Empty;

@@ -1,5 +1,5 @@
 ﻿using Dawn;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Logic.BoundedContexts.Posts.Queries
+namespace Logic.Read.Posts.Queries
 {
     public record GetPostsPageQuery : IRequest<PaginatedPostList>
     {
@@ -40,15 +40,16 @@ namespace Logic.BoundedContexts.Posts.Queries
             Guard.Argument(request.Limit).Positive();
 
             var query = _readOnlyContext.Posts
-                .Include(x => x.User)
-                .Select(x => new PostListDto(x));
-            
-            var posts = await query
-                .Skip(request.Offset)
-                .Take(request.Limit)
-                .ToListAsync(cancellationToken);
+                .AsQueryable();
 
             int count = await query.CountAsync(cancellationToken);
+
+            var posts = await query
+                .Include(x => x.User)
+                .Skip(request.Offset)
+                .Take(request.Limit)
+                .Select(x => new PostListDto(x))
+                .ToListAsync(cancellationToken);
 
             return new PaginatedPostList
             {

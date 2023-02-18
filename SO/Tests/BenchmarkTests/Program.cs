@@ -1,7 +1,4 @@
-﻿using BenchmarkDotNet.Running;
-using BenchmarkTests.APIs;
-
-namespace BenchmarkTests
+﻿namespace BenchmarkTests
 {
     internal class Program
     {

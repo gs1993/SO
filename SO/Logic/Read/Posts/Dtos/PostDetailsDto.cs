@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logic.BoundedContexts.Posts.Dtos
+namespace Logic.Queries.Posts.Dtos
 {
     public sealed class PostDetailsDto
     {
@@ -22,6 +22,6 @@ namespace Logic.BoundedContexts.Posts.Dtos
         public string Title { get; init; }
         public int ViewCount { get; init; }
 
-        public IEnumerable<CommentDto> Comments { get; init; }
+        public IReadOnlyList<CommentDto> Comments { get; init; }
     }
 }

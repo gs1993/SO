@@ -1,5 +1,5 @@
 ﻿using Dawn;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Logic.BoundedContexts.Posts.Queries
+namespace Logic.Read.Posts.Queries
 {
     public record GetLastestPostsQuery : IRequest<IReadOnlyList<PostListDto>>
     {
@@ -21,7 +21,7 @@ namespace Logic.BoundedContexts.Posts.Queries
     }
 
     public class GetLastestPostsQueryHandler : IRequestHandler<GetLastestPostsQuery, IReadOnlyList<PostListDto>>
-    {  
+    {
         private readonly ReadOnlyDatabaseContext _readOnlyContext;
 
         public GetLastestPostsQueryHandler(ReadOnlyDatabaseContext readOnlyContext)
@@ -33,6 +33,10 @@ namespace Logic.BoundedContexts.Posts.Queries
         {
             Guard.Argument(request).NotNull();
             Guard.Argument(request.Size).Positive();
+
+            var posts2 = _readOnlyContext.Posts
+                .Include(x => x.User)
+                .ToList();
 
             var posts = await _readOnlyContext.Posts
                 .Include(x => x.User)

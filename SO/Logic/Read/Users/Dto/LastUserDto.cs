@@ -2,7 +2,7 @@
 {
     public sealed class LastUserDto
     {
-        public int Id { get; set; }
-        public string DisplayName { get; set; }
+        public int Id { get; init; }
+        public string DisplayName { get; init; }
     }
 }

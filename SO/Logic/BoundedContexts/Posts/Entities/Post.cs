@@ -4,7 +4,6 @@ using Logic.Utils;
 using Logic.Utils.Db;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Logic.BoundedContexts.Posts.Entities
 {

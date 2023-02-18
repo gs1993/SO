@@ -1,9 +1,7 @@
-﻿using Logic.BoundedContexts.Users.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Logic.BoundedContexts.Posts.Dtos
+namespace Logic.Queries.Posts.Dtos
 {
     public class PostDto
     {
@@ -26,18 +24,6 @@ namespace Logic.BoundedContexts.Posts.Dtos
         public int LastEditorUserId { get; init; }
         public int ViewCount { get; init; }
 
-        public virtual UserDto User { get; init; }
         public virtual IReadOnlyList<CommentDto> Comments { get; init; }
-
-        public string[] GetTagsArray()
-        {
-            if (string.IsNullOrWhiteSpace(Tags))
-                return Array.Empty<string>();
-
-            return Tags[1..^1]
-                .Split("><")
-                .OrderBy(x => x)
-                .ToArray();
-        }
     }
 }

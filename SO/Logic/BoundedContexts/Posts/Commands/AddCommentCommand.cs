@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using Dawn;
-using Logic.BoundedContexts.Posts.Dtos;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;

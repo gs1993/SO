@@ -1,7 +1,7 @@
 ﻿using Api;
 using Api.Args.Post;
 using IntegrationTests.Utils;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System.Collections.Generic;

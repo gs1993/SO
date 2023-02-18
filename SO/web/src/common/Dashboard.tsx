@@ -9,6 +9,7 @@ import NewPosts from '../posts/newPosts';
 import Footer from './Footer';
 import { Toaster } from 'react-hot-toast';
 import SideBarMenu from './SideBarMenu';
+import PostList from '../posts/postList';
 
 
 const mdTheme = createTheme();
@@ -63,7 +64,7 @@ function DashboardContent() {
                             </Grid>
                             <Grid item xs={12}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    Posts
+                                    <PostList/>
                                 </Paper>
                             </Grid>
                         </Grid>

@@ -2,8 +2,8 @@
 using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
-using Logic.BoundedContexts.Posts.Dtos;
 using GraphQL.Client.Abstractions;
+using Logic.Queries.Posts.Dtos;
 
 namespace BenchmarkTests.APIs
 {

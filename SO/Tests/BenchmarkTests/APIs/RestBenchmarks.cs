@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 using System.Net.Http.Headers;
 using System.Text.Json;
 

@@ -1,5 +1,5 @@
 ﻿using Dawn;
-using Logic.BoundedContexts.Posts.Dtos;
+using Logic.Queries.Posts.Dtos;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Logic.BoundedContexts.Posts.Queries
+namespace Logic.Read.Posts.Queries
 {
     public record GetPostQuery : IRequest<PostDetailsDto?>
     {
@@ -35,6 +35,7 @@ namespace Logic.BoundedContexts.Posts.Queries
             Guard.Argument(request.Id).Positive();
 
             var post = await _readOnlyContext.Posts
+                .Include(x => x.User)
                 .Include(x => x.Comments)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken)
@@ -53,7 +54,7 @@ namespace Logic.BoundedContexts.Posts.Queries
                 CommunityOwnedDate = post.CommunityOwnedDate,
                 CreationDate = post.CreateDate,
                 FavoriteCount = post.FavoriteCount,
-                LastEditorDisplayName = post.LastEditorDisplayName ?? string.Empty,
+                LastEditorDisplayName = post.User?.DisplayName ?? string.Empty,
                 Score = post.Score,
                 LastActivityDate = post.LastActivityDate,
                 LastEditDate = post.LastUpdateDate,
@@ -65,8 +66,8 @@ namespace Logic.BoundedContexts.Posts.Queries
                 {
                     Text = c.Text,
                     Score = c.Score,
-                    CreationDate = c.CreationDate
-                })
+                    CreationDate = c.CreateDate
+                }).ToList().AsReadOnly()
             };
         }
     }

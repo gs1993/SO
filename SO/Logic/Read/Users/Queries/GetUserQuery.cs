@@ -2,8 +2,6 @@
 using Logic.BoundedContexts.Users.Dto;
 using Logic.Utils.Db;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,7 +45,6 @@ namespace Logic.BoundedContexts.Users.Queries
                     UpVotes = user.UpVotes,
                     AboutMe = user.AboutMe ?? string.Empty,
                     Age = user.Age,
-                    //CreatedPostCount = user.CreatedPostCount,
                     LastAccessDate = user.LastAccessDate,
                     Location = user.Location ?? string.Empty,
                     Reputation = user.Reputation,
