@@ -38,6 +38,25 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Route("GetByCursor")]
+        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(PaginatedPostList))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
+        public async Task<IActionResult> Get([FromQuery] GetByCursorArgs args)
+        {
+            var validationResult = _validatorFactory.GetValidator<GetByCursorArgs>().Validate(args);
+            if (!validationResult.IsValid)
+                return ValidationError(validationResult);
+
+            var postListResult = await _mediator.Send(new GetPostsPageByCursorQuery
+            (
+                cursor: args.Cursor,
+                limit: args.Limit
+            ));
+            return FromCustomResult(postListResult);
+        }
+
+        [HttpGet]
         [Route("GetLastest")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(IReadOnlyList<PostListDto>))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]

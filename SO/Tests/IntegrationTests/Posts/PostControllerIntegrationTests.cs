@@ -1,5 +1,6 @@
 ﻿using Api;
 using Api.Args.Post;
+using Docker.DotNet.Models;
 using IntegrationTests.Utils;
 using Logic.Queries.Posts.Dtos;
 using Microsoft.AspNetCore.WebUtilities;
@@ -57,8 +58,7 @@ namespace IntegrationTests.Posts
         [InlineData(3, 2, 1)]
         [InlineData(1, 1, 1)]
         [InlineData(1, 3, 3)]
-        public async Task Should_GetListReturnExpectedAmountOfItems_WhenTableHasFourItems
-            (int offset, int limit, int expectedItemsCount)
+        public async Task Should_GetListReturnExpectedAmountOfItems_WhenTableHasFourItems(int offset, int limit, int expectedItemsCount)
         {
             // Arrange
             var query = new Dictionary<string, string>()
@@ -75,6 +75,62 @@ namespace IntegrationTests.Posts
             Assert.NotNull(response.Posts);
             Assert.Equal(expectedItemsCount, response.Posts.Count);
             Assert.Equal(4, response.Count);
+        }
+
+        [Theory]
+        [InlineData(null, 4, 4)]
+        [InlineData(null, 1, 1)]
+        [InlineData(null, 10, 4)]
+        [InlineData(1, 3, 3)]
+        [InlineData(3, 10, 1)]
+        [InlineData(4, 10, 0)]
+        [InlineData(4, 1, 0)]
+        public async Task Should_GetListByCursorReturnExpectedAmountOfItems_WhenTableHasFourItems(int? cursor, int limit, int expectedItemsCount)
+        {
+            // Arrange
+            var query = new Dictionary<string, string>()
+            {
+                ["Limit"] = limit.ToString()
+            };
+            if (cursor.HasValue)
+                query.Add("Cursor", cursor.Value.ToString());
+
+            var uri = QueryHelpers.AddQueryString("/api/Post/GetByCursor", query);
+
+            // Act
+            var response = await GetAndDeserializeResponse<PaginatedPostList>(uri);
+
+            // Assert
+            Assert.NotNull(response.Posts);
+            Assert.Equal(expectedItemsCount, response.Posts.Count);
+            Assert.Equal(4, response.Count);
+        }
+
+        [Theory]
+        [InlineData(null, 4, 1, 4)]
+        [InlineData(null, 1, 1, 1)]
+        [InlineData(null, 10, 1, 4)]
+        [InlineData(1, 3, 2, 4)]
+        [InlineData(3, 10, 4, 4)]
+        public async Task Should_GetListByCursorReturnExpectedItems_WhenTableHasFourItems(int? cursor, int limit, int firstItemId, int lastItemId)
+        {
+            // Arrange
+            var query = new Dictionary<string, string>()
+            {
+                ["Limit"] = limit.ToString()
+            };
+            if (cursor.HasValue)
+                query.Add("Cursor", cursor.Value.ToString());
+
+            var uri = QueryHelpers.AddQueryString("/api/Post/GetByCursor", query);
+
+            // Act
+            var response = await GetAndDeserializeResponse<PaginatedPostList>(uri);
+
+            // Assert
+            Assert.NotNull(response.Posts);
+            Assert.Equal(firstItemId, response.Posts.First().Id);
+            Assert.Equal(lastItemId, response.Posts.Last().Id);
         }
 
         [Fact]
