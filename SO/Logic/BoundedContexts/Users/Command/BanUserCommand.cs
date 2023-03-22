@@ -36,7 +36,7 @@ namespace Logic.BoundedContexts.Users.Command
             Guard.Argument(request.Id).Positive();
 
             var user = await _databaseContext.Users
-                .FindAsync(request.Id)
+                .FindByIdAsync(request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
             if (user == null || user.IsDeleted)

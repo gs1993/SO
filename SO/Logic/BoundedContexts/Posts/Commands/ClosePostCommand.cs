@@ -36,7 +36,7 @@ namespace Logic.BoundedContexts.Posts.Commands
             Guard.Argument(request.Id).Positive();
 
             var post = await _databaseContext.Posts
-                .FindAsync(request.Id)
+                .FindByIdAsync(request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
             if (post == null)
