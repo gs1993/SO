@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Utils.Db;
+using System;
 
 namespace Logic.Read.Users.Models
 {

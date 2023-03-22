@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Logic.Utils.Db
 {
@@ -37,5 +39,8 @@ namespace Logic.Utils.Db
                 optionsBuilder.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
             });
         }
+
+        public static ValueTask<T?> FindByIdAsync<T>(this DbSet<T> dbSet, int id, CancellationToken cancellationToken) where T : BaseEntity
+            => dbSet.FindAsync(new object?[] { id }, cancellationToken: cancellationToken);
     }
 }

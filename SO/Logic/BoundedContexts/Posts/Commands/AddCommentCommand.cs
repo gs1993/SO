@@ -2,7 +2,9 @@
 using Dawn;
 using Logic.Utils;
 using Logic.Utils.Db;
+using Logic.Utils.Db;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,20 +41,19 @@ namespace Logic.BoundedContexts.Posts.Commands
             Guard.Argument(request.PostId).Positive();
 
             var user = await _databaseContext.Users
-                .FindAsync(request.UserId)
+                .FindByIdAsync(request.UserId, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
             if (user == null)
                 return Errors.Users.DoesNotExists(request.UserId);
 
             var post = await _databaseContext.Posts
-                .FindAsync(request.PostId)
+                .Include(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken)
                 .ConfigureAwait(false);
 
             if (post == null)
                 return Errors.Posts.DoesNotExists(request.PostId);
-
-            _databaseContext.Entry(post).Collection(x => x.Comments).Load();
 
             var result = post.AddComment(user, request.Comment);
             if (result.IsFailure)
@@ -63,7 +64,6 @@ namespace Logic.BoundedContexts.Posts.Commands
                 .ConfigureAwait(false);
 
             return Result.Success();
-
         }
     }
 }

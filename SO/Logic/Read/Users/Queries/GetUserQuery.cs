@@ -2,6 +2,7 @@
 using Logic.BoundedContexts.Users.Dto;
 using Logic.Utils.Db;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace Logic.BoundedContexts.Users.Queries
             Guard.Argument(request.Id).Positive();
 
             var user = await _readOnlyContext.Users
-                .FindAsync(request.Id)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
             return user != null

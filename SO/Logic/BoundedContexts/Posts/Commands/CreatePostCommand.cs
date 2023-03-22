@@ -45,7 +45,7 @@ namespace Logic.BoundedContexts.Posts.Commands
             Guard.Argument(request.AuthorId).Positive();
 
             var author = await _databaseContext.Users
-                .FindAsync(request.AuthorId)
+                .FindByIdAsync(request.AuthorId, cancellationToken)
                 .ConfigureAwait(false);
 
             if (author == null)

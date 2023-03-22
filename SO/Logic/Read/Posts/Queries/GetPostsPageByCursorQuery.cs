@@ -50,7 +50,8 @@ namespace Logic.Read.Posts.Queries
                 .Include(x => x.User)
                 .Take(request.Limit)
                 .Select(x => new PostListDto(x))
-                .ToListAsync(cancellationToken);
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return new PaginatedPostList
             {
