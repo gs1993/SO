@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Dawn;
 using Logic.BoundedContexts.Posts.Entities;
+using Logic.Contracts;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -32,11 +33,13 @@ namespace Logic.BoundedContexts.Posts.Commands
     {
         public readonly DatabaseContext _databaseContext;
         public readonly IDateTimeProvider _dateTimeProvider;
+        public readonly IMediator _mediator;
 
-        public CreatePostCommandHandler(DatabaseContext databaseContext, IDateTimeProvider dateTimeProvider)
+        public CreatePostCommandHandler(DatabaseContext databaseContext, IDateTimeProvider dateTimeProvider, IMediator mediator)
         {
             _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
+            _mediator = mediator;
         }
 
         public async Task<Result> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -64,6 +67,10 @@ namespace Logic.BoundedContexts.Posts.Commands
             if (createPostResult.IsFailure)
                 return createPostResult.Error;
 
+            var spamValidationResult = await _mediator.Send(new ValidatePostContentCommand(request.Body), cancellationToken);
+            if (spamValidationResult.IsSuccess && spamValidationResult.Value == IsSpamPredictionEnum.Spam)
+                return Errors.Posts.InappropriatePostContent();
+
             _databaseContext.Attach(createPostResult.Value);
 
             await _databaseContext
@@ -72,5 +79,5 @@ namespace Logic.BoundedContexts.Posts.Commands
 
             return Result.Success();
         }
-    }
+    }    
 }
