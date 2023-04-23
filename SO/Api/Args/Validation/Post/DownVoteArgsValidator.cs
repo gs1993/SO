@@ -7,7 +7,10 @@ namespace Api.Args.Validation.Post
     {
         public DownVoteArgsValidator()
         {
-            RuleFor(x => x.UserId).GreaterThan(0);
+            RuleFor(x => x).NotNull();
+
+            RuleFor(x => x.UserId)
+                .GreaterThan(0);
         }
     }
 }

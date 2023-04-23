@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 /SO/BenchmarkDotNet.Artifacts/results
 /SO/Tests/BenchmarkTests/BenchmarkDotNet.Artifacts/results
-/SO/Api/appsettings.Development.json
+**/appsettings.Development.json

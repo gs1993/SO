@@ -7,6 +7,8 @@ namespace Api.Args.Validation.Post
     {
         public GetArgsValidator()
         {
+            RuleFor(x => x).NotNull();
+
             RuleFor(x => x.Offset)
                 .GreaterThanOrEqualTo(0);
 

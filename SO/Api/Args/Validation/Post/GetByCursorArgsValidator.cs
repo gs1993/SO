@@ -7,6 +7,8 @@ namespace Api.Args.Validation.Post
     {
         public GetByCursorArgsValidator()
         {
+            RuleFor(x => x).NotNull();
+
             RuleFor(x => x.Cursor)
                 .GreaterThan(0)
                 .When(x => x.Cursor != null);

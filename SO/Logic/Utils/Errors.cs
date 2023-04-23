@@ -8,6 +8,7 @@
             public static Error CommentIsRequired() => new("Comment cannot be empty");
             public static Error AlreadyClosed() => new("Post already closed");
             public static Error DoesNotExists(int id) => new($"Post with id {id} does not exist");
+            public static Error InappropriatePostContent() => new("Inappropriate post content");
         }
 
         public static class Users
