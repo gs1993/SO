@@ -1,5 +1,6 @@
 ﻿using Dawn;
 using Logic.Queries.Posts.Dtos;
+using Logic.Read.Posts.Models;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -32,25 +33,20 @@ namespace Logic.Read.Posts.Queries
             _readOnlyContext = readOnlyContext ?? throw new ArgumentNullException(nameof(readOnlyContext));
         }
 
-
         public async Task<PaginatedPostList> Handle(GetPostsPageQuery request, CancellationToken cancellationToken)
         {
             Guard.Argument(request).NotNull();
             Guard.Argument(request.Offset).NotNegative();
             Guard.Argument(request.Limit).Positive();
 
-            var query = _readOnlyContext.Posts
-                .AsQueryable();
+            var posts = new List<PostListDto>();
+            await foreach (var post in GetPosts(_readOnlyContext, request.Offset, request.Limit))
+            {
+                posts.Add(post);
+            }
 
-            int count = await query.CountAsync(cancellationToken);
-
-            var posts = await query
-                .Include(x => x.User)
-                .Skip(request.Offset)
-                .Take(request.Limit)
-                .Select(x => new PostListDto(x))
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
+            int count = await _readOnlyContext.Posts
+                .CountAsync(cancellationToken);
 
             return new PaginatedPostList
             {
@@ -58,5 +54,27 @@ namespace Logic.Read.Posts.Queries
                 Count = count
             };
         }
+
+        private static readonly Func<ReadOnlyDatabaseContext, int, int, IAsyncEnumerable<PostListDto>> GetPosts =
+            EF.CompileAsyncQuery((ReadOnlyDatabaseContext context, int offset, int limit) =>
+                context.Set<PostModel>()
+                    .Include(x => x.User)
+                    .OrderBy(x => x.Id)
+                    .Skip(offset)
+                    .Take(limit)
+                    .Select(post => new PostListDto
+                    {
+                        Id = post.Id,
+                        Title = post.Title ?? string.Empty,
+                        Body = post.Body,
+                        AnswerCount = post.AnswerCount,
+                        CommentCount = post.CommentCount,
+                        Score = post.Score,
+                        ViewCount = post.ViewCount,
+                        CreationDate = post.CreateDate,
+                        IsClosed = post.ClosedDate != null,
+                        Tags = post.GetTagsArray(),
+                        UserName = post.User != null ? post.User.DisplayName : string.Empty,
+                    }));
     }
 }

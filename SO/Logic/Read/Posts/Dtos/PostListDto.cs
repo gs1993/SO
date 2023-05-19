@@ -5,23 +5,6 @@ namespace Logic.Queries.Posts.Dtos
 {
     public sealed class PostListDto
     {
-
-        public PostListDto() { }
-        public PostListDto(PostModel post)
-        {
-            Id = post.Id;
-            Title = post.Title ?? string.Empty;
-            Body = post.Body;
-            AnswerCount = post.AnswerCount;
-            CommentCount = post.CommentCount;
-            Score = post.Score;
-            ViewCount = post.ViewCount;
-            CreationDate = post.CreateDate;
-            IsClosed = post.ClosedDate != null;
-            Tags = post.GetTagsArray();
-            UserName = post.User?.DisplayName ?? string.Empty;
-        }
-
         public int Id { get; init; }
         public int AnswerCount { get; init; }
         public bool IsClosed { get; init; }

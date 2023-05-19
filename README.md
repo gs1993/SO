@@ -28,6 +28,9 @@ Read-write separation on application level:
 2. Independent [Read](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/ReadOnlyDatabaseContext.cs) and [write](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/DatabaseContext.cs) db contexts
 3. More efficient scaling on [micro](https://github.com/gs1993/SO/blob/master/SO/Logic/Utils/Db/DbExtensions.cs) and [macro](https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication?view=sql-server-ver16) levels
 
+##### EF Compiled Queries:
+Employing [Compiled Queries](https://github.com/gs1993/SO/blob/master/SO/Logic/Read/Posts/Queries/GetLastestPostsQuery.cs) serves as an effective strategy to significantly boost the performance on the data retrieval side of the application.
+
 ### Tests
 ![Tests](https://github.com/gs1993/SO/blob/master/images/Tests.PNG)
 

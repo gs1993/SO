@@ -1,8 +1,10 @@
 ﻿using Dawn;
 using Logic.Queries.Posts.Dtos;
+using Logic.Read.Posts.Models;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -34,19 +36,34 @@ namespace Logic.Read.Posts.Queries
             Guard.Argument(request).NotNull();
             Guard.Argument(request.Size).Positive();
 
-            var posts2 = _readOnlyContext.Posts
-                .Include(x => x.User)
-                .ToList();
+            var postList = new List<PostListDto>();
+            await foreach (var post in GetPosts(_readOnlyContext, request.Size))
+            {
+                postList.Add(post);
+            }
 
-            var posts = await _readOnlyContext.Posts
-                .Include(x => x.User)
-                .OrderByDescending(x => x.Id)
-                .Take(request.Size)
-                .Select(x => new PostListDto(x))
-                .ToListAsync(cancellationToken: cancellationToken)
-                .ConfigureAwait(false);
-
-            return posts ?? new List<PostListDto>();
+            return postList.AsReadOnly();
         }
+
+        private static readonly Func<ReadOnlyDatabaseContext, int, IAsyncEnumerable<PostListDto>> GetPosts =
+            EF.CompileAsyncQuery((ReadOnlyDatabaseContext context, int size) =>
+                context.Set<PostModel>()
+                    .Include(x => x.User)
+                    .OrderByDescending(x => x.Id)
+                    .Take(size)
+                    .Select(post => new PostListDto
+                    {
+                        Id = post.Id,
+                        Title = post.Title ?? string.Empty,
+                        Body = post.Body,
+                        AnswerCount = post.AnswerCount,
+                        CommentCount = post.CommentCount,
+                        Score = post.Score,
+                        ViewCount = post.ViewCount,
+                        CreationDate = post.CreateDate,
+                        IsClosed = post.ClosedDate != null,
+                        Tags = post.GetTagsArray(),
+                        UserName = post.User != null ? post.User.DisplayName : string.Empty,
+                    }));
     }
 }

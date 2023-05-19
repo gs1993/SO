@@ -18,7 +18,7 @@ namespace Logic.Read.Posts.Models
         public int FavoriteCount { get; init; }
         public DateTime LastActivityDate { get; init; }
         public DateTime? LastUpdateDate { get; init; }
-        public string LastEditorDisplayName { get; init; }
+        public string? LastEditorDisplayName { get; init; }
         public int Score { get; init; }
         public string? Tags { get; init; }
         public string? Title { get; init; }
