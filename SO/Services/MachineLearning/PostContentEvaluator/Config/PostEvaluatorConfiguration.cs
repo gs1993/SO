@@ -1,4 +1,4 @@
-﻿namespace PostContentEvaluator
+﻿namespace ModelBuilder.Config
 {
     internal class PostEvaluatorConfiguration
     {

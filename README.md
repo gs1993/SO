@@ -69,10 +69,19 @@ Spam detection is accomplished through a machine learning model trained on a lar
 
 ## Setup
 
+## Api
+
 1. Download and install [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) - version `2018-06` or newer
-2. Go to [appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Api/appsettings.json) and set the connection strings to database
+2. Go to [Api/appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Api/appsettings.json) and set the connection strings to database
 3. Run database migrations
 ```cmd
 dotnet ef database update
 ```
 4. Run project and go to app url: [http://localhost:5000/swagger/index.html](http://localhost:5000/swagger/index.html)
+
+## Machine learning models
+
+1. Go to [ModelBuilder/appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Services/MachineLearning/PostContentEvaluator/appsettings.json). Set `ConnectionString` to database and `SaveModelPath` - (path to generate ML model)
+2. Run `ModelBuilder` in release mode and wait for ML model to generate .zip file in specified location
+3. Go to [PredictionEngineApi/appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Services/MachineLearning/PredictionEngineApi/appsettings.json). Set `PredictionModelPath` (path and name of generated ML model)
+4. Run project and go to app url: [http://localhost:5001/swagger/index.html](http://localhost:5001/swagger/index.html)

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using ModelBuilder.Config;
+using ModelBuilder.EvaluationEngines;
 
-namespace PostContentEvaluator
+namespace ModelBuilder
 {
     internal class Program
     {
@@ -19,7 +21,6 @@ namespace PostContentEvaluator
             string saveModelPath = settings.SaveModelPath;
             if (!Directory.Exists(saveModelPath))
                 Directory.CreateDirectory(saveModelPath);
-
 
             try
             {

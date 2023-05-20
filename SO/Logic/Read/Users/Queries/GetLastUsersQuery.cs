@@ -3,7 +3,6 @@ using Logic.BoundedContexts.Users.Dto;
 using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

@@ -1,5 +1,4 @@
-﻿using Logic.Read.Posts.Models;
-using System;
+﻿using System;
 
 namespace Logic.Queries.Posts.Dtos
 {

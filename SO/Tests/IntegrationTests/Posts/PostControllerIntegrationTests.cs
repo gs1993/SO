@@ -1,6 +1,5 @@
 ﻿using Api;
 using Api.Args.Post;
-using Docker.DotNet.Models;
 using IntegrationTests.Utils;
 using Logic.Queries.Posts.Dtos;
 using Microsoft.AspNetCore.WebUtilities;

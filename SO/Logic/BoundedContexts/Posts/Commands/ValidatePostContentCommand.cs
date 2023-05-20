@@ -19,19 +19,13 @@ namespace Logic.BoundedContexts.Posts.Commands
 
     public class ValidatePostContentCommandHandler : IRequestHandler<ValidatePostContentCommand, Result<IsSpamPredictionEnum>>
     {
-        public readonly IAntySpamPredictionService _postPredictionService;
-
-        public ValidatePostContentCommandHandler(IAntySpamPredictionService postPredictionService)
-        {
-            _postPredictionService = postPredictionService;
-        }
+        
 
         public async Task<Result<IsSpamPredictionEnum>> Handle(ValidatePostContentCommand request, CancellationToken cancellationToken)
         {
             Guard.Argument(request).NotNull();
             Guard.Argument(request.Body).NotEmpty().NotWhiteSpace();
 
-            var spamValidationResult = _postPredictionService.Predict(request.Body);
             return Result.Success(spamValidationResult);
         }
     }

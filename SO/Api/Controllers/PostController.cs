@@ -109,21 +109,6 @@ namespace Api.Controllers
             return FromResult(result, successStatusCode: 201);
         }
 
-        [HttpPost]
-        [Route("ValidateContent/")]
-        [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, type: typeof(EnvelopeError))]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError, type: typeof(EnvelopeError))]
-        public async Task<IActionResult> ValidateContent([FromBody] ValidateContentArgs args)
-        {
-            var validationResult = _validatorFactory.GetValidator<ValidateContentArgs>().Validate(args);
-            if (!validationResult.IsValid)
-                return ValidationError(validationResult);
-
-            var result = await _mediator.Send(new ValidatePostContentCommand(args.Body));
-            return FromCustomResult(result);
-        }
-
         [HttpPut]
         [Route("Close/{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK, type: typeof(EnvelopeSuccess))]

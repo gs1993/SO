@@ -1,9 +1,10 @@
 ﻿using Microsoft.ML;
 using Microsoft.ML.Data;
+using ModelBuilder.Config;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
-namespace PostContentEvaluator
+namespace ModelBuilder.EvaluationEngines
 {
     internal static class PostScoreEvaluationEngine
     {

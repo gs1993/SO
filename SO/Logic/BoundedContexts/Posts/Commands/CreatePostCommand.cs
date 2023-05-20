@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Dawn;
 using Logic.BoundedContexts.Posts.Entities;
-using Logic.Contracts;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -66,10 +65,6 @@ namespace Logic.BoundedContexts.Posts.Commands
 
             if (createPostResult.IsFailure)
                 return createPostResult.Error;
-
-            var spamValidationResult = await _mediator.Send(new ValidatePostContentCommand(request.Body), cancellationToken);
-            if (spamValidationResult.IsSuccess && spamValidationResult.Value == IsSpamPredictionEnum.Spam)
-                return Errors.Posts.InappropriatePostContent();
 
             _databaseContext.Attach(createPostResult.Value);
 

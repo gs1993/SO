@@ -2,7 +2,6 @@
 using Dawn;
 using Logic.Utils;
 using Logic.Utils.Db;
-using Logic.Utils.Db;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

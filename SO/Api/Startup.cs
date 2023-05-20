@@ -1,9 +1,7 @@
 ﻿using Api.GraphQL;
 using Api.Utils;
-using Dawn;
 using FluentValidation;
 using GrpcPostServer;
-using Logic.Contracts;
 using Logic.Utils;
 using Logic.Utils.Db;
 using MediatR;
@@ -14,10 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.ML;
-using PostContentEvaluator.IsPostSpam;
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -57,8 +52,6 @@ namespace Api
             AddGraphQL(services);
 
             services.AddGrpc();
-
-            AddPostContentEvaluator(services, Configuration.GetValue<string>("PredictionModelPath"));
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -137,16 +130,6 @@ namespace Api
         {
             services.AddValidatorsFromAssemblyContaining<Startup>();
             services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
-        }
-
-        private static void AddPostContentEvaluator(IServiceCollection services, string modelFilePath)
-        {
-            Guard.Argument(modelFilePath).NotEmpty().NotWhiteSpace();
-
-            var mlContext = new MLContext();
-            var model = mlContext.Model.Load(modelFilePath, out var _);
-
-            services.AddSingleton<IAntySpamPredictionService>(new AntySpamPredictionService(mlContext, model));
         }
     }
 }

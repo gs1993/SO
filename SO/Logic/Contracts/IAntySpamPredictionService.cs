@@ -2,8 +2,10 @@
 {
     public interface IAntySpamPredictionService
     {
-        IsSpamPredictionEnum Predict(string postBody);
+        PrecictionResponse Predict(string postBody);
     }
+
+    public sealed record PrecictionResponse(IsSpamPredictionEnum Prediction, float ConfidenceLevel);
 
     public enum IsSpamPredictionEnum
     {
