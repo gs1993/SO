@@ -28,7 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MachineLearning", "MachineL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelBuilder", "Services\MachineLearning\PostContentEvaluator\ModelBuilder.csproj", "{185396FA-4CE5-4BF8-87D1-5E250E5595F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PredictionEngineApi", "Services\MachineLearning\PredictionEngineApi\PredictionEngineApi.csproj", "{83EE9C6F-8FEE-4312-BA53-5886958079F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PredictionEngineApi", "Services\MachineLearning\PredictionEngineApi\PredictionEngineApi.csproj", "{83EE9C6F-8FEE-4312-BA53-5886958079F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGptApi", "Services\MachineLearning\ChatGptApi\ChatGptApi.csproj", "{E448F675-0C55-436D-8E38-758407BBD980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,10 @@ Global
 		{83EE9C6F-8FEE-4312-BA53-5886958079F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83EE9C6F-8FEE-4312-BA53-5886958079F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83EE9C6F-8FEE-4312-BA53-5886958079F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E448F675-0C55-436D-8E38-758407BBD980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E448F675-0C55-436D-8E38-758407BBD980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E448F675-0C55-436D-8E38-758407BBD980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E448F675-0C55-436D-8E38-758407BBD980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{54505993-976A-40D8-83A6-CB9B64B981F2} = {ECC901F0-2E63-4C0C-902D-6A96090F2BCE}
 		{185396FA-4CE5-4BF8-87D1-5E250E5595F3} = {54505993-976A-40D8-83A6-CB9B64B981F2}
 		{83EE9C6F-8FEE-4312-BA53-5886958079F5} = {54505993-976A-40D8-83A6-CB9B64B981F2}
+		{E448F675-0C55-436D-8E38-758407BBD980} = {54505993-976A-40D8-83A6-CB9B64B981F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4DA5FDD-E995-4BC8-960E-9EB7EBD2FA04}
