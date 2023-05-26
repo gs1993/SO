@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{808C1C0B-D089-4E6D-A2D2-488798C3C631}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{E74A9D75-1C9E-45B0-86CC-294889FA43A6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C2501861-59AA-4F70-A78A-9E5B7E6DF678}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}"
@@ -30,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelBuilder", "Services\Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PredictionEngineApi", "Services\MachineLearning\PredictionEngineApi\PredictionEngineApi.csproj", "{83EE9C6F-8FEE-4312-BA53-5886958079F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGptApi", "Services\MachineLearning\ChatGptApi\ChatGptApi.csproj", "{E448F675-0C55-436D-8E38-758407BBD980}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGptApi", "Services\MachineLearning\ChatGptApi\ChatGptApi.csproj", "{E448F675-0C55-436D-8E38-758407BBD980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +44,6 @@ Global
 		{808C1C0B-D089-4E6D-A2D2-488798C3C631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{808C1C0B-D089-4E6D-A2D2-488798C3C631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{808C1C0B-D089-4E6D-A2D2-488798C3C631}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E74A9D75-1C9E-45B0-86CC-294889FA43A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63AB5EA8-FD9D-4A65-B1CE-00F45B10B820}.Release|Any CPU.ActiveCfg = Release|Any CPU
