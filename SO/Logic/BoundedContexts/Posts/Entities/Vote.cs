@@ -1,10 +1,11 @@
-﻿using Logic.BoundedContexts.Users.Entities;
+﻿using CSharpFunctionalExtensions;
+using Logic.BoundedContexts.Users.Entities;
 using Logic.Utils.Db;
 using System;
 
 namespace Logic.BoundedContexts.Posts.Entities
 {
-    public class Vote : BaseEntity
+    public class Vote : Entity<int>
     {
         public int PostId { get; private set; }
         public int? UserId { get; private set; }

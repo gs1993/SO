@@ -85,3 +85,4 @@ dotnet ef database update
 2. Run `ModelBuilder` in release mode and wait for ML model to generate .zip file in specified location
 3. Go to [PredictionEngineApi/appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Services/MachineLearning/PredictionEngineApi/appsettings.json). Set `PredictionModelPath` (path and name of generated ML model)
 4. Run project and go to app url: [http://localhost:5001/swagger/index.html](http://localhost:5001/swagger/index.html)
+5. aa docker-compose -f elasticsearch-kibana-docker-compose.yaml up -d
