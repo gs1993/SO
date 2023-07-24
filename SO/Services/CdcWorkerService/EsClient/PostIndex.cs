@@ -11,23 +11,23 @@ namespace CdcWorkerService.EsClient
         public PostIndex(PostCT cdcPost)
         {
             Id = cdcPost.Id;
-            AnswerCount = cdcPost.AnswerCount ?? default;
-            Body = cdcPost.Body ?? string.Empty;
-            ClosedDate = cdcPost.ClosedDate ?? default;
-            CommentCount = cdcPost.CommentCount ?? default;
-            CommunityOwnedDate = cdcPost.CommunityOwnedDate ?? default;
-            CreateDate = cdcPost.CreateDate ?? default;
-            FavoriteCount = cdcPost.FavoriteCount ?? default;
-            IsDeleted = cdcPost.IsDeleted ?? default;
-            LastActivityDate = cdcPost.LastActivityDate ?? default;
-            LastEditorDisplayName = cdcPost.LastEditorDisplayName ?? string.Empty;
-            Score = cdcPost.Score ?? default;
-            ViewCount = cdcPost.ViewCount ?? default;
-            Title = cdcPost.Title ?? string.Empty;
+            //AnswerCount = cdcPost.AnswerCount ?? default;
+            //Body = cdcPost.Body ?? string.Empty;
+            //ClosedDate = cdcPost.ClosedDate ?? default;
+            //CommentCount = cdcPost.CommentCount ?? default;
+            //CommunityOwnedDate = cdcPost.CommunityOwnedDate ?? default;
+            //CreateDate = cdcPost.CreateDate ?? default;
+            //FavoriteCount = cdcPost.FavoriteCount ?? default;
+            //IsDeleted = cdcPost.IsDeleted ?? default;
+            //LastActivityDate = cdcPost.LastActivityDate ?? default;
+            //LastEditorDisplayName = cdcPost.LastEditorDisplayName ?? string.Empty;
+            //Score = cdcPost.Score ?? default;
+            //ViewCount = cdcPost.ViewCount ?? default;
+            //Title = cdcPost.Title ?? string.Empty;
 
-            Tags = !string.IsNullOrWhiteSpace(cdcPost.Tags)
-                ? cdcPost.Tags.Split(' ')
-                : Array.Empty<string>();
+            //Tags = !string.IsNullOrWhiteSpace(cdcPost.Tags)
+            //    ? cdcPost.Tags.Split(' ')
+            //    : Array.Empty<string>();
         }
 
         public int Id { get; init; }

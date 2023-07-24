@@ -4,6 +4,7 @@ using CdcWorkerService.Strategy;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Nest;
+using System.Data;
 
 namespace CdcWorkerService;
 
@@ -39,7 +40,7 @@ internal class Worker : BackgroundService
                 throw;
             }
 
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(1000, stoppingToken); //TODO: delay from config
         }
     }
 
@@ -52,7 +53,7 @@ internal class Worker : BackgroundService
         var minLsn = GetMinLsn(dbContext, lastTracking);
         var maxLsn = GetMaxLsn(dbContext);
 
-        if (!minLsn.SequenceEqual(maxLsn))
+        if (maxLsn != null && !minLsn.SequenceEqual(maxLsn))
         {
             var changes = await GetNetChangesAsync(dbContext, minLsn, maxLsn);
             await ExecuteStrategies(changes, stoppingToken);
@@ -74,31 +75,51 @@ internal class Worker : BackgroundService
             : lastTracking.LastStartLsn;
     }
 
-    private static byte[] GetMaxLsn(DatabaseContext dbContext)
+    private static byte[]? GetMaxLsn(DatabaseContext dbContext)
     {
         return dbContext.PostsCT
             .Select(c => DatabaseContext.GetMaxLsn())
-            .First();
+            .FirstOrDefault();
     }
 
     private async Task<List<PostCT>> GetNetChangesAsync(DatabaseContext dbContext, byte[] fromLsn, byte[] toLsn)
     {
-        var changes = await dbContext.Set<PostCT>()
-            .FromSqlRaw("SELECT * FROM cdc.fn_cdc_get_net_changes_dbo_Posts(@fromLsn, @toLsn, 'all')",
-                new SqlParameter("@fromLsn", fromLsn),
-                new SqlParameter("@toLsn", toLsn))
-            .ToListAsync();
+        using var command = dbContext.Database.GetDbConnection().CreateCommand();
+        command.CommandText = $"SELECT * FROM cdc.fn_cdc_get_net_changes_dbo_Posts(@fromLsn, @toLsn, 'all');";
+        command.CommandType = CommandType.Text;
 
-        return changes;
+        command.Parameters.Add(new SqlParameter("@fromLsn", fromLsn));
+        command.Parameters.Add(new SqlParameter("@toLsn", toLsn));
+
+        await dbContext.Database.OpenConnectionAsync();
+
+        using var result = await command.ExecuteReaderAsync();
+        var posts = new List<PostCT>();
+
+        while (await result.ReadAsync())
+        {
+            var post = new PostCT
+            {
+                // Adjust this part to match your PostCT properties and the order of columns returned by the function.
+                Id = result.GetInt32(0),
+                // Other properties...
+            };
+
+            posts.Add(post);
+        }
+
+        await dbContext.Database.CloseConnectionAsync();
+
+        return posts;
     }
 
     private async Task ExecuteStrategies(List<PostCT> changes, CancellationToken stoppingToken)
     {
-        foreach (var change in changes)
-        {
-            if (_strategyContext.TryGetValue(change.Operation, out var strategy))
-                await strategy.ExecuteStrategy(change, _elasticClient, stoppingToken);
-        }
+        //foreach (var change in changes)
+        //{
+        //    if (_strategyContext.TryGetValue(change.Operation, out var strategy))
+        //        await strategy.ExecuteStrategy(change, _elasticClient, stoppingToken);
+        //}
     }
 
     private static async Task UpdateLastStartLsn(DatabaseContext dbContext, CdcTracking? lastTracking, byte[] maxLsn, CancellationToken stoppingToken)

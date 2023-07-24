@@ -36,7 +36,7 @@ namespace CdcWorkerService.Db
             modelBuilder.Entity<PostCT>(x =>
             {
                 x.ToTable("dbo_Posts_CT", "cdc").HasKey(k => k.Id);
-                x.Property(p => p.Operation).HasColumnName("__$operation");
+                //x.Property(p => p.Operation).HasColumnName("__$operation");
             });
 
             modelBuilder.Entity<CdcTracking>(x =>
