@@ -42,6 +42,8 @@ namespace Logic.Migrations
                 DROP TABLE IF EXISTS CdcTrackings;
             ");
 
+            // Disable CDC on the database
+            migrationBuilder.Sql("EXEC sys.sp_cdc_disable_db");
         }
     }
 }

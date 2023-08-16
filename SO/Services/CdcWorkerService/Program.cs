@@ -3,6 +3,7 @@ using CdcWorkerService.Db;
 using CdcWorkerService.Db.Models;
 using CdcWorkerService.EsClient;
 using CdcWorkerService.Strategy;
+using CdcWorkerService.Utils;
 using Microsoft.EntityFrameworkCore;
 using Nest;
 
@@ -24,6 +25,9 @@ IHost host = Host.CreateDefaultBuilder(args)
                 { OperationEnum.ValueAfterUpdate, new ValueAfterUpdateCdcStrategy() }
             };
         });
+
+        var delayInMs = hostContext.Configuration.GetValue<int>("WorkerSettings:DelayInMs");
+        services.AddSingleton(new WorkerSettings { DelayInMs = delayInMs });
 
         services.AddHostedService<Worker>();
     })
