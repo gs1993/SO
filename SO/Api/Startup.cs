@@ -1,5 +1,6 @@
 ﻿using Api.GraphQL;
 using Api.Utils;
+using ElasticSoDatabase.Utils;
 using FluentValidation;
 using GrpcPostServer;
 using Logic.Utils;
@@ -35,7 +36,9 @@ namespace Api
 
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-            services.AddMediatR(typeof(DatabaseContext).Assembly);
+            services.AddMediatR(
+                typeof(DatabaseContext).Assembly,
+                typeof(ElasticsearchExtensions).Assembly);
 
             AddDbContext(services);
 
@@ -50,6 +53,10 @@ namespace Api
 
             AddControllers(services);
             AddGraphQL(services);
+
+            services.AddElasticsearch(
+                Configuration.GetValue<string>("Elasticsearch:Url"),
+                Configuration.GetValue<string>("Elasticsearch:DefaultIndexName"));
 
             services.AddGrpc();
         }

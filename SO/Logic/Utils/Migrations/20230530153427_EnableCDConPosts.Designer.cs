@@ -4,6 +4,7 @@ using Logic.Utils.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Logic.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230530153427_EnableCDConPosts")]
+    partial class EnableCDConPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,6 +216,18 @@ namespace Logic.Migrations
                     b.Property<int?>("BountyAmount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -227,7 +241,7 @@ namespace Logic.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Vote");
                 });
 
             modelBuilder.Entity("Logic.BoundedContexts.Users.Entities.User", b =>

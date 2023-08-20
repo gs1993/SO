@@ -60,6 +60,11 @@ namespace Logic.Utils.Db
                 x.HasQueryFilter(x => !x.IsDeleted);
             });
 
+            modelBuilder.Entity<Vote>(x =>
+            {
+                x.ToTable("Votes").HasKey(k => k.Id);
+            });
+
             modelBuilder.Entity<PostType>(x =>
             {
                 x.ToTable("PostTypes").HasKey(k => k.Id);

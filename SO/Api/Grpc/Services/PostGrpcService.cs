@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Logic.Read.Posts.Dtos;
 using Logic.Read.Posts.Queries;
 using MediatR;
 using System;
@@ -35,7 +36,9 @@ namespace GrpcPostServer
             var postListResult = await _mediator.Send(new GetPostsPageQuery
             (
                 offset: request.Offset,
-                limit: request.Limit
+                limit: request.Limit,
+                searchArgs: Array.Empty<SearchArgs>(),
+                sortArgs: null
             ));
             var result = new GetListResponse();
             result.Post.AddRange(postListResult.Posts.Select(x => new PostDto

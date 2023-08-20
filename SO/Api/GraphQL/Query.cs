@@ -4,6 +4,7 @@ using FluentValidation;
 using HotChocolate;
 using HotChocolate.Subscriptions;
 using Logic.Queries.Posts.Dtos;
+using Logic.Read.Posts.Dtos;
 using Logic.Read.Posts.Queries;
 using MediatR;
 using System;
@@ -28,7 +29,9 @@ namespace Api.GraphQL
             var postListResult = await mediator.Send(new GetPostsPageQuery
                 (
                     offset: offset,
-                    limit: limit
+                    limit: limit,
+                    searchArgs: Array.Empty<SearchArgs>(),
+                    sortArgs: null
                 ));
 
             await eventSender.SendAsync("GetPostsPage", postListResult.Posts);
