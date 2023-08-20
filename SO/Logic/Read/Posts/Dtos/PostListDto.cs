@@ -14,6 +14,5 @@ namespace Logic.Queries.Posts.Dtos
         public string Body { get; init; }
         public int ViewCount { get; init; }
         public string[] Tags { get; init; }
-        public string UserName { get; init; }
     }
 }
