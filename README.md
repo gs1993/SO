@@ -3,15 +3,14 @@
 The technology demonstration app uses Entity Framework Core to manage <b>400GB</b> of data from the [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) in a clean and consistent manner 
 
 ## Table of Contents
-- [Architecture](#Architecture)
-- [Features](#Features)
-  - [CQRS](#CQRS)
-  - [Tests](#Tests)
-  - [Domain Driven Design](#Domain-Driven-Design)
-  - [APIs](#APIs)
-  - [Machine Learning](#Machine-Learning)
-- [Setup](#Setup)
-
+- [Architecture](#architecture)
+- [Features](#features)
+  * [CQRS](#cqrs)
+  * [Tests](#tests)
+  * [Domain Driven Design](#domain-driven-design)
+  * [APIs](#apis)
+  * [Machine Learning](#machine-learning)
+- [Setup](#setup)
 
 ## Architecture
 ![Architecture](https://github.com/gs1993/SO/blob/master/images/Architecture2.PNG)
