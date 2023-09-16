@@ -34,7 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CdcWorkerService", "Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlToElaticMigratorService", "Services\SqlToElaticMigratorService\SqlToElaticMigratorService.csproj", "{E7034F4E-EA3D-415D-90CC-5961CF6D7F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSoDatabase", "Services\ElasticSoDatabase\ElasticSoDatabase.csproj", "{594C4C1E-611A-4AC1-99E8-75216F0A81DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElasticSoDatabase", "Services\ElasticSoDatabase\ElasticSoDatabase.csproj", "{594C4C1E-611A-4AC1-99E8-75216F0A81DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7C57D01F-230A-4D8E-888B-133D535FDA18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientReliability", "Shared\HttpClientReliability\HttpClientReliability.csproj", "{C219F76A-6718-4A67-AFAD-6540DF54E8A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +90,10 @@ Global
 		{594C4C1E-611A-4AC1-99E8-75216F0A81DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{594C4C1E-611A-4AC1-99E8-75216F0A81DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{594C4C1E-611A-4AC1-99E8-75216F0A81DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C219F76A-6718-4A67-AFAD-6540DF54E8A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C219F76A-6718-4A67-AFAD-6540DF54E8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C219F76A-6718-4A67-AFAD-6540DF54E8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C219F76A-6718-4A67-AFAD-6540DF54E8A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +109,7 @@ Global
 		{D64FD42F-E57A-40C1-B13B-965D04F4EBC7} = {ECC901F0-2E63-4C0C-902D-6A96090F2BCE}
 		{E7034F4E-EA3D-415D-90CC-5961CF6D7F2D} = {ECC901F0-2E63-4C0C-902D-6A96090F2BCE}
 		{594C4C1E-611A-4AC1-99E8-75216F0A81DC} = {ECC901F0-2E63-4C0C-902D-6A96090F2BCE}
+		{C219F76A-6718-4A67-AFAD-6540DF54E8A5} = {7C57D01F-230A-4D8E-888B-133D535FDA18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4DA5FDD-E995-4BC8-960E-9EB7EBD2FA04}
