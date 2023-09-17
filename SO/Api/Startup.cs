@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using System;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -59,6 +61,10 @@ namespace Api
                 Configuration.GetValue<string>("Elasticsearch:DefaultIndexName"));
 
             services.AddGrpc();
+
+            services
+                .AddFeatureManagement(Configuration.GetSection("FeatureFlags"))
+                .AddFeatureFilter<PercentageFilter>();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
