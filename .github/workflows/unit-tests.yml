@@ -23,6 +23,6 @@ jobs:
       - name: Install dependencies
         run: dotnet restore ./SO/Tests/UnitTests/UnitTests.csproj
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./SO/Tests/UnitTests/UnitTests.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test ./SO/Tests/UnitTests/UnitTests.csproj --no-restore --verbosity normal
