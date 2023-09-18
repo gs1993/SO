@@ -1,3 +1,7 @@
+name: .NET Code Coverage
+
+on: push
+
 jobs:
   build:
     runs-on: ubuntu-latest
