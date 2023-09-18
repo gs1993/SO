@@ -2,6 +2,8 @@
 
 The technology demonstration app uses Entity Framework Core to manage <b>400GB</b> of data from the [StackOverflow Database](https://www.brentozar.com/archive/2015/10/how-to-download-the-stack-overflow-database-via-bittorrent) in a clean and consistent manner 
 
+[![Unit tests](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml/badge.svg?branch=master)](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml)
+
 ## Table of Contents
 - [Architecture](#architecture)
 - [Features](#features)
