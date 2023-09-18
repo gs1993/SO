@@ -1,0 +1,23 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ./SO/Tests/UnitTests/UnitTests.csproj
+
+    - name: Run tests with Coverlet
+      run: dotnet test ./SO/Tests/UnitTests/UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+    - name: Upload coverage to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: **/coverage.opencover.xml
