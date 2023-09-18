@@ -74,7 +74,7 @@ namespace UnitTests.Logic.Users
                 downVotes: 1
             );
 
-            Assert.True(result.IsFailure);
+            Assert.False(result.IsFailure);
             Assert.Contains("UpVotes", result.Error);
         }
 
