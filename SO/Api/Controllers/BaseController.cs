@@ -71,5 +71,12 @@ namespace Api.Controllers
                 ? Error(result.Error)
                 : StatusCode(successStatusCode);
         }
+
+        protected IActionResult FromResult<T>(Result<T> result, int successStatusCode = 200)
+        {
+            return result.IsFailure
+                ? Error(result.Error)
+                : StatusCode(successStatusCode, result.Value);
+        }
     }
 }

@@ -45,7 +45,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Logic\Logic.csproj" />
 		<ProjectReference Include="..\Services\ElasticSoDatabase\ElasticSoDatabase.csproj" />
-		<ProjectReference Include="..\Services\PostContentEvaluator\PostContentEvaluator.csproj" />
 	</ItemGroup>
 
 </Project>
