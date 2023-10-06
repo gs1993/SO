@@ -12,6 +12,7 @@ The technology demonstration app uses Entity Framework Core to manage <b>400GB</
   * [Domain Driven Design](#domain-driven-design)
   * [APIs](#apis)
   * [Machine Learning](#machine-learning)
+  * [Feature flags](#feature-flags)
 - [Setup](#setup)
 
 ## Architecture
@@ -65,6 +66,12 @@ Spam detection is accomplished through a machine learning model trained on a lar
 
 #### Training results:
 ![Training_results](https://github.com/gs1993/SO/blob/master/images/Training_results.PNG)
+
+### Feature flags
+Feature flags provide a easy way to turn features on or off dynamically.
+[FeatureFlagController.cs](https://github.com/gs1993/SO/blob/master/SO/Api/Controllers/FeatureFlagsDemoController.cs) - demo edpoints
+[FeatureFlags.cs](https://github.com/gs1993/SO/blob/master/SO/Logic/Read/FeatureFlagsDemo/FeatureFlag.cs) - logic for the flags
+[appsettings.json](https://github.com/gs1993/SO/blob/master/SO/Api/appsettings.json) - set by "FeatureFlags" section in appsettings
 
 --------------
 

@@ -8,15 +8,19 @@ using Logic.Utils.Db;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.FeatureFilters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 
 namespace Api
@@ -62,9 +66,15 @@ namespace Api
 
             services.AddGrpc();
 
+            // Feature flags
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ITargetingContextAccessor, HttpContextTargetingContextAccessor>();
+
             services
                 .AddFeatureManagement(Configuration.GetSection("FeatureFlags"))
-                .AddFeatureFilter<PercentageFilter>();
+                .AddFeatureFilter<PercentageFilter>()
+                .AddFeatureFilter<TimeWindowFilter>()
+                .AddFeatureFilter<TargetingFilter>();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -99,7 +109,7 @@ namespace Api
         {
             string commandConnectionString = Configuration.GetConnectionString("SO_Database");
             string queryConectionString = Configuration.GetConnectionString("SO_ReadonlyDatabase");
-            
+
             services.AddDbContexts(commandConnectionString, queryConectionString);
         }
 
