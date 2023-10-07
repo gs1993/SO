@@ -29,6 +29,6 @@ jobs:
     - name: Install Python Dependencies
       run: pip install PyGithub
     - name: Update Mutation Score Badge
-      run: python ./SO/.github/scripts/update_badge.py
+      run: python ../github/scripts/update_badge.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
