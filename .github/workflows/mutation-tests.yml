@@ -24,7 +24,7 @@ jobs:
     - name: Install dotnet-stryker
       run: dotnet tool install dotnet-stryker --tool-path /usr/local/bin
     - name: Run dotnet-stryker
-      run: /usr/local/bin/dotnet-stryker --project "Logic.csproj"
+      run: /usr/local/bin/dotnet-stryker --project "Logic.csproj" --reporter "json"
       working-directory: ./SO/Tests/UnitTests
     - name: Install Python Dependencies
       run: pip install PyGithub

@@ -22,8 +22,8 @@ def update_readme_badge(new_score, readme_path):
         f.write(updated_contents)
 
 if __name__ == '__main__':
-    report_path = './path/to/your/stryker/report.json'  # Replace with your Stryker report path
-    readme_path = './README.md'  # Replace with your README path if different
+    report_path = './path/to/your/stryker/report.json'
+    readme_path = './README.md'
     new_score = get_mutation_score_from_report(report_path)
     
     update_readme_badge(new_score, readme_path)
