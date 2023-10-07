@@ -4,6 +4,8 @@ The technology demonstration app uses Entity Framework Core to manage <b>400GB</
 
 [![Unit tests](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml/badge.svg?branch=master)](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml)
 
+![Mutation tests score](https://img.shields.io/badge/Mutation%20Score-00.00%25-red.svg)
+
 ## Table of Contents
 - [Architecture](#architecture)
 - [Features](#features)

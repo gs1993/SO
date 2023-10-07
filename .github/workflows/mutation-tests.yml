@@ -26,3 +26,9 @@ jobs:
     - name: Run dotnet-stryker
       run: /usr/local/bin/dotnet-stryker --project "Logic.csproj"
       working-directory: ./SO/Tests/UnitTests
+    - name: Install Python Dependencies
+      run: pip install PyGithub
+    - name: Update Mutation Score Badge
+      run: python ./SO/.github/scripts/update_badge.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
