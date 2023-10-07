@@ -30,6 +30,6 @@ jobs:
       run: pip install PyGithub
     - name: Update Mutation Score Badge
       working-directory: ./
-      run: python ./github/scripts/update_badge.py
+      run: python ./.github/scripts/update_badge.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
