@@ -30,10 +30,9 @@ jobs:
       run: |
         BASE_URL="https://dashboard.stryker-mutator.io"
         PROJECT="github.com/${{ github.repository }}"
-        VERSION=${{ github.ref#refs/heads/ }}
+        VERSION=$(echo "${{ github.ref }}" | sed -e "s/refs\/heads\///g")
         LATEST_REPORT_FOLDER=$(ls -td /home/runner/work/SO/SO/SO/Tests/UnitTests/StrykerOutput/*/ | head -n 1)
         REPORT_FILE="${LATEST_REPORT_FOLDER}reports/mutation-report.json"
-        echo "Uploading mutation-testing-report.json to ${BASE_URL}/api/reports/${PROJECT}/${VERSION}"
         curl -X PUT \
           ${BASE_URL}/api/reports/${PROJECT}/${VERSION} \
           -H "Content-Type: application/json" \
