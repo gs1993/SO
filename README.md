@@ -4,6 +4,8 @@ The technology demonstration app uses Entity Framework Core to manage <b>400GB</
 
 [![Unit tests](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml/badge.svg?branch=master)](https://github.com/gs1993/SO/actions/workflows/unit-tests.yml)
 
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fgs1993%2FSO%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/gs1993/SO/master)
+
 ## Table of Contents
 - [Architecture](#architecture)
 - [Features](#features)

@@ -1,0 +1,41 @@
+name: Stryker Mutation Tests
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  stryker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ['6.0.x']
+        
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Install dotnet-stryker
+      run: dotnet tool install dotnet-stryker --tool-path /usr/local/bin
+    - name: Run dotnet-stryker
+      run: /usr/local/bin/dotnet-stryker --project "Logic.csproj" --reporter "json"
+      working-directory: ./SO/Tests/UnitTests
+    - name: Upload Report to Stryker Dashboard
+      run: |
+        BASE_URL="https://dashboard.stryker-mutator.io"
+        PROJECT="github.com/${{ github.repository }}"
+        VERSION=$(echo "${{ github.ref }}" | sed -e "s/refs\/heads\///g")
+        LATEST_REPORT_FOLDER=$(ls -td /home/runner/work/SO/SO/SO/Tests/UnitTests/StrykerOutput/*/ | head -n 1)
+        REPORT_FILE="${LATEST_REPORT_FOLDER}reports/mutation-report.json"
+        curl -X PUT \
+          ${BASE_URL}/api/reports/${PROJECT}/${VERSION} \
+          -H "Content-Type: application/json" \
+          -H "Host: dashboard.stryker-mutator.io" \
+          -H "X-Api-Key: ${{ secrets.STRYKER_API_KEY }}" \
+          -d @$REPORT_FILE
