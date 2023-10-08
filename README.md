@@ -41,6 +41,7 @@ Employing [Compiled Queries](https://github.com/gs1993/SO/blob/master/SO/Logic/R
 1. [Unit tests](https://github.com/gs1993/SO/blob/master/SO/Tests/UnitTests/Logic/Posts/PostTests.cs) - in-depth tests for complex domain logic
 2. [Integration tests](https://github.com/gs1993/SO/blob/master/SO/Tests/IntegrationTests/Posts/PostControllerIntegrationTests.cs) - api-level test with a separate database created dynamically using Docker
 3. [Benchmark test](https://github.com/gs1993/SO/blob/master/SO/Tests/BenchmarkTests/APIs/RestBenchmarks.cs) - comparison of REST and GraphQL performance
+3. [Mutation test](https://dashboard.stryker-mutator.io/reports/github.com/gs1993/SO/master#mutant) - using [stryker-net](https://github.com/stryker-mutator/stryker-net)
 
 ### Domain Driven Design
 
