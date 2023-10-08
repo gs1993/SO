@@ -24,12 +24,19 @@ jobs:
     - name: Install dotnet-stryker
       run: dotnet tool install dotnet-stryker --tool-path /usr/local/bin
     - name: Run dotnet-stryker
-      run: /usr/local/bin/dotnet-stryker --project "Logic.csproj" >> stryker_log.txt
+      run: /usr/local/bin/dotnet-stryker --project "Logic.csproj" --reporter "json"
       working-directory: ./SO/Tests/UnitTests
-    - name: Install Python Dependencies
-      run: pip install PyGithub
-    - name: Update Mutation Score Badge
-      working-directory: ./
-      run: python ./.github/scripts/update_badge.py
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Report to Stryker Dashboard
+      run: |
+        BASE_URL="https://dashboard.stryker-mutator.io"
+        PROJECT="github.com/${{ github.repository }}"
+        VERSION=${{ github.ref#refs/heads/ }}
+        LATEST_REPORT_FOLDER=$(ls -td /home/runner/work/SO/SO/SO/Tests/UnitTests/StrykerOutput/*/ | head -n 1)
+        REPORT_FILE="${LATEST_REPORT_FOLDER}reports/mutation-report.json"
+        echo "Uploading mutation-testing-report.json to ${BASE_URL}/api/reports/${PROJECT}/${VERSION}"
+        curl -X PUT \
+          ${BASE_URL}/api/reports/${PROJECT}/${VERSION} \
+          -H "Content-Type: application/json" \
+          -H "Host: dashboard.stryker-mutator.io" \
+          -H "X-Api-Key: ${{ secrets.STRYKER_API_KEY }}" \
+          -d @$REPORT_FILE
