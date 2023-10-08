@@ -14,22 +14,17 @@ if report_files:
         
     mutation_score = data.get('mutationScore', None)
     
-    if mutation_score is not None:
-        print(f'Mutation score is {mutation_score}')
-        
-        # Read README file
-        with open('/home/runner/work/SO/SO/README.md', 'r') as readme_file:
-            readme_content = readme_file.read()
-        
-        # Update badge using a regular expression to match the old badge
-        updated_readme_content = re.sub(
-            r'!\[Mutation Score\]\(https://img\.shields\.io/badge/Mutation%20Score-[0-9.]+%-blue\)',
-            f'![Mutation Score](https://img.shields.io/badge/Mutation%20Score-{mutation_score}%25-blue)',
-            readme_content
-        )
-        
-        # Write back updated content to README
-        with open('/home/runner/work/SO/SO/README.md', 'w') as readme_file:
-            readme_file.write(updated_readme_content)
-else:
-    print("No report files found.")
+    # Read README file
+    with open('/home/runner/work/SO/SO/README.md', 'r') as readme_file:
+        readme_content = readme_file.read()
+    
+    # Update badge using a regular expression to match the old badge
+    updated_readme_content = re.sub(
+        r'!\[Mutation Score\]\(https://img\.shields\.io/badge/Mutation%20Score-[0-9.]+%-blue\)',
+        f'![Mutation Score](https://img.shields.io/badge/Mutation%20Score-{mutation_score}%25-blue)',
+        readme_content
+    )
+    
+    # Write back updated content to README
+    with open('/home/runner/work/SO/SO/README.md', 'w') as readme_file:
+        readme_file.write(updated_readme_content)
