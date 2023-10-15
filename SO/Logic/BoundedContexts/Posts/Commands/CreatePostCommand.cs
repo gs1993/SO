@@ -57,9 +57,8 @@ namespace Logic.BoundedContexts.Posts.Commands
             (
                 title: request.Title, 
                 body: request.Body, 
-                createDate: _dateTimeProvider.Now, 
-                authorId: request.AuthorId,
-                authorName: author.DisplayName, 
+                createDate: _dateTimeProvider.Now,
+                author: author,
                 tags: request.Tags
             );
 

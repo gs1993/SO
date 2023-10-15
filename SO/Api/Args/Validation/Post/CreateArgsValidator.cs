@@ -11,7 +11,7 @@ namespace Api.Args.Validation.Post
             RuleFor(x => x)
                 .NotNull()
                 .MustBeEntity(y => Logic.BoundedContexts.Posts.Entities.Post
-                    .Create(y.Title, y.Body, DateTime.Now, y.AuthorId, "UserName", y.Tags));
+                    .Create(y.Title, y.Body, DateTime.Now, null, y.Tags));
         }
     }
     

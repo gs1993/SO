@@ -45,6 +45,7 @@ namespace Logic.BoundedContexts.Posts.Entities
         {
             Title = title;
             Body = body;
+            CreateDate = createDate;
             LastActivityDate = createDate;
             LastEditorDisplayName = authorName;
             LastEditorUserId = authorId;
@@ -64,8 +65,10 @@ namespace Logic.BoundedContexts.Posts.Entities
         }
 
         public static Result<Post, Error> Create(string title, string body, DateTime createDate,
-            int authorId, string authorName, string? tags)
+            User author, string? tags)
         {
+            ArgumentNullException.ThrowIfNull(author);
+
             if (string.IsNullOrWhiteSpace(title))
                 return Errors.General.ValueIsRequired(nameof(title));
             var trimmedTitle = title.Trim();
@@ -85,33 +88,29 @@ namespace Logic.BoundedContexts.Posts.Entities
             if (createDate == DateTime.MinValue)
                 return Errors.General.ValueIsRequired(nameof(createDate));
 
-            if (authorId < 0)
-                return Errors.General.ValueIsRequired(nameof(authorId));
-
-            if (string.IsNullOrWhiteSpace(authorName))
-                return Errors.General.ValueIsRequired(nameof(authorName));
-
-            return new Post(trimmedTitle, trimmedBody, createDate, authorId, authorName, trimmedTags);
+            return new Post(trimmedTitle, trimmedBody, createDate, author.Id, author.DisplayName, trimmedTags);
         }
         #endregion
 
         public Result AddComment(User user, string comment)
         {
-            if (user == null)
-                return Errors.General.ValueIsRequired(nameof(user));
-            if (string.IsNullOrWhiteSpace(comment))
+            ArgumentNullException.ThrowIfNull(user);
+
+            var trimmedComment = comment?.Trim() ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(trimmedComment))
                 return Errors.Posts.CommentIsRequired();
+            if (trimmedComment.Length > 10_000)
+                return Errors.General.InvalidLength(nameof(comment));
 
 
-            _comments.Add(new Comment(user.Id, comment));
+            _comments.Add(new Comment(user.Id, trimmedComment));
 
             return Result.Success();
         }
 
         public Result UpVote(User user)
         {
-            if (user == null)
-                return Errors.General.ValueIsRequired(nameof(user));
+            ArgumentNullException.ThrowIfNull(user);
 
             AddVote(user, 1);
 
@@ -120,8 +119,7 @@ namespace Logic.BoundedContexts.Posts.Entities
 
         public Result DownVote(User user)
         {
-            if (user == null)
-                return Errors.General.ValueIsRequired(nameof(user));
+            ArgumentNullException.ThrowIfNull(user);
 
             AddVote(user, -1);
 
@@ -130,7 +128,10 @@ namespace Logic.BoundedContexts.Posts.Entities
 
         public Result Close(DateTime closeDate)
         {
-            if (ClosedDate != null)
+            if (closeDate == default)
+                throw new ArgumentNullException(nameof(closeDate));
+
+            if (ClosedDate.HasValue)
                 return Errors.Posts.AlreadyClosed();
 
             ClosedDate = closeDate;
