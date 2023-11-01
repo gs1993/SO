@@ -157,6 +157,22 @@ namespace UnitTests.Logic.Posts
             Assert.NotNull(result.Value);
         }
 
+        [Fact]
+        public void Should_CreateSucceed_WhenTagsIsNull()
+        {
+            var result = Post.Create
+            (
+               tags: null,
+               title: CreateString(5),
+               body: CreateString(50),
+               createDate: _sut.CreateDate,
+               author: _user
+            );
+
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -176,6 +192,21 @@ namespace UnitTests.Logic.Posts
 
             Assert.True(result.IsFailure);
             Assert.Contains("title", result.Error.Message);
+        }
+
+        [Fact]
+        public void Should_CreateThrowAnException_WhenUserIsNull()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => Post.Create
+            (
+               author: null,
+               title: CreateString(250),
+               body: CreateString(1000),
+               tags: CreateString(100),
+               createDate: _sut.CreateDate
+            ));
+
+            Assert.Equal("Value cannot be null. (Parameter 'author')", exception.Message);
         }
 
         [Theory]

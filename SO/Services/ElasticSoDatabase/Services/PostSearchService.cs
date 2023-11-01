@@ -139,7 +139,7 @@ namespace ElasticSoDatabase.Services
 
         private Nest.QueryContainer BuildQuery(IEnumerable<SearchArgs> searchArgs)
         {
-            Nest.QueryContainer queryContainer = null;
+            Nest.QueryContainer? queryContainer = null;
             foreach (var arg in searchArgs)
                 queryContainer &= CreateFieldQuery(arg.Field, arg.Operation, arg.Value);
 

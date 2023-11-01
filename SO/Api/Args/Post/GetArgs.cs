@@ -9,7 +9,7 @@ namespace Api.Args.Post
         public int Offset { get; init; }
         [Required]
         public int Limit { get; init; }
-        public SearchArgs[]? SearchArgs { get; init; }
-        public SortArgs? SortArgs { get; init; }
+        public SearchArgs[] SearchArgs { get; init; }
+        public SortArgs SortArgs { get; init; }
     }
 }
