@@ -142,22 +142,6 @@ namespace UnitTests.Logic.Posts
         }
 
         [Fact]
-        public void Should_CreateSucceed_WhenTagsIsNull()
-        {
-            var result = Post.Create
-            (
-               tags: null,
-               title: CreateString(5),
-               body: CreateString(50),
-               createDate: _sut.CreateDate,
-               author: _user
-            );
-
-            Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
-        }
-
-        [Fact]
         public void Should_CreateSucceed_WhenAllPropertiesMaxLength()
         {
             var result = Post.Create
@@ -168,6 +152,22 @@ namespace UnitTests.Logic.Posts
                createDate: _sut.CreateDate,
                author: _user
            );
+
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+        }
+
+        [Fact]
+        public void Should_CreateSucceed_WhenTagsIsNull()
+        {
+            var result = Post.Create
+            (
+               tags: null,
+               title: CreateString(5),
+               body: CreateString(50),
+               createDate: _sut.CreateDate,
+               author: _user
+            );
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Value);
