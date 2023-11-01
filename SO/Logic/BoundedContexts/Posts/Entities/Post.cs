@@ -82,7 +82,7 @@ namespace Logic.BoundedContexts.Posts.Entities
                 return Errors.General.InvalidLength(nameof(body));
 
             var trimmedTags = tags?.Trim() ?? string.Empty;
-            if (trimmedTags?.Length > 100)
+            if (trimmedTags.Length > 100)
                 return Errors.General.InvalidLength(nameof(tags));
 
             if (createDate == DateTime.MinValue)
