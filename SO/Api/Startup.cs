@@ -1,5 +1,4 @@
-﻿using Api.GraphQL;
-using Api.Utils;
+﻿using Api.Utils;
 using ElasticSoDatabase.Utils;
 using FluentValidation;
 using GrpcPostServer;
@@ -58,7 +57,6 @@ namespace Api
             });
 
             AddControllers(services);
-            AddGraphQL(services);
 
             services.AddElasticsearch(
                 Configuration.GetValue<string>("Elasticsearch:Url"),
@@ -111,16 +109,6 @@ namespace Api
             string queryConectionString = Configuration.GetConnectionString("SO_ReadonlyDatabase");
 
             services.AddDbContexts(commandConnectionString, queryConectionString);
-        }
-
-        private static void AddGraphQL(IServiceCollection services)
-        {
-            services
-                .AddGraphQLServer()
-                .AddQueryType<Query>()
-                .AddMutationType<Mutation>()
-                .AddSubscriptionType<Subscription>()
-                .AddInMemorySubscriptions();
         }
 
         private static void AddControllers(IServiceCollection services)
