@@ -35,7 +35,7 @@ namespace ElasticSoDatabase.QueryHandlers
 
             if (postListResult.IsFailure)
                 throw new Exception(postListResult.Error);
-
+            
             var dto = postListResult.Value
                 .Items
                 .Select(x => new PostListDto

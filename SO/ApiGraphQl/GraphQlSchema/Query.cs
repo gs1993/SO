@@ -1,22 +1,18 @@
 ﻿using Api.Args.Post;
 using Dawn;
 using FluentValidation;
-using HotChocolate;
 using HotChocolate.Subscriptions;
 using Logic.Queries.Posts.Dtos;
 using Logic.Read.Posts.Dtos;
 using Logic.Read.Posts.Queries;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Api.GraphQL
+namespace ApiGraphQl.GraphQlSchema
 {
     public class Query
     {
         public async Task<IReadOnlyList<PostListDto>> GetPostsPage(int offset, int limit,
-            [Service] IMediator mediator, [Service] ITopicEventSender eventSender, [Service] IValidatorFactory validatorFactory)
+            IMediator mediator, ITopicEventSender eventSender, IValidatorFactory validatorFactory)
         {
             var validationResult = validatorFactory.GetValidator<GetArgs>().Validate(new GetArgs
             {
@@ -40,7 +36,7 @@ namespace Api.GraphQL
         }
 
         public async Task<IReadOnlyList<PostListDto>> GetLastest(int size,
-            [Service] IMediator mediator, [Service] ITopicEventSender eventSender, [Service] IValidatorFactory validatorFactory)
+            IMediator mediator, ITopicEventSender eventSender, IValidatorFactory validatorFactory)
         {
             var validationResult = validatorFactory.GetValidator<GetLastestArgs>().Validate(new GetLastestArgs
             {
@@ -60,7 +56,7 @@ namespace Api.GraphQL
         }
 
         public async Task<PostDetailsDto> Get(int id,
-            [Service] IMediator mediator, [Service] ITopicEventSender eventSender)
+            IMediator mediator, ITopicEventSender eventSender)
         {
             Guard.Argument(id).Positive();
 

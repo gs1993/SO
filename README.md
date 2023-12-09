@@ -59,7 +59,7 @@ Employing [Compiled Queries](https://github.com/gs1993/SO/blob/master/SO/Logic/R
 
 [REST](https://github.com/gs1993/SO/tree/master/SO/Api/Controllers) - with [Swagger](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) documentation
 
-[GraphQL](https://github.com/gs1993/SO/tree/master/SO/Api/GraphQL) - using [Grpc.AspNetCore](https://github.com/grpc/grpc-dotnet)
+[GraphQL](https://github.com/gs1993/SO/tree/master/SO/ApiGraphQl) - using [ChilliCream GraphQL Platform](https://github.com/ChilliCream/graphql-platform)
 
 [gRPC](https://github.com/gs1993/SO/tree/master/SO/Api/Grpc) - using [Google.Protobuf](https://github.com/protocolbuffers/protobuf)
 
